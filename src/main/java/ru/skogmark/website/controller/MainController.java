@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *         2016-03-08
  */
 @Controller
-@RequestMapping(path = "/")
 public class MainController {
 
     private static final String INDEX_VIEW = "main/index";

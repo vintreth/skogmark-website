@@ -54,19 +54,6 @@
   </section>
   <jsp:invoke fragment="content"/>
   <section class="page__footer">
-    <div class="page__separator"></div>
-    <h3>Join our mailing list for the latest news,<br/>dates & free tickets!</h3>
-    <div class="footer__subscription-form">
-      <form action="" method="post">
-        <div class="form__input-group">
-          <i class="form__icon-email"></i>
-          <input class="form__input-text" type="email" placeholder="Email Address"/>
-        </div>
-        <div class="form__input-group">
-          <input class="form__input-submit button" type="submit" value="Subscribe Now"/>
-        </div>
-      </form>
-    </div>
     <div class="page__separator-small"></div>
     <div class="footer__social-block">
       <h3>Follow us on:</h3>

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ tag language="java" %>
 <section class="page__feed">
   <div class="page__separator-small"></div>
@@ -6,7 +7,7 @@
     <div class="feed__container-column">
       <div class="feed__post">
         <div class="feed__post-title">
-          <a href="#">The Toxic Void performance at WixMusic Festival hit waves</a>
+          <a href="/post/1">The Toxic Void performance at WixMusic Festival hit waves</a>
         </div>
         <div class="feed__post-date">June 14, 2015</div>
         <div class="feed__post-preview-image"></div>
@@ -22,15 +23,15 @@
           know a
           little more about you.
         </div>
-        <a href="#" class="feed__post-read-more-btn button">Read More</a>
+        <a href="/post/1" class="feed__post-read-more-btn button">Read More</a>
       </div>
       <div class="feed__post">
         <div class="feed__post-title">
-          <a href="#">Backstage with The Toxic Void</a>
+          <a href="/post/2">Backstage with The Toxic Void</a>
         </div>
         <div class="feed__post-date">June 14, 2015</div>
         <div class="feed__post-preview-image">
-          <a href="#">
+          <a href="/post/2">
             <img src="../../../../resources/images/1jEWiVU49a8.jpg" alt=""/>
           </a>
         </div>
@@ -39,7 +40,7 @@
           encourage
           readers to keep coming back.
         </div>
-        <a href="#" class="feed__post-read-more-btn button">Read More</a>
+        <a href="/post/2" class="feed__post-read-more-btn button">Read More</a>
       </div>
       <div class="feed__post">
         <div class="feed__post-title">
