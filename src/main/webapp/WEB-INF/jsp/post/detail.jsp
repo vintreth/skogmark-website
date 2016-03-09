@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags/templates" %>
+<%@ taglib prefix="w" tagdir="/WEB-INF/tags/widgets/post" %>
 <t:main title="Home page">
   <jsp:attribute name="content">
     <section class="page__detail-feed-container">
@@ -28,26 +29,9 @@
           </div>
         </div>
       </div><!--
-    ---><div class="detail-feed__side-bar">
-      <div class="side-bar__item">
-        <div class="side-bar__item-title">Featured Posts</div>
-        <div class="side-bar__item-carousel">
-          <ul>
-            <li>
-              <div class="carousel__post-preview">
-                <a href="#">
-                  <img src="../../../resources/images/1jEWiVU49a8.jpg" alt=""/>
-                </a>
-              </div>
-              <div class="carousel__post-title">
-                <a href="#">Backstage with The Toxic Void</a>
-              </div>
-              <div class="carousel__post-date">June 14, 2015</div>
-            </li>
-          </ul>
-        </div>
+   --><div class="detail-feed__side-bar">
+        <w:side-bar/>
       </div>
-    </div>
     </section>
   </jsp:attribute>
 </t:main>
