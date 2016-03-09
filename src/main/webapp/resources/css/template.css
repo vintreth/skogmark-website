@@ -105,6 +105,8 @@ p {
     z-index: -900;
     margin-top: 85px;
     opacity: 0.5;
+    top: 0;
+    left: 0;
 }
 .background-header__img {
     background: url(../images/template/bg-header-full.png) 50%;
@@ -118,16 +120,20 @@ p {
     position: absolute;
     z-index: -500;
     background-color: rgba(0, 0, 0, 0.3);
+    top: 0;
+    left: 0;
 }
 #page {
     min-height: 100%;
 }
 .page__head-bar {
     height: 85px;
-    position: relative;
 }
 .page__head-bar a {
     text-decoration: none;
+}
+.head_bar__navigation-container {
+    position: relative;
 }
 .head_bar__navigation {
     min-height: 100%;
@@ -153,14 +159,17 @@ p {
     top: 0;
 }
 .head_bar__social-block li {
-    display: inline-block;
     padding: 50px 2px 0 2px;
 }
-.head_bar__social-block a {
+.social-block li {
+    display: inline-block;
+}
+.social-block a {
     opacity: 0.8;
 }
-.head_bar__social-block a:hover {
+.social-block a:hover {
     opacity: 1.0;
+    text-decoration: none;
 }
 .social-block__fb-icon {
     background: url(../images/icons/social-fb.png);
@@ -290,4 +299,11 @@ p {
     font-size: 15px;
     margin-bottom: 40px;
     text-align: center;
+}
+.footer__social-block {
+    text-align: center;
+    padding: 15px 0;
+}
+.footer__social-block-container h3 {
+    margin-bottom: 0;
 }
