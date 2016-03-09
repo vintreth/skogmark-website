@@ -13,5 +13,6 @@
     <w:logo/>
     <w:feed/>
     <w:actual-album/>
+    <w:subscription/>
   </jsp:attribute>
 </t:main>

@@ -1,0 +1,71 @@
+@media (max-width: 768px) {
+    .detail-feed__feed-column {
+        width: 100% !important;
+    }
+    .detail-feed__side-bar {
+        display: none !important;
+    }
+}
+.detail-feed__feed-column {
+    width: 67%;
+    margin-bottom: 30px;
+    display: inline-block;
+    vertical-align: top;
+}
+.detail-feed__post {
+    min-height: 200px;
+    background-color: rgba(47, 46, 46, 0.3);
+    display: inline-block;
+    padding: 20px;
+    font-family: Raleway, sans-serif;
+    color: #cccccc;
+    font-size: 14px;
+}
+.detail-feed__title {
+    text-align: left;
+    margin: 0 0 5px 0;
+    font-family: "MuseoSlab", sans-serif;
+    font-size: 23px;
+    color: #ffffff;
+}
+.detail-feed__content {
+    margin: 40px 0;
+}
+.detail-feed__post img {
+    max-width: 100%;
+}
+.detail-feed__tag {
+    display: inline-block;
+    margin: 5px;
+    color: #a0a09f;
+}
+.detail-feed__side-bar {
+    width: 33%;
+    display: inline-block;
+    vertical-align: top;
+    padding: 30px 0;
+}
+.side-bar__item-title {
+    font-size: 20px;
+    border-bottom: 1px solid #cccccc;
+    padding-bottom: 5px;
+    margin-left: 60px;
+}
+.side-bar__item-carousel {
+    margin-left: 60px;
+}
+.side-bar__item-carousel li {
+    display: inline-block;
+    padding: 10px 0;
+}
+.carousel__post-preview img {
+    max-width: 100%;
+}
+.carousel__post-title {
+    font-size: 17px;
+    font-family: "MuseoSlab", sans-serif;
+    padding: 5px 0;
+}
+.carousel__post-date {
+    font-size: 10px;
+}

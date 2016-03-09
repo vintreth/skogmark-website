@@ -60,6 +60,9 @@ h3 {
     width: 100%;
     text-align: center;
 }
+p {
+    margin: 7px 0;
+}
 .input-text {
 
 }
@@ -273,7 +276,7 @@ h3 {
 }
 .actual-album-container__buy {
     float: left;
-    color: rgba(160,160,159,1);
+    color: #a0a09f;
 }
 .actual-album-container__share {
     float: right;

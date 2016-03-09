@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="<c:url value="/resources/css/open-sans.css"/>"/>
   <link rel="stylesheet" href="<c:url value="/resources/css/museo-slab.css"/>"/>
   <link rel="stylesheet" href="<c:url value="/resources/css/icomoon.css"/>"/>
+  <link rel="stylesheet" href="<c:url value="/resources/css/detail-feed.css"/>"/>
 </head>
 <body>
 <div id="background-repeat"></div>
