@@ -3,11 +3,13 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>${title}</title>
-    <link rel="stylesheet" href="../../../../resources/assets/css/template.css"/>
-    <link rel="stylesheet" href="../../../../resources/assets/css/font-awesome.css"/>
-    <link rel="stylesheet" href="../../../../resources/assets/css/raleway.css"/>
-    <link rel="stylesheet" href="../../../../resources/assets/css/open-sans.css"/>
-    <link rel="stylesheet" href="../../../../resources/assets/css/museo-slab.css"/>
+    <link rel="stylesheet" href="../../../../resources/css/template.css"/>
+    <link rel="stylesheet" href="../../../../resources/css/forms.css"/>
+    <link rel="stylesheet" href="../../../../resources/css/font-awesome.css"/>
+    <link rel="stylesheet" href="../../../../resources/css/raleway.css"/>
+    <link rel="stylesheet" href="../../../../resources/css/open-sans.css"/>
+    <link rel="stylesheet" href="../../../../resources/css/museo-slab.css"/>
+    <link rel="stylesheet" href="../../../../resources/css/icomoon.css"/>
 </head>
 <body>
 <div id="background-repeat"></div>
@@ -41,9 +43,8 @@
         <div class="page__logo-img"></div>
     </section>
     <section class="page__feed">
-        <div class="page__separator"></div>
+        <div class="page__separator-small"></div>
         <h1>Latest News</h1>
-
         <div class="feed__container">
             <div class="feed__container-column">
                 <div class="feed__post">
@@ -64,7 +65,7 @@
                         know a
                         little more about you.
                     </div>
-                    <a href="#" class="feed__post-read-more-btn">Read More</a>
+                    <a href="#" class="feed__post-read-more-btn button">Read More</a>
                 </div>
                 <div class="feed__post">
                     <div class="feed__post-title">
@@ -73,7 +74,7 @@
                     <div class="feed__post-date">June 14, 2015</div>
                     <div class="feed__post-preview-image">
                         <a href="#">
-                            <img src="/var/java/skogmark-site/src/main/resources/assets/images/1jEWiVU49a8.jpg" alt=""/>
+                            <img src="../../../../resources/images/1jEWiVU49a8.jpg" alt=""/>
                         </a>
                     </div>
                     <div class="feed__post-preview-text">
@@ -81,7 +82,7 @@
                         encourage
                         readers to keep coming back.
                     </div>
-                    <a href="#" class="feed__post-read-more-btn">Read More</a>
+                    <a href="#" class="feed__post-read-more-btn button">Read More</a>
                 </div>
                 <div class="feed__post">
                     <div class="feed__post-title">
@@ -90,7 +91,7 @@
                     <div class="feed__post-date">June 14, 2015</div>
                     <div class="feed__post-preview-image">
                         <a href="">
-                            <img src="/var/java/skogmark-site/src/main/resources/assets/images/D_TodUfKFUI.jpg" alt=""/>
+                            <img src="../../../../resources/images/D_TodUfKFUI.jpg" alt=""/>
                         </a>
                     </div>
                     <div class="feed__post-preview-text">
@@ -98,7 +99,7 @@
                         encourage
                         readers to keep coming back.
                     </div>
-                    <a href="#" class="feed__post-read-more-btn">Read More</a>
+                    <a href="#" class="feed__post-read-more-btn button">Read More</a>
                 </div>
             </div>
             <div class="feed__container-column">
@@ -109,7 +110,7 @@
                     <div class="feed__post-date">June 14, 2015</div>
                     <div class="feed__post-preview-image">
                         <a href="">
-                            <img src="/var/java/skogmark-site/src/main/resources/assets/images/Y9D-ytgyWLo.jpg" alt=""/>
+                            <img src="../../../../resources/images/Y9D-ytgyWLo.jpg" alt=""/>
                         </a>
                     </div>
                     <div class="feed__post-preview-text">
@@ -117,7 +118,7 @@
                         encourage
                         readers to keep coming back.
                     </div>
-                    <a href="#" class="feed__post-read-more-btn">Read More</a>
+                    <a href="#" class="feed__post-read-more-btn button">Read More</a>
                 </div>
                 <div class="feed__post">
                     <div class="feed__post-title">
@@ -126,7 +127,7 @@
                     <div class="feed__post-date">June 14, 2015</div>
                     <div class="feed__post-preview-image">
                         <a href="">
-                            <img src="/var/java/skogmark-site/src/main/resources/assets/images/05e3dc_553608c4545b41a3b9ecf44f6fdd9354.jpg"
+                            <img src="../../../../resources/images/05e3dc_553608c4545b41a3b9ecf44f6fdd9354.jpg"
                                  alt=""/>
                         </a>
                     </div>
@@ -136,7 +137,7 @@
                         Great looking images make your blog posts more visually compelling for your audience, and
                         encourage readers to keep coming back
                     </div>
-                    <a href="#" class="feed__post-read-more-btn">Read More</a>
+                    <a href="#" class="feed__post-read-more-btn button">Read More</a>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -152,13 +153,32 @@
                 <div class="clearfix"></div>
             </div>
             <div class="page__actual-album-container-img">
-                <img src="/var/java/skogmark-site/src/main/resources/assets/images/nIgophlY1UM.jpg" alt=""/>
+                <img src="../../../../resources/images/nIgophlY1UM.jpg" alt=""/>
             </div>
         </div>
     </section>
     <section class="page__footer">
         <div class="page__separator"></div>
-        <h3>Join our mailing list for the latest news, tour dates & free tickets!</h3>
+        <h3>Join our mailing list for the latest news,<br/>dates & free tickets!</h3>
+        <div class="footer__subscription-form">
+            <form action="" method="post">
+                <div class="form__input-group">
+                    <i class="form__icon-email"></i>
+                    <input class="form__input-text" type="email" placeholder="Email Address"/>
+                </div>
+                <div class="form__input-group">
+                    <input class="form__input-submit button" type="submit" value="Subscribe Now"/>
+                </div>
+            </form>
+        </div>
+        <div class="page__separator-small"></div>
+        <div class="footer__social-block">
+            <h3>Follow us on:</h3>
+            <!--todo: require social widget-->
+        </div>
+        <div class="footer__copyright">
+            <p>© 2016 by Skogmark</p>
+        </div>
     </section>
     <!--<jsp:invoke fragment="content"/>-->
 </div>
