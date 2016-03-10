@@ -1,5 +1,6 @@
 package ru.skogmark.website.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class PostController {
 
+    private static Logger logger = Logger.getLogger("PostController");
+
     @RequestMapping(path = "/post/{id}", method = RequestMethod.GET)
-    public String detailPage(@PathVariable Integer id, Model model) {
+    public String detail(@PathVariable Integer id, Model model) {
+        logger.debug("Rendering detail post page");
         model.addAttribute("id", id);
 
         return "post/detail";

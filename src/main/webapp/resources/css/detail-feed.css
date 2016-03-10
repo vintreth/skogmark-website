@@ -93,3 +93,11 @@
 .recent-post-container__date {
     font-size: 10px;
 }
+.side-bar__archive-container a {
+    display: block;
+    padding: 5px 0;
+}
+.side-bar__tag-container a {
+    display: inline-block;
+    padding: 5px 5px 0 0;
+}

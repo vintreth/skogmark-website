@@ -33,12 +33,12 @@
         <div class="recent-post-container__recent-post-preview">
           <img src="../../../resources/images/Y9D-ytgyWLo.jpg" alt=""/>
         </div><!--
-                        ---><div class="recent-post-container__info">
-        <div class="recent-post-container__title">
-          <a href="/post/1">NEW ALBUM: "Raging Clouds" is out</a>
+    ---><div class="recent-post-container__info">
+          <div class="recent-post-container__title">
+            <a href="/post/1">NEW ALBUM: "Raging Clouds" is out</a>
+          </div>
+          <div class="recent-post-container__date">June 14, 2015</div>
         </div>
-        <div class="recent-post-container__date">June 14, 2015</div>
-      </div>
       </div>
       <div class="recent-post-container__recent-post">
         <div class="recent-post-container__recent-post-preview">
@@ -55,11 +55,21 @@
   </div>
   <div class="side-bar__item">
     <div class="side-bar__item-title">Archive</div>
+    <div class="side-bar__archive-container">
+      <a href="#">June 2015 (2)</a>
+      <a href="#">May 2015 (1)</a>
+      <a href="#">March 2015 (1)</a>
+      <a href="#">November 2014 (1)</a>
+    </div>
   </div>
   <div class="side-bar__item">
     <div class="side-bar__item-title">Search By Tags</div>
-  </div>
-  <div class="side-bar__item">
-    <div class="side-bar__item-title">Follow Us</div>
+    <div class="side-bar__tag-container">
+      <a href="#">Backstage</a>
+      <a href="#">Charts</a>
+      <a href="#">New Album</a>
+      <a href="#">Photos</a>
+      <a href="#">Sworn To Paganism</a>
+    </div>
   </div>
 </div>
