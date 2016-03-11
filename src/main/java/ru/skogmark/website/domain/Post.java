@@ -8,7 +8,7 @@ import java.util.Date;
  *         2016-03-10
  */
 @Entity
-@Table(name = "skogmark_post")
+@Table(name = "sk_post")
 public class Post {
 
     @Column
@@ -21,6 +21,19 @@ public class Post {
 
     @Column(name = "created_at")
     private Date createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private User createdBy;
+
+    @Column
+    private String content;
+
+    @Column(name = "preview_text")
+    private String previewText;
+
+    @OneToOne
+    private Image previewImage;
 
     /** Default constructor */
     public Post() {}
