@@ -25,6 +25,6 @@
 
   <!-- Imports -->
   <import resource="hibernate-context.xml"/>
-  <!--<import resource="catalog-context.xml"/>-->
+  <import resource="website-context.xml"/>
 
 </beans>

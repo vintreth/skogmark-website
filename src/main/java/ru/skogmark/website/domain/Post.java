@@ -32,8 +32,12 @@ public class Post {
     @Column(name = "preview_text")
     private String previewText;
 
-    @OneToOne
-    private Image previewImage;
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
+
+    @Column
+    private Integer shows;
 
     /** Default constructor */
     public Post() {}
