@@ -7,8 +7,8 @@ import java.util.Date;
  * @author svip
  *         2016-03-10
  */
-@Entity
-@Table(name = "sk_post")
+//@Entity
+//@Table(name = "sk_post")
 public class Post {
 
     @Column
