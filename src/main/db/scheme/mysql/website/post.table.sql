@@ -1,3 +1,4 @@
+USE skogmark;
 DROP TABLE IF EXISTS s_post;
 CREATE TABLE s_post (
   id           INT AUTO_INCREMENT NOT NULL,

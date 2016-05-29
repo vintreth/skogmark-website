@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 /**
+ * Any site image
  * @author kbogdanov 11.03.16
  */
 @Entity
@@ -18,11 +19,22 @@ public class Image {
     @Column(name = "created_at")
     private Date createdAt;
 
+//    private User createdBy;
+
     @Column
     private String path;
 
+    /**
+     * File name
+     */
     @Column
     private String name;
+
+    /**
+     * Title for the image
+     */
+    @Column
+    private String title;
 
     @Column(name = "mime_type")
     private String mimeType;
@@ -67,5 +79,13 @@ public class Image {
 
     public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

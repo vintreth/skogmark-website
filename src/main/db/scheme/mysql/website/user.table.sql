@@ -1,3 +1,4 @@
+USE skogmark;
 DROP TABLE IF EXISTS sk_user;
 CREATE TABLE sk_user (
   id            INT AUTO_INCREMENT NOT NULL,
