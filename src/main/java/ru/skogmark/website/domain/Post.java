@@ -8,7 +8,7 @@ import java.util.Date;
  *         2016-03-10
  */
 @Entity
-@Table(name = "sk_post")
+@Table(name = "s_post")
 public class Post {
 
     @Column
@@ -32,9 +32,9 @@ public class Post {
     @Column(name = "preview_text")
     private String previewText;
 
-//    @ManyToOne
-//    @JoinColumn(name = "image_id")
-//    private Image image;
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @Column
     private Integer shows;
@@ -88,5 +88,13 @@ public class Post {
 
     public void setShows(Integer shows) {
         this.shows = shows;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }

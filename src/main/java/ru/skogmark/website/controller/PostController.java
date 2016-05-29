@@ -36,9 +36,9 @@ public class PostController extends BaseController {
                 throw new HttpException(HttpStatus.NOT_FOUND, "Post id" + id + " could not be found");
             }
 
-            //todo
-            model.addAttribute("id", id);
             model.addAttribute("post", post);
+            model.addAttribute("createdAt", postService.getCreatedAtString(post));
+            model.addAttribute("imageSrc", postService.getImageSrc(post));
         } catch (HttpException e) {
             return errorPage(e.getStatus());
         }

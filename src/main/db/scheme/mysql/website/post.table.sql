@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS sk_post;
-CREATE TABLE sk_post (
+DROP TABLE IF EXISTS s_post;
+CREATE TABLE s_post (
   id           INT AUTO_INCREMENT NOT NULL,
   title        VARCHAR(128)       NOT NULL,
   created_at   DATETIME           NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE sk_post (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_general_ci;
 
-INSERT INTO sk_post (title, created_at, created_by, content, preview_text, image_id)
+INSERT INTO s_post (title, created_at, created_by, content, preview_text, image_id)
   VALUES (
     "А тем временем нас 666!",
     NOW(),
