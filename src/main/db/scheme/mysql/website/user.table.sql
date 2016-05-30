@@ -1,6 +1,6 @@
 USE skogmark;
-DROP TABLE IF EXISTS sk_user;
-CREATE TABLE sk_user (
+DROP TABLE IF EXISTS s_user;
+CREATE TABLE s_user (
   id            INT AUTO_INCREMENT NOT NULL,
   email         VARCHAR(255)       NOT NULL,
   registered_at DATETIME,
