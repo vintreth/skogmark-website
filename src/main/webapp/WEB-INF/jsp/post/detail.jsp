@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags/templates" %>
 <%@ taglib prefix="w" tagdir="/WEB-INF/tags/widgets/post" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <t:main title="Home page">
   <jsp:attribute name="content">
     <section class="page__detail-feed-container">
@@ -12,8 +13,9 @@
           <div class="detail-feed__content">${post.content}</div>
           <div class="detail-feed__tags">
             <div class="detail-feed__tag">Tags:</div>
-            <div class="detail-feed__tag"><a href="#">New Album</a></div>
-            <div class="detail-feed__tag"><a href="#">Sworn To Paganism</a></div>
+            <c:forEach var="tag" items="${post.tags}">
+              <div class="detail-feed__tag"><a href="#">${tag.value}</a></div>
+            </c:forEach>
           </div>
         </div>
       </div><!--

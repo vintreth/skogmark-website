@@ -23,7 +23,7 @@ public class Post {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @Column
+    @Column(name="created_by")
     private Integer createdBy;
 
     @Column(nullable = false)

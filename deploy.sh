@@ -3,7 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Copying war file
-scp ${DIR}/build/web-site-1.0.war developer@skogmark.ru:/home/developer/deploy/web-site-1.0.war
+scp ${DIR}/target/web-site-1.0.war developer@skogmark.ru:/home/developer/deploy/web-site-1.0.war
 
 # Copying database files
 cd ${DIR}/src/main/db/scheme/mysql/website
