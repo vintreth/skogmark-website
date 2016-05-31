@@ -12,31 +12,32 @@ import java.sql.Date;
 public class Image {
 
     @Id
-    @Column
+    @Column(unique = true, nullable = false)
     @GeneratedValue
     private Integer id;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-//    private User createdBy;
-
     @Column
+    private Integer createdBy;
+
+    @Column(nullable = false)
     private String path;
 
     /**
      * File name
      */
-    @Column
+    @Column(nullable = false)
     private String name;
 
     /**
      * Title for the image
      */
-    @Column
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "mime_type")
+    @Column(name = "mime_type", nullable = false, length = 32)
     private String mimeType;
 
     public Image() {}

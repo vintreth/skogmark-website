@@ -2,6 +2,7 @@ package ru.skogmark.website.domain;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author svip
@@ -16,17 +17,16 @@ public class Post {
     @GeneratedValue
     private Integer id;
 
-    @Column
+    @Column(length = 128, nullable = false)
     private String title;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-//    @ManyToOne
-//    @JoinColumn(name = "created_by")
-//    private User createdBy;
-
     @Column
+    private Integer createdBy;
+
+    @Column(nullable = false)
     private String content;
 
     @Column(name = "preview_text")
@@ -38,6 +38,14 @@ public class Post {
 
     @Column
     private Integer shows;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "s_tag_post",
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")}
+    )
+    private Set<Tag> tags;
 
     /** Default constructor */
     public Post() {}
@@ -96,5 +104,13 @@ public class Post {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }

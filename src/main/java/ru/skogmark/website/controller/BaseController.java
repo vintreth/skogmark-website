@@ -9,7 +9,7 @@ import javax.annotation.Resource;
  * @author svip
  *         2016-05-29
  */
-public class BaseController {
+class BaseController {
 
     private static final String VIEW_PATH = "main";
 
