@@ -12,6 +12,14 @@
     <jdk.version>1.8</jdk.version>
     <spring.version>4.2.4.RELEASE</spring.version>
     <junit.version>4.12</junit.version>
+    <spring.orm.version>4.2.4.RELEASE</spring.orm.version>
+    <cglib.version>3.2.0</cglib.version>
+    <hibernate.version>5.0.6.Final</hibernate.version>
+    <mysql.connector.version>5.1.38</mysql.connector.version>
+    <jstl.version>1.2</jstl.version>
+    <log4j.version>1.2.17</log4j.version>
+    <jsp.api.version>2.0</jsp.api.version>
+    <jackson.version>1.9.13</jackson.version>
   </properties>
   <dependencies>
     <dependency>
@@ -27,17 +35,17 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
-      <version>4.2.4.RELEASE</version>
+      <version>${spring.orm.version}</version>
     </dependency>
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
-      <version>3.2.0</version>
+      <version>${cglib.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>5.0.6.Final</version>
+      <version>${hibernate.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.transaction</groupId>
@@ -47,22 +55,32 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.38</version>
+      <version>${mysql.connector.version}</version>
     </dependency>
     <dependency>
       <groupId>jstl</groupId>
       <artifactId>jstl</artifactId>
-      <version>1.2</version>
+      <version>${jstl.version}</version>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>apache-log4j-extras</artifactId>
+      <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet.jsp</groupId>
       <artifactId>jsp-api</artifactId>
-      <version>2.0</version>
+      <version>${jsp.api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>${jackson.version}</version>
     </dependency>
   </dependencies>
 

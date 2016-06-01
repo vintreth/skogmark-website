@@ -20,6 +20,7 @@ public class PostService {
 
     @Resource
     private PostDao postDao;
+
     @Resource
     private StoreManager storeManager;
 

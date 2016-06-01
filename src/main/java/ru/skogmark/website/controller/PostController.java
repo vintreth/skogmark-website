@@ -17,6 +17,7 @@ import javax.annotation.Resource;
  *         2016-03-09
  */
 @Controller
+@RequestMapping("/post")
 public class PostController extends BaseController {
 
     @Resource(name = "postService")
@@ -24,7 +25,7 @@ public class PostController extends BaseController {
 
     private static Logger logger = Logger.getLogger("PostController");
 
-    @RequestMapping(path = "/post/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public String detail(@PathVariable int id, Model model) {
         try {
             logger.debug("Rendering detail post page");
