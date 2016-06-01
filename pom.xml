@@ -20,6 +20,7 @@
     <log4j.version>1.2.17</log4j.version>
     <jsp.api.version>2.0</jsp.api.version>
     <jackson.version>1.9.13</jackson.version>
+    <jackson.databind.version>2.5.0</jackson.databind.version>
   </properties>
   <dependencies>
     <dependency>
@@ -81,6 +82,11 @@
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-mapper-asl</artifactId>
       <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.databind.version}</version>
     </dependency>
   </dependencies>
 
