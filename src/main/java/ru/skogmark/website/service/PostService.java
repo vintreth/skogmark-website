@@ -2,7 +2,6 @@ package ru.skogmark.website.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.skogmark.website.dao.PostDao;
 import ru.skogmark.website.domain.Post;
 import ru.skogmark.website.store.StoreManager;
