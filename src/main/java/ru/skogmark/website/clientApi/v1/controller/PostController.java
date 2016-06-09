@@ -32,10 +32,9 @@ public class PostController extends ClientApiController {
         return post;
     }
 
-    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Record could not be found")
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(RecordNotFoundException.class)
-    @ResponseBody
-    public String notFound(RecordNotFoundException e) {
-        return new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND).toString();
+    public ModelAndView notFound(RecordNotFoundException e) {
+        return super.notFound(e);
     }
 }
