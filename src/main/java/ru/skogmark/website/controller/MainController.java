@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MainController {
 
     private static final String INDEX_VIEW = "main/index";
+    private static final String TOUR_VIEW = "main/tour";
 
     private static Logger logger = Logger.getLogger("MainController");
 
@@ -21,5 +22,12 @@ public class MainController {
         logger.debug("Processing index page");
 
         return INDEX_VIEW;
+    }
+
+    @RequestMapping(path = "/tour", method = RequestMethod.GET)
+    public String tour() {
+        logger.debug("Processing tour page");
+
+        return TOUR_VIEW;
     }
 }
