@@ -23,16 +23,7 @@
   <section class="page__head-bar">
     <div id="navigation-bg"></div>
     <div class="head_bar__navigation-container">
-      <div class="head_bar__navigation">
-        <ul>
-          <li class="selected"><a href="#">Home</a></li>
-          <li><a href="#">Tour</a></li>
-          <li><a href="#">Media</a></li>
-          <li><a href="#">Albums</a></li>
-          <li><a href="#">Biography</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </div>
+      <jsp:include page="/WEB-INF/jsp/navigation/main.jsp"/>
       <div class="head_bar__social-block social-block">
         <ul>
           <li><a href="https://www.facebook.com/skogmark" class="social-block__fb-icon">&nbsp;</a></li>
