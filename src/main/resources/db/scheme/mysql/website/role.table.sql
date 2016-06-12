@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS s_role;
+CREATE TABLE s_role (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(32),
+  PRIMARY KEY (id)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_general_ci;
