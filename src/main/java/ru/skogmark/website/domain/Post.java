@@ -23,8 +23,9 @@ public class Post {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @Column(name="created_by")
-    private Integer createdBy;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "created_by")
+    private User createdBy;
 
     @Column(nullable = false)
     private String content;
@@ -32,14 +33,14 @@ public class Post {
     @Column(name = "preview_text")
     private String previewText;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
 
     @Column
     private Integer shows;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "s_tag_post",
             joinColumns = {@JoinColumn(name = "post_id")},
@@ -114,11 +115,11 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 }

@@ -19,7 +19,7 @@ public class Image {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "created_by")
     private User createdBy;
 
