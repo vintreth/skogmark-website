@@ -32,7 +32,7 @@ public class Post {
     @Column(name = "preview_text")
     private String previewText;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
 

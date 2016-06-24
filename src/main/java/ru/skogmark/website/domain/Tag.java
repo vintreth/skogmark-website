@@ -22,8 +22,9 @@ public class Tag {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @Column(name = "created_by", nullable = false)
-    private Integer createdBy;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "created_by")
+    private User createdBy;
 
     public Tag() {}
 
@@ -51,11 +52,11 @@ public class Tag {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 }

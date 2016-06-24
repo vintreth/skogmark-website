@@ -19,8 +19,9 @@ public class Image {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @Column(name = "created_by")
-    private Integer createdBy;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "created_by")
+    private User createdBy;
 
     @Column(nullable = false)
     private String path;
@@ -88,5 +89,13 @@ public class Image {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 }
