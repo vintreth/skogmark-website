@@ -1,4 +1,4 @@
-<%@ page import="ru.skogmark.website.Navigation" %>
+<%@ page import="ru.skogmark.www.Navigation" %>
 <%--
   Created by IntelliJ IDEA.
   User: svip
