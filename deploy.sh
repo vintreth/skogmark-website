@@ -6,7 +6,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 scp ${DIR}/target/web-site-1.0.war developer@skogmark.ru:/home/developer/deploy/web-site-1.0.war
 
 # Copying database files
-cd ${DIR}/src/main/resources/db/scheme/mysql/website
+cd ${DIR}/src/main/resources/db
 tar -czvf database.scheme.tar.gz .
 scp database.scheme.tar.gz developer@skogmark.ru:/home/developer/deploy/db/database.scheme.tar.gz
 rm database.scheme.tar.gz
