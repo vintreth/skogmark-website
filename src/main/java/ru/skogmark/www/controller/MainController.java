@@ -1,6 +1,7 @@
 package ru.skogmark.www.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,7 @@ public class MainController {
 
     private static Logger logger = Logger.getLogger("MainController");
 
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String index() {
         logger.debug("Processing index page");
@@ -24,6 +26,7 @@ public class MainController {
         return INDEX_VIEW;
     }
 
+    @Secured({"ROLE_ADMIN"})
     @RequestMapping(path = "/tour", method = RequestMethod.GET)
     public String tour() {
         logger.debug("Processing tour page");

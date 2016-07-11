@@ -6,9 +6,10 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
+  <global-method-security secured-annotations="enabled" />
   <!-- enable use-expressions -->
   <http auto-config="true">
-    <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')"/>
+    <!--<intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')"/>-->
     <form-login default-target-url="/"/>
 
     <!-- access denied page -->
