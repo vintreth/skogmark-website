@@ -22,7 +22,7 @@ public class Tag {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
     private User createdBy;
 

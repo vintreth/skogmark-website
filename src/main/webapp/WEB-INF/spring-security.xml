@@ -8,7 +8,8 @@
 
     <!-- enable use-expressions -->
     <http auto-config="true">
-        <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" />
+      <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" />
+      <form-login default-target-url="/"/>
 
         <!-- access denied page -->
         <!--<access-denied-handler error-page="/403" />-->
@@ -20,15 +21,11 @@
                 <!--password-parameter="password" />-->
         <!--<logout logout-success-url="/login?logout" />-->
         <!-- enable csrf protection -->
-        <!--<csrf />-->
+        <!--<csrf/>-->
     </http>
 
-    <authentication-manager alias="auth">
-        <authentication-provider>
-            <user-service>
-              <user name="root" password="admin" authorities="ROLE_ADMIN"/>
-            </user-service>
-        </authentication-provider>
-    </authentication-manager>
+  <authentication-manager alias="auth">
+    <authentication-provider user-service-ref="customUserDetailsService"/>
+  </authentication-manager>
 
 </beans:beans>

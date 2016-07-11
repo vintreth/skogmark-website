@@ -11,8 +11,12 @@ CREATE TABLE s_user (
   location      VARCHAR(64),
   registered_at DATETIME           NOT NULL,
   active        CHAR(1)            NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  CONSTRAINT UNIQUE email(email)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_general_ci;
+
+INSERT INTO s_user (email, password, first_name, last_name, birthday, gender, location, registered_at, active) VALUES
+  ("bogdanow90@gmail.com", "admin", "Admin", "", "1990-07-25", "M", "St. Petersburg, Russia", NOW(), "Y");

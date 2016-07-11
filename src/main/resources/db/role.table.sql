@@ -1,9 +1,16 @@
-DROP TABLE IF EXISTS s_role;
-CREATE TABLE s_role (
+drop TABLE IF EXISTS s_role;
+CREATE TABLE s_role(
   id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(32),
-  PRIMARY KEY (id)
+  name VARCHAR(16) NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT UNIQUE name(name)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_general_ci;
+
+INSERT INTO s_role (name) VALUES
+  ("ROLE_ADMIN"),
+  ("ROLE_MEMBER"),
+  ("ROLE_USER"),
+  ("ROLE_GUEST");

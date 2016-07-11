@@ -8,6 +8,7 @@
       <div class="detail-feed__feed-column">
         <div class="detail-feed__post">
           <div class="detail-feed__title">${post.title}</div>
+          <div class="feed__post-date">${post.createdBy.firstName}</div>
           <div class="feed__post-date">${createdAt}</div>
           <div class="feed__post-preview"><img src="${imageSrc}" alt="${post.title}"/></div>
           <div class="detail-feed__content">${post.content}</div>

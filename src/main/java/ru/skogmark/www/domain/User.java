@@ -2,6 +2,7 @@ package ru.skogmark.www.domain;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 /**
  * @author kbogdanov 11.03.16
@@ -41,6 +42,14 @@ public class User {
 
     @Column
     private Boolean active;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "s_user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 
     public User() {}
 
@@ -116,11 +125,20 @@ public class User {
         this.registeredAt = registeredAt;
     }
 
-    public Boolean getActive() {
+    public Boolean isActive() {
         return active;
     }
 
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
 }

@@ -15,7 +15,7 @@ public class Gig {
     @Column(nullable = false, unique = true)
     private Integer id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
     private User createdBy;
 
