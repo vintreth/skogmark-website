@@ -14,6 +14,6 @@ CREATE TABLE s_tag (
 CREATE INDEX `value` ON s_tag(`value`);
 
 INSERT INTO s_tag (value, created_at, created_by) VALUES
-  ("Sworn To Paganism", NOW(), 0),
-  ("New Album", NOW(), 0),
-  ("Recording", NOW(), 0);
+  ("Sworn To Paganism", NOW(), 1),
+  ("New Album", NOW(), 1),
+  ("Recording", NOW(), 1);

@@ -9,6 +9,8 @@ import ru.skogmark.www.domain.Post;
 import ru.skogmark.www.service.PostService;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author kbogdanov 01.06.16
@@ -20,7 +22,7 @@ public class PostController extends ClientApiController {
     @Resource
     private PostService postService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{id}/", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Post getOne(@PathVariable int id) {
         Post post = postService.getPostById(id);
@@ -32,9 +34,16 @@ public class PostController extends ClientApiController {
         return post;
     }
 
+    @RequestMapping(value = "/recent/", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Set<Post> getRecent() {
+        return postService.getRecentPosts();
+    }
+
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(RecordNotFoundException.class)
     public ModelAndView notFound(RecordNotFoundException e) {
         return super.notFound(e);
     }
+
 }

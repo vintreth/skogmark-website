@@ -8,8 +8,8 @@ import ru.skogmark.www.store.StoreManager;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author kbogdanov 14.03.16
@@ -25,9 +25,8 @@ public class PostService {
 
     private static Logger logger = Logger.getLogger("PostService");
 
-    public List<Post> getRecentPosts() {
-
-        return new ArrayList<>();
+    public Set<Post> getRecentPosts() {
+        return postDao.getRecentPosts();
     }
 
     public Post getPostById(int id) {

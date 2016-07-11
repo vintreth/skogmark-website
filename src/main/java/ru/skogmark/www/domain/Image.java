@@ -1,5 +1,7 @@
 package ru.skogmark.www.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -91,6 +93,7 @@ public class Image {
         this.title = title;
     }
 
+    @JsonIgnore
     public User getCreatedBy() {
         return createdBy;
     }

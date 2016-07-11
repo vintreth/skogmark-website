@@ -16,7 +16,7 @@ CREATE TABLE s_image (
 
 INSERT INTO s_image (created_at, created_by, name, title, path, mime_type) VALUES (
   NOW(),
-  0,
+  1,
   "yQiHPnMF--I.jpg",
   "Skogmark at the Black Metal Evening",
   "2ba",

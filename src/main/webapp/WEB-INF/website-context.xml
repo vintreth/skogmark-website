@@ -3,6 +3,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="postDao" class="ru.skogmark.www.dao.PostDao"/>
+  <bean id="fileRegister" class="ru.skogmark.www.store.FileRegisterImpl" factory-method="getInstance"/>
 
 </beans>

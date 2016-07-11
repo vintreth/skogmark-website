@@ -27,7 +27,7 @@ public class MainController {
     }
 
     @Secured({"ROLE_ADMIN"})
-    @RequestMapping(path = "/tour", method = RequestMethod.GET)
+    @RequestMapping(path = "/tour/", method = RequestMethod.GET)
     public String tour() {
         logger.debug("Processing tour page");
 

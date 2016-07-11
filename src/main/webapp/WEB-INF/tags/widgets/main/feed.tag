@@ -1,5 +1,7 @@
+<%@ tag import="ru.skogmark.www.store.FileRegisterImpl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ tag language="java" %>
+<% FileRegisterImpl.getInstance().addPackage("main/feed"); %>
 <section class="page__feed">
   <div class="page__separator-small"></div>
   <h1>Latest News</h1>
@@ -7,7 +9,7 @@
     <div class="feed__container-column">
       <div class="feed__post">
         <div class="feed__post-title">
-          <a href="/post/1">The Toxic Void performance at WixMusic Festival hit waves</a>
+          <a href="/post/1/">The Toxic Void performance at WixMusic Festival hit waves</a>
         </div>
         <div class="feed__post-date">June 14, 2015</div>
         <div class="feed__post-preview-image"></div>

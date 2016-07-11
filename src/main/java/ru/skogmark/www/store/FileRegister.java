@@ -6,6 +6,6 @@ package ru.skogmark.www.store;
  */
 public interface FileRegister {
 
-    void addJs();
+    void addPackage(String path);
 
 }

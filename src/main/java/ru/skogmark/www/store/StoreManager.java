@@ -18,4 +18,9 @@ public class StoreManager {
     public String getImageSrc(Image image) {
         return STORE_PATH + "/images/" + image.getPath() + "/" + image.getName();
     }
+
+    public String getStorePath() {
+        return STORE_PATH;
+    }
+
 }

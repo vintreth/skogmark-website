@@ -1,9 +1,8 @@
 package ru.skogmark.www.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import ru.skogmark.www.store.FileRegister;
-
-import javax.annotation.Resource;
 
 /**
  * @author svip
@@ -13,7 +12,7 @@ class BaseController {
 
     private static final String VIEW_PATH = "main";
 
-    @Resource
+    @Autowired
     protected FileRegister fileRegister;
 
     protected String errorPage(HttpStatus status) {

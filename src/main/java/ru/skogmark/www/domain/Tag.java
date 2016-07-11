@@ -1,5 +1,7 @@
 package ru.skogmark.www.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -52,6 +54,7 @@ public class Tag {
         this.createdAt = createdAt;
     }
 
+    @JsonIgnore
     public User getCreatedBy() {
         return createdBy;
     }

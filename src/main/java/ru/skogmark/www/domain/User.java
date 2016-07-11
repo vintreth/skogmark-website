@@ -1,5 +1,7 @@
 package ru.skogmark.www.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Set;
@@ -53,6 +55,7 @@ public class User {
 
     public User() {}
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
@@ -69,6 +72,7 @@ public class User {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -117,6 +121,7 @@ public class User {
         this.location = location;
     }
 
+    @JsonIgnore
     public Date getRegisteredAt() {
         return registeredAt;
     }
@@ -125,6 +130,7 @@ public class User {
         this.registeredAt = registeredAt;
     }
 
+    @JsonIgnore
     public Boolean isActive() {
         return active;
     }
@@ -133,6 +139,7 @@ public class User {
         this.active = active;
     }
 
+    @JsonIgnore
     public Set<Role> getRoles() {
         return roles;
     }

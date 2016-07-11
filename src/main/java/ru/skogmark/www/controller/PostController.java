@@ -26,7 +26,7 @@ public class PostController extends BaseController {
 
     private static Logger logger = Logger.getLogger("PostController");
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}/", method = RequestMethod.GET)
     @Secured({"ROLE_ADMIN"})
     public String detail(@PathVariable int id, Model model) {
         try {
@@ -37,9 +37,6 @@ public class PostController extends BaseController {
             if (null == post) {
                 throw new HttpException(HttpStatus.NOT_FOUND, "Post id" + id + " could not be found");
             }
-
-            //todo manage scripts and styles
-            fileRegister.addJs();
 
             model.addAttribute("post", post);
             model.addAttribute("createdAt", postService.getCreatedAtString(post));
