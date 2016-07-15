@@ -1,7 +1,7 @@
-<%@ tag import="ru.skogmark.www.store.FileRegisterImpl" %>
+<%@ tag import="ru.skogmark.www.store.FileRegister" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ tag language="java" %>
-<% FileRegisterImpl.getInstance().addPackage("main/feed"); %>
+<% FileRegister.getInstance().addPackage("main/feed"); %>
 <section class="page__feed">
   <div class="page__separator-small"></div>
   <h1>Latest News</h1>

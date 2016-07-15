@@ -19,5 +19,19 @@ class Package {
     private String scriptsContent;
     private String stylesContent;
 
+    public String[] getScripts() {
+        return scripts;
+    }
 
+    public void setScripts(String[] scripts) {
+        this.scripts = scripts;
+    }
+
+    public String[] getStyles() {
+        return styles;
+    }
+
+    public void setStyles(String[] styles) {
+        this.styles = styles;
+    }
 }

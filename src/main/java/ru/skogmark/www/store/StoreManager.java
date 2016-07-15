@@ -1,7 +1,14 @@
 package ru.skogmark.www.store;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.skogmark.www.domain.Image;
+
+import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Manager of resource storing files, images, scripts, styles, etc.
@@ -12,15 +19,34 @@ import ru.skogmark.www.domain.Image;
 @Component
 public class StoreManager {
 
-    /** Absolute store path */
-    private static final String STORE_PATH = "http://store.skogmark.ru";
+    private static Logger logger = Logger.getLogger("StoreManager");
+
+    /**
+     * Absolute store path
+     */
+    private static final String STORE_PATH = "http://store.skogmark.ru/";
 
     public String getImageSrc(Image image) {
-        return STORE_PATH + "/images/" + image.getPath() + "/" + image.getName();
+        return STORE_PATH + "images/" + image.getPath() + "/" + image.getName();
     }
 
-    public String getStorePath() {
-        return STORE_PATH;
+    public String getAbsolutePath(String relativePath) {
+        return STORE_PATH + relativePath;
+    }
+
+    public String getLocalPath(String relativePath) {
+        return localPath() + relativePath;
+    }
+
+    private static String localPath() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        String localAddr = request.getHeader("Host");
+        if (localAddr.contains("localhost")) {
+            return "/var/java/skogmark-site/store/";
+        }
+
+        return "/var/www/skogmark.ru/store/";
     }
 
 }

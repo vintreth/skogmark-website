@@ -1,6 +1,6 @@
 {
   "scripts": [
-    "script.js"
+    "js/Feed.class.js"
   ],
   "styles": [
     "style.css"
