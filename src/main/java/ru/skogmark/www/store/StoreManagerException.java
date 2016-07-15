@@ -1,10 +1,12 @@
 package ru.skogmark.www.store;
 
+import ru.skogmark.www.exception.BaseRuntimeException;
+
 /**
  * @author svip
  *         2016-07-15
  */
-public class StoreManagerException extends ru.skogmark.www.exception.RuntimeException {
+public class StoreManagerException extends BaseRuntimeException {
 
     public StoreManagerException() {
         super();

@@ -18,4 +18,5 @@ class BaseController {
     protected String errorPage(HttpStatus status) {
         return VIEW_PATH + "/page" + status;
     }
+
 }

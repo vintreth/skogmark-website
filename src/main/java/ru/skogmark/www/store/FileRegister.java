@@ -1,13 +1,9 @@
 package ru.skogmark.www.store;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,7 +12,7 @@ import java.util.Set;
  */
 public class FileRegister {
 
-    private Set<Package> packages;
+    private Set<Package> packages = new HashSet<>();
 
     @Autowired
     private StoreManager storeManager;
@@ -35,26 +31,20 @@ public class FileRegister {
 
     public void addPackage(String path) {
         logger.debug("FileRegister.addPackage('" + path + "')");
+        packages.add(new Package(path, this));
+    }
 
-        String packagePath = storeManager.getLocalPath("packages/" + path + "/");
-        String packageJsonPath = packagePath + "package.json";
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(packageJsonPath));
-            StringBuilder json = new StringBuilder();
-            String line;
-            while (null != (line = reader.readLine())) {
-                json.append(line);
-            }
-            ObjectMapper objectMapper = new ObjectMapper();
-            Package pack = objectMapper.readValue(json.toString(), Package.class);
-            System.out.println(pack);
-        } catch (FileNotFoundException e) {
-            logger.error("Failure to resolve package.json for path " + packageJsonPath);
-        } catch (IOException e) {
-            String message = "Error occurred during reading the file";
-            logger.error(message, e);
-            throw new FileRegisterException(message, e);
+    public String renderPackages() {
+        StringBuilder html = new StringBuilder();
+        for (Package pack : packages) {
+            html.append(pack.render());
         }
+
+        return html.toString();
+    }
+
+    public StoreManager getStoreManager() {
+        return storeManager;
     }
 
 }

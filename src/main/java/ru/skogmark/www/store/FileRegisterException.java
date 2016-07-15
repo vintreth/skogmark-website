@@ -1,10 +1,12 @@
 package ru.skogmark.www.store;
 
+import ru.skogmark.www.exception.BaseRuntimeException;
+
 /**
  * @author svip
  *         2016-07-11
  */
-public class FileRegisterException extends ru.skogmark.www.exception.RuntimeException {
+public class FileRegisterException extends BaseRuntimeException {
 
     public FileRegisterException() {
         super();
@@ -21,4 +23,5 @@ public class FileRegisterException extends ru.skogmark.www.exception.RuntimeExce
     public FileRegisterException(Throwable cause) {
         super(cause);
     }
+
 }

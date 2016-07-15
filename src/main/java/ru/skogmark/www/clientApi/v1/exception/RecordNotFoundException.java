@@ -1,11 +1,11 @@
 package ru.skogmark.www.clientApi.v1.exception;
 
-import ru.skogmark.www.exception.RuntimeException;
+import ru.skogmark.www.exception.BaseRuntimeException;
 
 /**
  * @author kbogdanov 01.06.16
  */
-public class RecordNotFoundException extends RuntimeException {
+public class RecordNotFoundException extends BaseRuntimeException {
 
     public RecordNotFoundException() {
         super();

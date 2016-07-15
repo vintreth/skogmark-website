@@ -1,3 +1,4 @@
+<%@ tag import="ru.skogmark.www.store.FileRegister" %>
 <%@ tag language="java" %>
 <%@ attribute name="title" required="true" %>
 <%@ attribute name="content" fragment="true" %>
@@ -49,5 +50,6 @@
     </div>
   </section>
 </div>
+<%= FileRegister.getInstance().renderPackages() %>
 </body>
 </html>
