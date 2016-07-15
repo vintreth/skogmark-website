@@ -88,10 +88,23 @@ class Package {
                     .append("<link rel=\"stylesheet\" type=\"text/css\" href=\"")
                     .append(packagePath)
                     .append(stylePath)
-                    .append("/>");
+                    .append("\"/>");
         }
 
         return html.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Package) {
+            return path.equals(((Package) o).path);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 12 * 14 + path.hashCode();
+    }
 }

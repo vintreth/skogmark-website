@@ -1,6 +1,8 @@
 {
   "scripts": [
-    "js/Feed.class.js"
+    "js/Feed.class.js",
+    "js/FeedContainer.class.js",
+    "js/bootstrap.js"
   ],
   "styles": [
     "style.css"
