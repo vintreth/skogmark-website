@@ -29,13 +29,11 @@ public class PostDao {
 
     private static Logger logger = Logger.getLogger("PostDao");
 
-    private static final int RECENT_POST_LIMIT = 6;
-
-    public Set<Post> getRecentPosts() {
+    public Set<Post> getRecentPosts(int recentPostLimit) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Post.class);
         criteria.addOrder(Order.desc("createdAt"));
 
-        return new HashSet<>(getAllByCriteria(criteria, RECENT_POST_LIMIT));
+        return new HashSet<>(getAllByCriteria(criteria, recentPostLimit));
     }
 
     @SuppressWarnings("unchecked")

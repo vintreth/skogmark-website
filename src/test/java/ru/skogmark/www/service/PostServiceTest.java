@@ -24,4 +24,8 @@ public class PostServiceTest extends TestCase {
         assertEquals("1 January 2016", postService.getCreatedAtString(post1));
         assertEquals("25 July 2016", postService.getCreatedAtString(post2));
     }
+
+    public void testGetRecentPosts() throws Exception {
+
+    }
 }
