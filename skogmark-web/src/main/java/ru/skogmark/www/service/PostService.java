@@ -22,10 +22,12 @@ public class PostService {
     @Resource
     private StoreManager storeManager;
 
+    private static final int RECENT_POST_LIMIT = 6;
+
     private static Logger logger = Logger.getLogger("PostService");
 
     public Set<Post> getRecentPosts() {
-        return postDao.getRecentPosts();
+        return postDao.getRecentPosts(RECENT_POST_LIMIT);
     }
 
     public Post getPostById(int id) {
