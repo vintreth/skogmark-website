@@ -9,7 +9,6 @@ import ru.skogmark.www.domain.Post;
 import ru.skogmark.www.service.PostService;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
 import java.util.Set;
 
 /**

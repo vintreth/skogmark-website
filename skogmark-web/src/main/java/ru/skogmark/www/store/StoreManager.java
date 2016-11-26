@@ -7,8 +7,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.skogmark.www.domain.Image;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  * Manager of resource storing files, images, scripts, styles, etc.
