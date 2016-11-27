@@ -32,5 +32,4 @@
   <authentication-manager alias="auth">
     <authentication-provider user-service-ref="customUserDetailsService"/>
   </authentication-manager>
-
 </beans:beans>

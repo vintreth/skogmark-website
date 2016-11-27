@@ -1,7 +1,10 @@
 package ru.skogmark.go.generator;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import ru.skogmark.go.domain.Wisdom;
 
 import java.io.*;
@@ -15,11 +18,18 @@ import java.util.Random;
  *         2016-11-26
  */
 @Component
-//@Scope("session")
+@Scope("session")
 public class WisdomGenerator {
     private static final String LOCAL_REPOSITORY = "local-wisdom.txt";
 
     private List<String> localRepository;
+
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     public Wisdom generate() {
         if (null == localRepository) {
