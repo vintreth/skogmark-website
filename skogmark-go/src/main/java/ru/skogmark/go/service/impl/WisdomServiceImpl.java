@@ -22,7 +22,7 @@ public class WisdomServiceImpl implements WisdomService {
     }
 
     @Override
-    public Wisdom getRandomMessage() {
+    public Wisdom getRandomWisdom() {
         return wisdomGenerator.generate();
     }
 }

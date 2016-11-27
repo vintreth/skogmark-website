@@ -4,10 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.skogmark.go.domain.Wisdom;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +40,8 @@ public class WisdomGenerator {
         }
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(localRepositoryUrl.getFile()));
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(localRepositoryUrl.getFile()), "utf-8"));
             localRepository = new ArrayList<>();
             String line;
             while (null != (line = reader.readLine())) {

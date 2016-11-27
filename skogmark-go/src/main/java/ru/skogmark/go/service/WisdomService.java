@@ -9,5 +9,5 @@ import ru.skogmark.go.domain.Wisdom;
  */
 @Service
 public interface WisdomService {
-    Wisdom getRandomMessage();
+    Wisdom getRandomWisdom();
 }

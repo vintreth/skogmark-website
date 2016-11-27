@@ -26,6 +26,6 @@ public class WisdomController {
 
     @RequestMapping(value = "/wisdom", method = RequestMethod.GET)
     public @ResponseBody Wisdom randomMessage() {
-        return wisdomService.getRandomMessage();
+        return wisdomService.getRandomWisdom();
     }
 }
