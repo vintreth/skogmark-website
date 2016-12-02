@@ -15,8 +15,8 @@ import ru.skogmark.go.service.WisdomService;
  */
 @Controller
 @Scope("session")
-@RequestMapping("/rest")
-public class WisdomController {
+@RequestMapping("/rest/gen")
+public class WisdomGeneratorController {
     private WisdomService wisdomService;
 
     @Autowired
