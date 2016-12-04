@@ -27,7 +27,7 @@ public class WisdomGeneratorTest {
 
     @Test
     public void testGeneration() throws Exception {
-        Wisdom wisdom = wisdomGenerator.generate();
+        Wisdom wisdom = wisdomGenerator.generateOne();
         assertFalse(wisdom.getContent().isEmpty());
     }
 }

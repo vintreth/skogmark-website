@@ -23,6 +23,11 @@ public class WisdomServiceImpl implements WisdomService {
 
     @Override
     public Wisdom getRandomWisdom() {
-        return wisdomGenerator.generate();
+        return wisdomGenerator.generateOne();
+    }
+
+    @Override
+    public Wisdom[] getRandomWisdoms(int count) {
+        return wisdomGenerator.generateMany(count);
     }
 }

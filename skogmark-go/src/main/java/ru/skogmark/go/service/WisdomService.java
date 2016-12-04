@@ -10,4 +10,6 @@ import ru.skogmark.go.domain.Wisdom;
 @Service
 public interface WisdomService {
     Wisdom getRandomWisdom();
+
+    Wisdom[] getRandomWisdoms(int count);
 }

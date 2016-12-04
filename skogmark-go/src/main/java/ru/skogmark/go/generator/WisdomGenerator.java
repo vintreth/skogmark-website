@@ -21,7 +21,7 @@ public class WisdomGenerator {
 
     private List<String> localRepository;
 
-    public Wisdom generate() {
+    public Wisdom generateOne() {
         if (null == localRepository) {
             loadLocalRepository();
         }
@@ -31,6 +31,14 @@ public class WisdomGenerator {
         wisdom.setContent(localRepository.get(rand1) + " " + localRepository.get(rand2));
 
         return wisdom;
+    }
+
+    public Wisdom[] generateMany(int count) {
+        Wisdom[] wisdoms = new Wisdom[count];
+        for (int i = 0; i < count; i++) {
+            wisdoms[i] = generateOne();
+        }
+        return wisdoms;
     }
 
     private void loadLocalRepository() {
