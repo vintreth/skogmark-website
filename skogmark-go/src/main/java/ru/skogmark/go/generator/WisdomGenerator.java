@@ -18,6 +18,7 @@ import java.util.Random;
 @Scope("session")
 public class WisdomGenerator {
     private static final String LOCAL_REPOSITORY = "local-wisdom.txt";
+    private static final String LOCAL_REPOSITORY_ENCODING = "utf-8";
 
     private List<String> localRepository;
 
@@ -47,16 +48,15 @@ public class WisdomGenerator {
             throw new FailedGenerationException("Unable to find local repository file " + LOCAL_REPOSITORY);
         }
 
-        try {
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(localRepositoryUrl.getFile()), "utf-8"));
+        try (InputStream inputStream = new FileInputStream(localRepositoryUrl.getFile())) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, LOCAL_REPOSITORY_ENCODING));
             localRepository = new ArrayList<>();
             String line;
             while (null != (line = reader.readLine())) {
                 localRepository.add(line);
             }
         } catch (FileNotFoundException e) {
-            throw new FailedGenerationException("Unable to resolve local repository file " + LOCAL_REPOSITORY);
+            throw new FailedGenerationException("Unable to resolve local repository file " + LOCAL_REPOSITORY, e);
         } catch (IOException e) {
             throw new FailedGenerationException("Failure to read file" + LOCAL_REPOSITORY, e);
         }
