@@ -1,0 +1,15 @@
+<configuration>
+  <postScheduler>
+    <maxJobDelayHours>4</maxJobDelayHours>
+    <jobIntervalSec>10</jobIntervalSec>
+    <timeTable>
+      <time>8</time>
+      <time>12</time>
+      <time>18</time>
+    </timeTable>
+  </postScheduler>
+  <awaitTerminationTimeoutSec>10</awaitTerminationTimeoutSec>
+  <generatorResourceUrl>http://localhost:8080/rest/gen/wisdom</generatorResourceUrl>
+  <userAgent>Mozilla/5.0</userAgent>
+  <defaultCharset>utf-8</defaultCharset>
+</configuration>

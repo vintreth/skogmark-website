@@ -8,17 +8,21 @@ import org.apache.log4j.Logger;
 public class Launcher {
     private static final Logger logger = Logger.getLogger(Launcher.class);
 
+    private Launcher() {
+    }
+
     /**
      * Main method to bootstrap
      * @param args console arguments
      */
     public static void main(String[] args) {
-        BloggerApplication bloggerApplication = new BloggerApplication();
+        logger.debug("Creating application instance");
+        Application application = new Application();
         try {
-            bloggerApplication.start();
+            application.start();
         } catch (Exception e) {
             logger.error("Exception caught while starting application. Application will be stopped.", e);
-            bloggerApplication.stop();
+            application.stop();
         }
     }
 }

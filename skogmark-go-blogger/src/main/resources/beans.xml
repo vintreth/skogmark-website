@@ -23,4 +23,9 @@
 
     <!-- Imports -->
     <!--<import resource="hibernate-context.xml"/>-->
+
+    <bean id="configuration"
+          class="ru.skogmark.go.blogger.config.Configuration"
+          factory-bean="configurationFactory"
+          factory-method="getConfiguration"/>
 </beans>
