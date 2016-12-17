@@ -3,6 +3,7 @@ package ru.skogmark.go.blogger;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.skogmark.go.blogger.blog.Blogger;
 
 /**
  * Scheduler for posts of blog
@@ -20,7 +21,7 @@ class PostScheduler implements Runnable {
 
     @Override
     public void run() {
-        logger.debug("Let's blogger write his shit");
+        logger.debug("Doing job");
         blogger.beABlogger();
         logger.debug("Done");
     }

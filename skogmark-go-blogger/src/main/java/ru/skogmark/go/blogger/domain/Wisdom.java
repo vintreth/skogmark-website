@@ -1,9 +1,10 @@
-package ru.skogmark.go.blogger.blog;
+package ru.skogmark.go.blogger.domain;
 
 /**
- *
+ * @author svip
+ *         2016-11-26
  */
-public class Post {
+public class Wisdom {
     private String content;
 
     public String getContent() {

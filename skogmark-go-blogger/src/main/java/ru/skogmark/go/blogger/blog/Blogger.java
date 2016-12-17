@@ -1,16 +1,13 @@
-package ru.skogmark.go.blogger;
+package ru.skogmark.go.blogger.blog;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skogmark.go.blogger.blog.Blog;
-import ru.skogmark.go.blogger.blog.Post;
 import ru.skogmark.go.blogger.config.Configuration;
-import ru.skogmark.go.blogger.exception.FailPostRetrievingException;
-import ru.skogmark.go.blogger.rest.HttpException;
-import ru.skogmark.go.blogger.rest.HttpRequest;
+import ru.skogmark.go.blogger.domain.Wisdom;
+import ru.skogmark.go.blogger.exception.FailDomainObjectRetrievingException;
+import ru.skogmark.go.blogger.service.WisdomService;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,20 +16,20 @@ import java.util.Date;
  *         2016-12-17
  */
 @Component
-class Blogger {
+public class Blogger {
     private static final Logger logger = Logger.getLogger(Blogger.class);
 
     private Blog blog;
     private Configuration configuration;
-    private HttpRequest httpRequest;
+    private WisdomService wisdomService;
 
     private Date postedDate;
 
     @Autowired
-    public Blogger(Blog blog, Configuration configuration, HttpRequest httpRequest) {
+    public Blogger(Blog blog, Configuration configuration, WisdomService wisdomService) {
         this.blog = blog;
         this.configuration = configuration;
-        this.httpRequest = httpRequest;
+        this.wisdomService = wisdomService;
     }
 
     /**
@@ -51,15 +48,20 @@ class Blogger {
         todayCalendar.set(Calendar.SECOND, 0);
         Date now = new Date();
 
+        boolean timeSuitable = false;
         Integer[] timeTable = configuration.getPostSchedulerParams().getTimeTable().getTimes();
-        Arrays.asList(timeTable).forEach(hour -> {
+        for (Integer hour : timeTable) {
             todayCalendar.set(Calendar.HOUR_OF_DAY, hour);
             Date postDate = todayCalendar.getTime();
             if (!isPostedAlready(postDate) && isTimeSuitable(now, postDate)) {
                 logger.debug("It's about time");
+                timeSuitable = true;
                 retrieveAndPost();
             }
-        });
+        }
+        if (!timeSuitable) {
+            logger.debug("It's not the time to post something");
+        }
     }
 
     private boolean isPostedAlready(Date postDate) {
@@ -79,22 +81,18 @@ class Blogger {
             Post post = retrieveMessage();
             postMessage(post);
             postedDate = new Date();
-        } catch (FailPostRetrievingException e) {
+        } catch (FailDomainObjectRetrievingException e) {
             logger.error("Unable to post a message", e);
         }
     }
 
-    private Post retrieveMessage() throws FailPostRetrievingException {
-        try {
-            String content = httpRequest.doGet(configuration.getGeneratorResourceUrl());
-            if (content.isEmpty()) {
-                throw new FailPostRetrievingException("Empty content");
-            }
+    private Post retrieveMessage() throws FailDomainObjectRetrievingException {
+        Wisdom wisdom = wisdomService.getWisdom();
+        logger.debug("Creating the post: " + wisdom.getContent());
+        Post post = new Post();
+        post.setContent(wisdom.getContent());
 
-        } catch (HttpException e) {
-            throw new FailPostRetrievingException("Failure to retrieve a post message", e);
-        }
-        return null;
+        return post;
     }
 
     private void postMessage(Post post) {

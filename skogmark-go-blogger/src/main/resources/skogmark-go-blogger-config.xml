@@ -1,6 +1,6 @@
 <configuration>
   <postScheduler>
-    <maxJobDelayHours>4</maxJobDelayHours>
+    <maxJobDelayHours>8</maxJobDelayHours>
     <jobIntervalSec>10</jobIntervalSec>
     <timeTable>
       <time>8</time>
@@ -9,7 +9,7 @@
     </timeTable>
   </postScheduler>
   <awaitTerminationTimeoutSec>10</awaitTerminationTimeoutSec>
-  <generatorResourceUrl>http://localhost:8080/rest/gen/wisdom</generatorResourceUrl>
+  <generatorResourceUrl>http://localhost:8080/skogmark-go-1.2-SNAPSHOT/rest/gen/wisdom</generatorResourceUrl>
   <userAgent>Mozilla/5.0</userAgent>
   <defaultCharset>utf-8</defaultCharset>
 </configuration>
