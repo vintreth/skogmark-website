@@ -14,22 +14,27 @@ import java.net.URL;
  */
 @Component
 public class ConfigurationFactory {
-    private static final String CONFIG_FILE_NAME = "skogmark-go-blogger-config.xml";
+    private static final String APPLICATION_CONFIG_PATH = "skogmark-go-blogger-config.xml";
     private static final Logger logger = Logger.getLogger(ConfigurationFactory.class);
 
-    public Configuration getConfiguration() throws FailConfigLoadingException {
-        logger.debug("Loading application config");
+    public Configuration getConfiguration() throws FailConfigurationLoadingException {
+        return loadConfiguration(Configuration.class, APPLICATION_CONFIG_PATH);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T loadConfiguration(Class<T> configClass, String configPath) throws FailConfigurationLoadingException {
+        logger.debug("Loading configuration for " + configClass);
         try {
-            URL configUrl = Thread.currentThread().getContextClassLoader().getResource(CONFIG_FILE_NAME);
+            URL configUrl = Thread.currentThread().getContextClassLoader().getResource(configPath);
             if (null == configUrl) {
-                throw new FailConfigLoadingException("Unable to resolve application config path");
+                throw new FailConfigurationLoadingException("Unable to resolve configuration path " + configPath);
             }
-            JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(configClass);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-            return (Configuration) unmarshaller.unmarshal(configUrl);
+            return (T) unmarshaller.unmarshal(configUrl);
         } catch (JAXBException e) {
-            throw new FailConfigLoadingException("Failure to load application config", e);
+            throw new FailConfigurationLoadingException("Failure to load configuration for " + configClass, e);
         }
     }
 }
