@@ -49,7 +49,7 @@ public class Blogger {
         Date now = new Date();
 
         boolean timeSuitable = false;
-        Integer[] timeTable = configuration.getPostSchedulerParams().getTimeTable().getTimes();
+        Integer[] timeTable = configuration.getBloggerParams().getTimeTable().getTimes();
         for (Integer hour : timeTable) {
             todayCalendar.set(Calendar.HOUR_OF_DAY, hour);
             Date postDate = todayCalendar.getTime();
@@ -69,8 +69,8 @@ public class Blogger {
     }
 
     private boolean isTimeSuitable(Date now, Date postDate) {
-        long maxJobDelayMs = configuration.getPostSchedulerParams().getMaxJobDelayHours() * 3600 * 1000L;
-        return postDate.getTime() <= now.getTime() && now.getTime() < (postDate.getTime() + maxJobDelayMs);
+        long maxTaskDelayMs = configuration.getBloggerParams().getMaxTaskDelayHours() * 3600 * 1000L;
+        return postDate.getTime() <= now.getTime() && now.getTime() < (postDate.getTime() + maxTaskDelayMs);
     }
 
     /**
@@ -86,6 +86,12 @@ public class Blogger {
         }
     }
 
+    /**
+     * Retrieves wisdom from service and creating a post
+     *
+     * @return new post
+     * @throws FailDomainObjectRetrievingException if error occurred while getting wisdom
+     */
     private Post retrieveMessage() throws FailDomainObjectRetrievingException {
         Wisdom wisdom = wisdomService.getWisdom();
         logger.debug("Creating the post: " + wisdom.getContent());

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.skogmark.go.blogger.blog.Blogger;
 import ru.skogmark.go.blogger.config.Configuration;
 import ru.skogmark.go.blogger.exception.ApplicationLevelException;
 
@@ -21,7 +22,7 @@ class Application {
     private ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beans.xml");
 
     @Autowired
-    private PostScheduler postScheduler;
+    private Blogger blogger;
 
     @Autowired
     private Configuration configuration;
@@ -33,12 +34,13 @@ class Application {
         logger.debug("Starting application");
         logger.debug("Autowiring beans to the current application instance");
         applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
+
         logger.debug("Starting scheduled executor");
-        executor.scheduleAtFixedRate(
-            postScheduler,
-            0L,
-            configuration.getPostSchedulerParams().getJobIntervalSec(),
-            TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(() -> {
+            logger.debug("Running task");
+            blogger.beABlogger();
+            logger.debug("Done");
+        }, 0L, configuration.getBloggerParams().getTaskIntervalSec(), TimeUnit.SECONDS);
     }
 
     /**
