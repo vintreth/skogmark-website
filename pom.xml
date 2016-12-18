@@ -10,7 +10,6 @@
   <modules>
     <module>skogmark-web</module>
     <module>skogmark-go</module>
-    <module>skogmark-go-blogger</module>
   </modules>
   <packaging>pom</packaging>
   <properties>
