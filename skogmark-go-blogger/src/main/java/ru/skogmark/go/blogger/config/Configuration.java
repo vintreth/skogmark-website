@@ -9,14 +9,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Configuration {
-    private BloggerParams bloggerParams;
+    private PostSchedulerParams postSchedulerParams;
     private long awaitTerminationTimeoutSec;
     private String generatorResourceUrl;
     private String userAgent;
     private String defaultCharset;
 
-    public BloggerParams getBloggerParams() {
-        return bloggerParams;
+    public PostSchedulerParams getPostSchedulerParams() {
+        return postSchedulerParams;
     }
 
     public long getAwaitTerminationTimeoutSec() {
@@ -35,9 +35,9 @@ public class Configuration {
         return defaultCharset;
     }
 
-    @XmlElement(name = "blogger")
-    public void setBloggerParams(BloggerParams bloggerParams) {
-        this.bloggerParams = bloggerParams;
+    @XmlElement(name = "postScheduler")
+    public void setPostSchedulerParams(PostSchedulerParams postSchedulerParams) {
+        this.postSchedulerParams = postSchedulerParams;
     }
 
     @XmlElement

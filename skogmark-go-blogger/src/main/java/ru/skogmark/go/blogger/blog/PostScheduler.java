@@ -16,8 +16,8 @@ import java.util.Date;
  *         2016-12-17
  */
 @Component
-public class Blogger {
-    private static final Logger logger = Logger.getLogger(Blogger.class);
+public class PostScheduler {
+    private static final Logger logger = Logger.getLogger(PostScheduler.class);
 
     private Blog blog;
     private Configuration configuration;
@@ -26,7 +26,7 @@ public class Blogger {
     private Date postedDate;
 
     @Autowired
-    public Blogger(Blog blog, Configuration configuration, WisdomService wisdomService) {
+    public PostScheduler(Blog blog, Configuration configuration, WisdomService wisdomService) {
         this.blog = blog;
         this.configuration = configuration;
         this.wisdomService = wisdomService;
@@ -49,7 +49,7 @@ public class Blogger {
         Date now = new Date();
 
         boolean timeSuitable = false;
-        Integer[] timeTable = configuration.getBloggerParams().getTimeTable().getTimes();
+        Integer[] timeTable = configuration.getPostSchedulerParams().getTimeTable().getTimes();
         for (Integer hour : timeTable) {
             todayCalendar.set(Calendar.HOUR_OF_DAY, hour);
             Date postDate = todayCalendar.getTime();
@@ -69,7 +69,7 @@ public class Blogger {
     }
 
     private boolean isTimeSuitable(Date now, Date postDate) {
-        long maxTaskDelayMs = configuration.getBloggerParams().getMaxTaskDelayHours() * 3600 * 1000L;
+        long maxTaskDelayMs = configuration.getPostSchedulerParams().getMaxTaskDelayHours() * 3600 * 1000L;
         return postDate.getTime() <= now.getTime() && now.getTime() < (postDate.getTime() + maxTaskDelayMs);
     }
 

@@ -1,5 +1,5 @@
 <configuration>
-  <blogger>
+  <postScheduler>
     <maxTaskDelayHours>4</maxTaskDelayHours>
     <taskIntervalSec>300</taskIntervalSec>
     <timeTable>
@@ -7,7 +7,7 @@
       <time>12</time>
       <time>18</time>
     </timeTable>
-  </blogger>
+  </postScheduler>
   <awaitTerminationTimeoutSec>30</awaitTerminationTimeoutSec>
   <generatorResourceUrl>http://localhost:8080/skogmark-go-1.2-SNAPSHOT/rest/gen/wisdom</generatorResourceUrl>
   <userAgent>Mozilla/5.0</userAgent>

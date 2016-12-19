@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @ContextConfiguration(locations = {"classpath:beans.xml"})
-public class BloggerTest {
+public class PostSchedulerTest {
     @Autowired
     private Blog blog;
 
@@ -32,8 +32,8 @@ public class BloggerTest {
     public void testTheTimeToPost() throws Exception {
         configure();
         WisdomService wisdomService = getWisdomService();
-        Blogger blogger = new Blogger(blog, configuration, wisdomService);
-        blogger.beABlogger();
+        PostScheduler postScheduler = new PostScheduler(blog, configuration, wisdomService);
+        postScheduler.beABlogger();
         //todo check wisdom
         verify(wisdomService, times(1)).getWisdom();
     }
@@ -42,28 +42,28 @@ public class BloggerTest {
     public void testNoRepeatPost() throws Exception {
         configure();
         WisdomService wisdomService = getWisdomService();
-        Blogger blogger = new Blogger(blog, configuration, wisdomService);
-        blogger.beABlogger();
-        blogger.beABlogger();
+        PostScheduler postScheduler = new PostScheduler(blog, configuration, wisdomService);
+        postScheduler.beABlogger();
+        postScheduler.beABlogger();
 
         verify(wisdomService, times(1)).getWisdom();
     }
 
     private void configure() {
         int actualHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        configuration.getBloggerParams().getTimeTable().setTimes(
+        configuration.getPostSchedulerParams().getTimeTable().setTimes(
             new Integer[] {actualHour, actualHour + 1, actualHour + 10});
     }
 
     @Test
     public void testForgottenPost() throws Exception {
         int actualHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        configuration.getBloggerParams().getTimeTable().setTimes(
+        configuration.getPostSchedulerParams().getTimeTable().setTimes(
             new Integer[] {actualHour - 3, actualHour - 2, actualHour - 1, actualHour, actualHour + 5});
-        configuration.getBloggerParams().setMaxTaskDelayHours(4);
+        configuration.getPostSchedulerParams().setMaxTaskDelayHours(4);
         WisdomService wisdomService = getWisdomService();
-        Blogger blogger = new Blogger(blog, configuration, wisdomService);
-        blogger.beABlogger();
+        PostScheduler postScheduler = new PostScheduler(blog, configuration, wisdomService);
+        postScheduler.beABlogger();
         //todo check wisdom
         verify(wisdomService, times(1)).getWisdom();
     }
@@ -71,12 +71,12 @@ public class BloggerTest {
     @Test
     public void testDelay() throws Exception {
         int actualHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        configuration.getBloggerParams().getTimeTable().setTimes(
+        configuration.getPostSchedulerParams().getTimeTable().setTimes(
             new Integer[] {actualHour - 5, actualHour, actualHour + 5});
-        configuration.getBloggerParams().setMaxTaskDelayHours(4);
+        configuration.getPostSchedulerParams().setMaxTaskDelayHours(4);
         WisdomService wisdomService = getWisdomService();
-        Blogger blogger = new Blogger(blog, configuration, wisdomService);
-        blogger.beABlogger();
+        PostScheduler postScheduler = new PostScheduler(blog, configuration, wisdomService);
+        postScheduler.beABlogger();
         //todo check wisdom
         verify(wisdomService, times(1)).getWisdom();
     }

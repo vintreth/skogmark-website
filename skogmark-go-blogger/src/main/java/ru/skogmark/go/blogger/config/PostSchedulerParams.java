@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
  * @author svip
  *         2016-12-17
  */
-public class BloggerParams {
+public class PostSchedulerParams {
     private int maxTaskDelayHours;
     private long taskIntervalSec;
     private TimeTable timeTable;
