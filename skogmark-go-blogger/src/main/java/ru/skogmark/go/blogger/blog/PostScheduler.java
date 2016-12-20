@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.skogmark.go.blogger.config.Configuration;
-import ru.skogmark.go.blogger.domain.Wisdom;
+import ru.skogmark.go.blogger.rest.domain.Wisdom;
 import ru.skogmark.go.blogger.exception.FailDomainObjectRetrievingException;
-import ru.skogmark.go.blogger.service.WisdomService;
+import ru.skogmark.go.blogger.rest.service.WisdomService;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -74,14 +74,14 @@ public class PostScheduler {
     }
 
     /**
-     * Shortcut for {@link #retrieveMessage()} and {@link #postMessage(Post)}
+     * Shortcut for {@link #retrieve()} and {@link #post(Post)}
      */
     private void retrieveAndPost() {
         try {
-            Post post = retrieveMessage();
-            postMessage(post);
+            Post post = retrieve();
+            post(post);
             postedDate = new Date();
-        } catch (FailDomainObjectRetrievingException e) {
+        } catch (FailDomainObjectRetrievingException | PostingException e) {
             logger.error("Unable to post a message", e);
         }
     }
@@ -92,7 +92,7 @@ public class PostScheduler {
      * @return new post
      * @throws FailDomainObjectRetrievingException if error occurred while getting wisdom
      */
-    private Post retrieveMessage() throws FailDomainObjectRetrievingException {
+    private Post retrieve() throws FailDomainObjectRetrievingException {
         Wisdom wisdom = wisdomService.getWisdom();
         logger.debug("Creating the post: " + wisdom.getContent());
         Post post = new Post();
@@ -101,7 +101,7 @@ public class PostScheduler {
         return post;
     }
 
-    private void postMessage(Post post) {
+    private void post(Post post) throws PostingException {
         blog.post(post);
     }
 }

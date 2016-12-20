@@ -1,0 +1,9 @@
+<telegramConfiguration>
+    <chatId>-1001099300337</chatId>
+    <api>
+        <url>https://api.telegram.org/bot%s/%s</url>
+        <methods>
+            <sendMessage>sendMessage</sendMessage>
+        </methods>
+    </api>
+</telegramConfiguration>

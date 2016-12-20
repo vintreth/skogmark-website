@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.skogmark.go.blogger.config.Configuration;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -34,25 +35,37 @@ public class HttpRequest {
         return makeRequest(HTTP_METHOD_GET, url);
     }
 
-    public String doPost(String url) throws HttpException {
+    public String doPost(String url, String body) throws HttpException {
         return makeRequest(HTTP_METHOD_POST, url);
     }
 
-    public String doPut(String url) throws HttpException {
+    public String doPut(String url, String body) throws HttpException {
         return makeRequest(HTTP_METHOD_PUT, url);
     }
 
-    public String doDelete(String url) throws HttpException {
+    public String doDelete(String url, String body) throws HttpException {
         return makeRequest(HTTP_METHOD_DELETE, url);
     }
 
     private String makeRequest(String method, String urlAddress) throws HttpException {
+        return makeRequest(method, urlAddress, null);
+    }
+
+    private String makeRequest(String method, String urlAddress, String body) throws HttpException {
         try {
             logger.debug("Sending request " + method + " " + urlAddress);
             URL url = new URL(urlAddress);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(method);
             connection.setRequestProperty("User-Agent", configuration.getUserAgent());
+            if (null != body && !body.isEmpty()) {
+                connection.setDoOutput(true);
+                try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+                    outputStream.writeBytes(body);
+                    outputStream.flush();
+                }
+            }
+            //todo process response code advanced
             int responseCode = connection.getResponseCode();
             if (299 < responseCode) {
                 throw new HttpException(

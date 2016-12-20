@@ -1,12 +1,11 @@
-package ru.skogmark.go.blogger.service;
+package ru.skogmark.go.blogger.rest.service;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.skogmark.go.blogger.config.Configuration;
-import ru.skogmark.go.blogger.domain.Wisdom;
+import ru.skogmark.go.blogger.rest.domain.Wisdom;
 import ru.skogmark.go.blogger.exception.FailDomainObjectRetrievingException;
 import ru.skogmark.go.blogger.rest.HttpException;
 import ru.skogmark.go.blogger.rest.HttpRequest;

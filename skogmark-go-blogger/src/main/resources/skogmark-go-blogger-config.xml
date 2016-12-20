@@ -1,11 +1,12 @@
 <configuration>
   <postScheduler>
-    <maxTaskDelayHours>4</maxTaskDelayHours>
-    <taskIntervalSec>300</taskIntervalSec>
+    <maxTaskDelayHours>3</maxTaskDelayHours>
+    <taskIntervalSec>60</taskIntervalSec>
     <timeTable>
       <time>8</time>
       <time>12</time>
-      <time>18</time>
+      <time>16</time>
+      <time>20</time>
     </timeTable>
   </postScheduler>
   <awaitTerminationTimeoutSec>30</awaitTerminationTimeoutSec>

@@ -6,7 +6,7 @@ import ru.skogmark.go.blogger.exception.ApplicationLevelException;
  * @author svip
  *         2016-12-17
  */
-class FailConfigurationLoadingException extends ApplicationLevelException {
+public class FailConfigurationLoadingException extends ApplicationLevelException {
     public FailConfigurationLoadingException(String message) {
         super(message);
     }

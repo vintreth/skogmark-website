@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 public interface Blog {
     /**
      * Posts a message to the blog
+     *
+     * @throws PostingException if errors occurred while posting
      */
-    void post(Post post);
+    void post(Post post) throws PostingException;
 }

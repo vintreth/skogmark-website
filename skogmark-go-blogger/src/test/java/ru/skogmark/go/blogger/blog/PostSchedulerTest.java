@@ -7,8 +7,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.skogmark.go.blogger.config.Configuration;
-import ru.skogmark.go.blogger.domain.Wisdom;
-import ru.skogmark.go.blogger.service.WisdomService;
+import ru.skogmark.go.blogger.rest.domain.Wisdom;
+import ru.skogmark.go.blogger.rest.service.WisdomService;
 
 import java.util.Calendar;
 

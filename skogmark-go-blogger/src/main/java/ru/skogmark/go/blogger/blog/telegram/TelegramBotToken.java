@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *         2016-12-18
  */
 @XmlRootElement
-public class TelegramBotToken {
+class TelegramBotToken {
     private String value;
 
     public String getValue() {
