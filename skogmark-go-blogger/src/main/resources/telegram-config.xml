@@ -6,7 +6,7 @@
             <sendMessage>sendMessage</sendMessage>
         </methods>
     </api>
-    <messageFormat>&lt;b&gt;"%s"хэйт&lt;/b&gt;</messageFormat>
+    <messageFormat>&lt;b&gt;%s&lt;/b&gt;</messageFormat>
     <parseMode>
         <html>HTML</html>
         <markdown>Markdown</markdown>
