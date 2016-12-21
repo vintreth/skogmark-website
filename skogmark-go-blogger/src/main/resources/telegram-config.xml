@@ -6,4 +6,5 @@
             <sendMessage>sendMessage</sendMessage>
         </methods>
     </api>
+    <messageFormat>&lt;b&gt;"%s.хэйт"&lt;/b&gt;</messageFormat>
 </telegramConfiguration>

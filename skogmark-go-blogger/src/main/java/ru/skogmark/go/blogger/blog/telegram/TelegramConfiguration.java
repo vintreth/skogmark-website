@@ -15,6 +15,9 @@ class TelegramConfiguration {
     @XmlElement
     private Api api;
 
+    @XmlElement
+    private String messageFormat;
+
     public static class Api {
         @XmlElement
         private String url;
@@ -46,5 +49,9 @@ class TelegramConfiguration {
 
     public Api getApi() {
         return api;
+    }
+
+    public String getMessageFormat() {
+        return messageFormat;
     }
 }

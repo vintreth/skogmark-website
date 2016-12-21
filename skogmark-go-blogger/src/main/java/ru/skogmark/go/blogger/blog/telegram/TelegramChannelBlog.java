@@ -34,8 +34,9 @@ public class TelegramChannelBlog implements Blog {
     @Override
     public void post(Post post) throws TelegramPostingException {
         try {
-            logger.debug("Posting message");
-            httpRequest.doPost(createUrl(), createBody(createTelegramMessage(post)));
+            TelegramMessage message = createTelegramMessage(post);
+            logger.debug("Posting message: " + message.getText());
+            httpRequest.doPost(createUrl(), createBody(message));
             logger.debug("Posted");
         } catch (HttpException e) {
             throw new TelegramPostingException("Failure to post", e);
@@ -45,7 +46,7 @@ public class TelegramChannelBlog implements Blog {
     private TelegramMessage createTelegramMessage(Post post) {
         TelegramMessage message = new TelegramMessage();
         message.setChatId(telegramConfiguration.getChatId());
-        message.setText(post.getContent());
+        message.setText(String.format(telegramConfiguration.getMessageFormat(), post.getContent()));
         message.setParseMode(TelegramMessage.PARSE_MODE_HTML);
 
         return message;
