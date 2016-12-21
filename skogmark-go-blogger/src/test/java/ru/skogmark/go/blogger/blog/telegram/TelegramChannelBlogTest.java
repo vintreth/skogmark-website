@@ -1,5 +1,6 @@
 package ru.skogmark.go.blogger.blog.telegram;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.skogmark.go.blogger.blog.Blog;
 import ru.skogmark.go.blogger.blog.Post;
-import ru.skogmark.go.blogger.config.Configuration;
 import ru.skogmark.go.blogger.rest.HttpException;
 import ru.skogmark.go.blogger.rest.HttpRequest;
 
@@ -27,9 +27,6 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(locations = "classpath:beans.xml")
 public class TelegramChannelBlogTest {
     private static final String REQUEST_URI = "https://api.telegram.org/bottestToken123456789/sendMessage";
-    private static final String EXPECTED_MESSAGE_JSON = "{\"text\":\"Test content\",\"chat_id\":-1001099300337," +
-            "\"parse_mode\":\"HTML\"," +
-            "\"disable_web_page_preview\":false,\"disable_notification\":false}";
 
     @Autowired
     private TelegramConfiguration telegramConfiguration;
@@ -41,9 +38,13 @@ public class TelegramChannelBlogTest {
     public void testRequestParams() throws Exception {
         HttpRequest httpRequest = getHttpRequest();
         Blog blog = getBlog(httpRequest);
-        blog.post(getPost());
-        
-        verify(httpRequest, times(1)).doPost(REQUEST_URI, EXPECTED_MESSAGE_JSON);
+        Post post = getPost("test message");
+        blog.post(post);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String expectedMessageJson = objectMapper.writeValueAsString(getTelegramMessage(post));
+
+        verify(httpRequest, times(1)).doPost(REQUEST_URI, expectedMessageJson);
     }
 
     private Blog getBlog(HttpRequest httpRequest) throws HttpException {
@@ -59,10 +60,19 @@ public class TelegramChannelBlogTest {
         return httpRequest;
     }
 
-    private Post getPost() {
+    private Post getPost(String content) {
         Post post = new Post();
-        post.setContent("Test content");
+        post.setContent(content);
 
         return post;
+    }
+
+    private TelegramMessage getTelegramMessage(Post post) {
+        TelegramMessage message = new TelegramMessage();
+        message.setChatId(telegramConfiguration.getChatId());
+        message.setText(String.format(telegramConfiguration.getMessageFormat(), post.getContent()));
+        message.setParseMode(telegramConfiguration.getParseMode().getHtml());
+
+        return message;
     }
 }

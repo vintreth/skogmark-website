@@ -7,9 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *         20.12.2016 14:48
  */
 class TelegramMessage {
-    public static final String PARSE_MODE_HTML = "HTML";
-    public static final String PARSE_MODE_MARKDOWN = "Markdown";
-
     @JsonProperty("chat_id")
     private long chatId;
 

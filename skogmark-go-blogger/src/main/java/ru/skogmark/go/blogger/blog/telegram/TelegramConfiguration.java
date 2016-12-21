@@ -18,6 +18,9 @@ class TelegramConfiguration {
     @XmlElement
     private String messageFormat;
 
+    @XmlElement
+    private ParseMode parseMode;
+
     public static class Api {
         @XmlElement
         private String url;
@@ -43,6 +46,22 @@ class TelegramConfiguration {
         }
     }
 
+    public static class ParseMode {
+        @XmlElement
+        private String html;
+
+        @XmlElement
+        private String markdown;
+
+        public String getHtml() {
+            return html;
+        }
+
+        public String getMarkdown() {
+            return markdown;
+        }
+    }
+
     public long getChatId() {
         return chatId;
     }
@@ -53,5 +72,9 @@ class TelegramConfiguration {
 
     public String getMessageFormat() {
         return messageFormat;
+    }
+
+    public ParseMode getParseMode() {
+        return parseMode;
     }
 }

@@ -47,7 +47,7 @@ public class TelegramChannelBlog implements Blog {
         TelegramMessage message = new TelegramMessage();
         message.setChatId(telegramConfiguration.getChatId());
         message.setText(String.format(telegramConfiguration.getMessageFormat(), post.getContent()));
-        message.setParseMode(TelegramMessage.PARSE_MODE_HTML);
+        message.setParseMode(telegramConfiguration.getParseMode().getHtml());
 
         return message;
     }

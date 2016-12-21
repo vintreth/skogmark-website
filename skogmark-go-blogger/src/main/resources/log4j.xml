@@ -2,9 +2,18 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-  <appender name="FILE" class="org.apache.log4j.rolling.RollingFileAppender">
+  <appender name="APP" class="org.apache.log4j.rolling.RollingFileAppender">
     <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-      <param name="FileNamePattern" value="./log/application_%d{yyyy-MM-dd}.log"/>
+      <param name="FileNamePattern" value="./log/application-%d{yyyy-MM-dd}.log"/>
+    </rollingPolicy>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern"
+             value="%d{yyyy-MMM-dd HH:mm:ss,SSS} [%t] %c %x%n  %-5p %m%n"/>
+    </layout>
+  </appender>
+  <appender name="SCHEDULER" class="org.apache.log4j.rolling.RollingFileAppender">
+    <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+      <param name="FileNamePattern" value="./log/scheduler-%d{yyyy-MM-dd}.log"/>
     </rollingPolicy>
     <layout class="org.apache.log4j.PatternLayout">
       <param name="ConversionPattern"
@@ -19,11 +28,11 @@
   </appender>
   <logger name="ru.skogmark.go.blogger">
     <level value="debug"/>
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="SCHEDULER"/>
     <appender-ref ref="TERMINAL"/>
   </logger>
   <root>
     <priority value="debug"/>
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="APP"/>
   </root>
 </log4j:configuration>

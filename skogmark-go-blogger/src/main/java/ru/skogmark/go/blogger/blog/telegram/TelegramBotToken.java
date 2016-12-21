@@ -9,14 +9,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 class TelegramBotToken {
+    @XmlElement
     private String value;
 
     public String getValue() {
         return value;
-    }
-
-    @XmlElement
-    public void setValue(String value) {
-        this.value = value;
     }
 }
