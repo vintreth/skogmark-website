@@ -5,8 +5,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.skogmark.go.blogger.config.Configuration;
-import ru.skogmark.go.blogger.rest.domain.Wisdom;
-import ru.skogmark.go.blogger.exception.FailDomainObjectRetrievingException;
+import ru.skogmark.go.blogger.rest.entity.Wisdom;
+import ru.skogmark.go.blogger.rest.FailEntityRetrievingException;
 import ru.skogmark.go.blogger.rest.HttpException;
 import ru.skogmark.go.blogger.rest.HttpRequest;
 
@@ -29,20 +29,20 @@ public class WisdomService {
         this.configuration = configuration;
     }
 
-    public Wisdom getWisdom() throws FailDomainObjectRetrievingException {
+    public Wisdom getWisdom() throws FailEntityRetrievingException {
         try {
             logger.debug("Retrieving a wisdom from rest api");
             String content = httpRequest.doGet(configuration.getGeneratorResourceUrl());
             if (content.isEmpty()) {
-                throw new FailDomainObjectRetrievingException("Empty content");
+                throw new FailEntityRetrievingException("Empty content");
             }
             ObjectMapper objectMapper = new ObjectMapper();
 
             return objectMapper.reader(Wisdom.class).readValue(content);
         } catch (HttpException e) {
-            throw new FailDomainObjectRetrievingException("Failure to retrieve a post message", e);
+            throw new FailEntityRetrievingException("Failure to retrieve a post message", e);
         } catch (IOException e) {
-            throw new FailDomainObjectRetrievingException("Json content is invalid", e);
+            throw new FailEntityRetrievingException("Json content is invalid", e);
         }
     }
 }

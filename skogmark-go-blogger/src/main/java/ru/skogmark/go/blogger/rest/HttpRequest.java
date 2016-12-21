@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -36,15 +37,15 @@ public class HttpRequest {
     }
 
     public String doPost(String url, String body) throws HttpException {
-        return makeRequest(HTTP_METHOD_POST, url);
+        return makeRequest(HTTP_METHOD_POST, url, body);
     }
 
     public String doPut(String url, String body) throws HttpException {
-        return makeRequest(HTTP_METHOD_PUT, url);
+        return makeRequest(HTTP_METHOD_PUT, url, body);
     }
 
     public String doDelete(String url, String body) throws HttpException {
-        return makeRequest(HTTP_METHOD_DELETE, url);
+        return makeRequest(HTTP_METHOD_DELETE, url, body);
     }
 
     private String makeRequest(String method, String urlAddress) throws HttpException {
@@ -57,19 +58,24 @@ public class HttpRequest {
             URL url = new URL(urlAddress);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(method);
+            //todo set headers explicitly
             connection.setRequestProperty("User-Agent", configuration.getUserAgent());
+            connection.setRequestProperty("Content-Type", "application/json");
             if (null != body && !body.isEmpty()) {
                 connection.setDoOutput(true);
-                try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
-                    outputStream.writeBytes(body);
-                    outputStream.flush();
+                try (OutputStreamWriter writer = new OutputStreamWriter(
+                        connection.getOutputStream(), configuration.getDefaultCharset())) {
+                    writer.write(body);
+                    writer.flush();
                 }
             }
             //todo process response code advanced
             int responseCode = connection.getResponseCode();
             if (299 < responseCode) {
                 throw new HttpException(
-                    "Unexpected response code " + responseCode + " for request " + method + " " + urlAddress);
+                        responseCode,
+                        "Unexpected response code " + responseCode + " for request " + method + " " + urlAddress,
+                        getContent(connection));
             }
             return getContent(connection);
         } catch (IOException e) {
@@ -86,6 +92,7 @@ public class HttpRequest {
             while (null != (line = reader.readLine())) {
                 builder.append(line);
             }
+            logger.debug("Content has been retrieved: " + builder);
             return builder.toString();
         } catch (IOException e) {
             throw new HttpException("Exception caught while retrieving content from http connection", e);

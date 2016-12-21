@@ -1,4 +1,4 @@
-package ru.skogmark.go.blogger.rest.domain;
+package ru.skogmark.go.blogger.rest.entity;
 
 /**
  * @author svip

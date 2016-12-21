@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 class TelegramConfiguration {
     @XmlElement
-    private int chatId;
+    private long chatId;
 
     @XmlElement
     private Api api;
@@ -40,7 +40,7 @@ class TelegramConfiguration {
         }
     }
 
-    public int getChatId() {
+    public long getChatId() {
         return chatId;
     }
 
