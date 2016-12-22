@@ -28,6 +28,8 @@ public class ConfigurationFactory {
             throws FailConfigurationLoadingException {
         logger.debug("Loading configuration for " + configClass);
         try {
+            //todo config folder location
+            //todo refactor config params
             URL configUrl = Thread.currentThread().getContextClassLoader().getResource(configPath);
             if (null == configUrl) {
                 throw new FailConfigurationLoadingException("Unable to resolve configuration path " + configPath);

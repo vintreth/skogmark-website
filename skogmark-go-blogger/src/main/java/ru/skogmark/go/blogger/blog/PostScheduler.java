@@ -102,6 +102,7 @@ public class PostScheduler {
     }
 
     private void post(Post post) throws PostingException {
+        //todo add local mode
         blog.post(post);
     }
 }

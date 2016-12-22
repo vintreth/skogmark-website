@@ -18,6 +18,9 @@ public class Launcher {
     public static void main(String[] args) {
         logger.debug("Creating application instance");
         Application application = new Application();
+        //todo add stop and restart commands
+        //todo add start by cron
+        //todo set logging levels
         try {
             application.start();
         } catch (Exception e) {
