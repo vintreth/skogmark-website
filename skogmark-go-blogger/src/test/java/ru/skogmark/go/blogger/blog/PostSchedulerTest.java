@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ru.skogmark.go.blogger.config.Configuration;
+import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 import ru.skogmark.go.blogger.rest.entity.Wisdom;
 import ru.skogmark.go.blogger.rest.service.WisdomService;
 
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(locations = {"classpath:beans.xml"})
 public class PostSchedulerTest {
     @Autowired
-    private Configuration configuration;
+    private ApplicationConfiguration configuration;
 
     @Test
     public void testTheTimeToPost() throws Exception {
@@ -31,7 +31,6 @@ public class PostSchedulerTest {
         WisdomService wisdomService = getWisdomService();
         PostScheduler postScheduler = new PostScheduler(getBlog(), configuration, wisdomService);
         postScheduler.beABlogger();
-        //todo check wisdom
         verify(wisdomService, times(1)).getWisdom();
     }
 
@@ -42,7 +41,6 @@ public class PostSchedulerTest {
         PostScheduler postScheduler = new PostScheduler(getBlog(), configuration, wisdomService);
         postScheduler.beABlogger();
         postScheduler.beABlogger();
-
         verify(wisdomService, times(1)).getWisdom();
     }
 
@@ -50,32 +48,6 @@ public class PostSchedulerTest {
         int actualHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         configuration.getPostSchedulerParams().getTimeTable().setTimes(
             new Integer[] {actualHour, actualHour + 1, actualHour + 10});
-    }
-
-    @Test
-    public void testForgottenPost() throws Exception {
-        int actualHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        configuration.getPostSchedulerParams().getTimeTable().setTimes(
-            new Integer[] {actualHour - 3, actualHour - 2, actualHour - 1, actualHour, actualHour + 5});
-        configuration.getPostSchedulerParams().setMaxTaskDelayHours(4);
-        WisdomService wisdomService = getWisdomService();
-        PostScheduler postScheduler = new PostScheduler(getBlog(), configuration, wisdomService);
-        postScheduler.beABlogger();
-        //todo check wisdom
-        verify(wisdomService, times(1)).getWisdom();
-    }
-
-    @Test
-    public void testDelay() throws Exception {
-        int actualHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        configuration.getPostSchedulerParams().getTimeTable().setTimes(
-            new Integer[] {actualHour - 5, actualHour, actualHour + 5});
-        configuration.getPostSchedulerParams().setMaxTaskDelayHours(4);
-        WisdomService wisdomService = getWisdomService();
-        PostScheduler postScheduler = new PostScheduler(getBlog(), configuration, wisdomService);
-        postScheduler.beABlogger();
-        //todo check wisdom
-        verify(wisdomService, times(1)).getWisdom();
     }
 
     private WisdomService getWisdomService() throws Exception {

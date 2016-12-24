@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
  *         2016-12-17
  */
 public class PostSchedulerParams {
-    private int maxTaskDelayHours;
+    private int maxTaskDelayMinutes;
     private long taskIntervalSec;
     private TimeTable timeTable;
 
@@ -24,8 +24,8 @@ public class PostSchedulerParams {
         }
     }
 
-    public int getMaxTaskDelayHours() {
-        return maxTaskDelayHours;
+    public int getMaxTaskDelayMinutes() {
+        return maxTaskDelayMinutes;
     }
 
     public long getTaskIntervalSec() {
@@ -40,8 +40,8 @@ public class PostSchedulerParams {
     }
 
     @XmlElement
-    public void setMaxTaskDelayHours(int maxTaskDelayHours) {
-        this.maxTaskDelayHours = maxTaskDelayHours;
+    public void setMaxTaskDelayMinutes(int maxTaskDelayMinutes) {
+        this.maxTaskDelayMinutes = maxTaskDelayMinutes;
     }
 
     @XmlElement

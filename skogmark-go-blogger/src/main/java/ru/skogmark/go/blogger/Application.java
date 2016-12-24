@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.skogmark.go.blogger.blog.PostScheduler;
-import ru.skogmark.go.blogger.config.Configuration;
+import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 import ru.skogmark.go.blogger.exception.ApplicationLevelException;
 
 import java.util.concurrent.Executors;
@@ -25,13 +25,13 @@ class Application {
     private PostScheduler postScheduler;
 
     @Autowired
-    private Configuration configuration;
+    private ApplicationConfiguration configuration;
 
     /**
      * Starts the application
      */
     public void start() throws ApplicationLevelException {
-        logger.debug("Starting application");
+        logger.info("Starting application");
         logger.debug("Autowiring beans to the current application instance");
         applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
 
@@ -48,10 +48,10 @@ class Application {
      */
     public void stop() {
         try {
-            logger.debug("Stopping the application. Awaiting termination.");
+            logger.info("Stopping the application. Awaiting termination.");
             executor.awaitTermination(configuration.getAwaitTerminationTimeoutSec(), TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            logger.error("InterruptedException occurred while awaiting scheduler termination", e);
+            logger.warn("InterruptedException occurred while awaiting scheduler termination", e);
             Thread.currentThread().interrupt();
         } finally {
             if (!executor.isTerminated()) {

@@ -3,9 +3,9 @@ package ru.skogmark.go.blogger.blog;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skogmark.go.blogger.config.Configuration;
+import ru.skogmark.go.blogger.config.ApplicationConfiguration;
+import ru.skogmark.go.blogger.rest.EntityRetrievingException;
 import ru.skogmark.go.blogger.rest.entity.Wisdom;
-import ru.skogmark.go.blogger.rest.FailEntityRetrievingException;
 import ru.skogmark.go.blogger.rest.service.WisdomService;
 
 import java.util.Calendar;
@@ -20,13 +20,13 @@ public class PostScheduler {
     private static final Logger logger = Logger.getLogger(PostScheduler.class);
 
     private Blog blog;
-    private Configuration configuration;
+    private ApplicationConfiguration configuration;
     private WisdomService wisdomService;
 
     private Date postedDate;
 
     @Autowired
-    public PostScheduler(Blog blog, Configuration configuration, WisdomService wisdomService) {
+    public PostScheduler(Blog blog, ApplicationConfiguration configuration, WisdomService wisdomService) {
         this.blog = blog;
         this.configuration = configuration;
         this.wisdomService = wisdomService;
@@ -69,7 +69,7 @@ public class PostScheduler {
     }
 
     private boolean isTimeSuitable(Date now, Date postDate) {
-        long maxTaskDelayMs = configuration.getPostSchedulerParams().getMaxTaskDelayHours() * 3600 * 1000L;
+        long maxTaskDelayMs = configuration.getPostSchedulerParams().getMaxTaskDelayMinutes() * 60 * 1000L;
         return postDate.getTime() <= now.getTime() && now.getTime() < (postDate.getTime() + maxTaskDelayMs);
     }
 
@@ -81,7 +81,7 @@ public class PostScheduler {
             Post post = retrieve();
             post(post);
             postedDate = new Date();
-        } catch (FailEntityRetrievingException | PostingException e) {
+        } catch (EntityRetrievingException | PostingException e) {
             logger.error("Unable to post a message", e);
         }
     }
@@ -90,9 +90,9 @@ public class PostScheduler {
      * Retrieves wisdom from service and creating a post
      *
      * @return new post
-     * @throws FailEntityRetrievingException if error occurred while getting wisdom
+     * @throws EntityRetrievingException if error occurred while getting wisdom
      */
-    private Post retrieve() throws FailEntityRetrievingException {
+    private Post retrieve() throws EntityRetrievingException {
         Wisdom wisdom = wisdomService.getWisdom();
         logger.debug("Creating the post: " + wisdom.getContent());
         Post post = new Post();
@@ -102,7 +102,6 @@ public class PostScheduler {
     }
 
     private void post(Post post) throws PostingException {
-        //todo add local mode
         blog.post(post);
     }
 }

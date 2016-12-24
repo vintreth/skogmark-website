@@ -3,7 +3,7 @@ package ru.skogmark.go.blogger.blog.telegram;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.skogmark.go.blogger.config.ConfigurationFactory;
-import ru.skogmark.go.blogger.config.FailConfigurationLoadingException;
+import ru.skogmark.go.blogger.config.ConfigurationLoadingException;
 
 /**
  * @author ksbogdan
@@ -15,12 +15,12 @@ class TelegramConfigurationFactory extends ConfigurationFactory {
     private static final String TOKEN_PATH = "telegram-bot-token.xml";
 
     @Bean(name = "telegramConfiguration")
-    public TelegramConfiguration getTelegramConfiguration() throws FailConfigurationLoadingException {
+    public TelegramConfiguration getTelegramConfiguration() throws ConfigurationLoadingException {
         return loadConfiguration(TelegramConfiguration.class, CONFIG_PATH);
     }
 
     @Bean(name = "telegramBotToken")
-    public TelegramBotToken geTelegramBotToken() throws FailConfigurationLoadingException {
+    public TelegramBotToken geTelegramBotToken() throws ConfigurationLoadingException {
         return loadConfiguration(TelegramBotToken.class, TOKEN_PATH);
     }
 }

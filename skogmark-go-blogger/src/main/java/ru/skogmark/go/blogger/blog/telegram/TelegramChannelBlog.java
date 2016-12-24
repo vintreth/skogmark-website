@@ -35,9 +35,9 @@ public class TelegramChannelBlog implements Blog {
     public void post(Post post) throws TelegramPostingException {
         try {
             TelegramMessage message = createTelegramMessage(post);
-            logger.debug("Posting message: " + message.getText());
+            logger.info("Posting message: " + message.getText());
             httpRequest.doPost(createUrl(), createBody(message));
-            logger.debug("Posted");
+            logger.info("Posted");
         } catch (HttpException e) {
             throw new TelegramPostingException("Failure to post", e);
         }
