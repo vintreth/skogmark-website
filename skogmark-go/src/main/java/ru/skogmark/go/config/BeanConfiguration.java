@@ -7,6 +7,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -15,7 +16,8 @@ import java.util.Properties;
  * Created by SwEEp on 02.01.2017.
  */
 @Configuration
-public class HibernateConfiguration {
+@EnableTransactionManagement
+public class BeanConfiguration {
     @Bean(name = "sessionFactory")
     public LocalSessionFactoryBean getSessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -34,9 +36,9 @@ public class HibernateConfiguration {
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://skogmark.ru/go");
-        dataSource.setUsername("root");
-        dataSource.setPassword("admin");
+        dataSource.setUrl("jdbc:mysql://skogmark.ru/go?useUnicode=true&amp;characterEncoding=utf-8");
+        dataSource.setUsername("go");
+        dataSource.setPassword("go");
 
         return dataSource;
     }

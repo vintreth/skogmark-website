@@ -30,4 +30,10 @@ public class WisdomGeneratorTest {
         Wisdom wisdom = wisdomGenerator.generateOne();
         assertFalse(wisdom.getContent().isEmpty());
     }
+
+    @Test
+    public void testAdvancedGeneration() throws Exception {
+        Wisdom wisdom = wisdomGenerator.generateOneAdvanced();
+        assertFalse(wisdom.getContent().isEmpty());
+    }
 }

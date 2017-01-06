@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.skogmark.go.domain.Wisdom;
-import ru.skogmark.go.service.WisdomService;
+import ru.skogmark.go.generator.WisdomGenerator;
 
 /**
  * @author svip
@@ -20,16 +20,21 @@ import ru.skogmark.go.service.WisdomService;
 public class WisdomGeneratorController {
     private final static Integer MAX_WISDOM_COUNT = 1000;
 
-    private WisdomService wisdomService;
+    private WisdomGenerator wisdomGenerator;
 
     @Autowired
-    public void setWisdomService(WisdomService wisdomService) {
-        this.wisdomService = wisdomService;
+    public WisdomGeneratorController(WisdomGenerator wisdomGenerator) {
+        this.wisdomGenerator = wisdomGenerator;
     }
 
     @RequestMapping(value = "/wisdom", method = RequestMethod.GET)
     public @ResponseBody Wisdom randomMessage() {
-        return wisdomService.getRandomWisdom();
+        return wisdomGenerator.generateOne();
+    }
+
+    @RequestMapping(value = "/wisdom-advanced", method = RequestMethod.GET)
+    public @ResponseBody Wisdom randomMessageAdvanced() {
+        return wisdomGenerator.generateOneAdvanced();
     }
 
     @RequestMapping(value = "/wisdoms", method = RequestMethod.GET)
@@ -37,6 +42,6 @@ public class WisdomGeneratorController {
         if (null == count || count > MAX_WISDOM_COUNT) {
             count = MAX_WISDOM_COUNT;
         }
-        return wisdomService.getRandomWisdoms(count);
+        return wisdomGenerator.generateMany(count);
     }
 }

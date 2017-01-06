@@ -66,7 +66,8 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>${mysql.connector.version}</version>
+      <!--<version>${mysql.connector.version}</version>-->
+      <version>5.0.8</version>
     </dependency>
     <dependency>
       <groupId>jstl</groupId>
