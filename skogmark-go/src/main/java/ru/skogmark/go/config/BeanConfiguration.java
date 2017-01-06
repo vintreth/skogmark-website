@@ -36,7 +36,7 @@ public class BeanConfiguration {
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://skogmark.ru/go?useUnicode=true&amp;characterEncoding=utf-8");
+        dataSource.setUrl("jdbc:mysql://skogmark.ru/go");
         dataSource.setUsername("go");
         dataSource.setPassword("go");
 
