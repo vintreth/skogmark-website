@@ -23,7 +23,4 @@
   <mvc:annotation-driven/>
 
   <mvc:resources mapping="/resources/**" location="/resources/"/>
-
-  <!-- Imports -->
-  <import resource="hibernate-context.xml"/>
 </beans>
