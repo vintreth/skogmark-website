@@ -5,12 +5,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.skogmark.go.dao.ConjunctionDao;
 import ru.skogmark.go.dao.SentencePartDao;
-import ru.skogmark.go.domain.Conjunction;
-import ru.skogmark.go.domain.RoleId;
-import ru.skogmark.go.domain.SentencePart;
-import ru.skogmark.go.domain.Wisdom;
+import ru.skogmark.go.domain.*;
 
-import javax.sql.DataSource;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,13 +23,16 @@ public class WisdomGenerator {
     private static final String LOCAL_REPOSITORY = "local-wisdom.txt";
     private static final String LOCAL_REPOSITORY_ENCODING = "utf-8";
 
+    private static final int COMMA_SEPARATOR_RATIO = 5;
+    private static final int ADDITIONAL_WORDS_RATIO = 3;
+
     private List<String> localRepository;
 
     private SentencePartDao sentencePartDao;
     private ConjunctionDao conjunctionDao;
 
-    @Autowired
-    private DataSource dataSource;
+    private List<SentencePart> sentenceParts;
+    private List<Conjunction> conjunctions;
 
     @Autowired
     public WisdomGenerator(SentencePartDao sentencePartDao, ConjunctionDao conjunctionDao) {
@@ -82,31 +81,83 @@ public class WisdomGenerator {
     }
 
     public Wisdom generateOneAdvanced() {
-        GenerationStrategy[] generationStrategies = new GenerationStrategy[]{
+        GenerationStrategy[] generationStrategies = new GenerationStrategy[] {
                 this::generateComplex,
+                this::generateCompound,
+                // todo generateList
         };
         GenerationStrategy generationStrategy = generationStrategies[new Random().nextInt(generationStrategies.length)];
+        Wisdom wisdom = generationStrategy.generate();
 
-        return generationStrategy.generate();
+        if (0 >= new Random().nextInt(ADDITIONAL_WORDS_RATIO)) {
+            SentencePart additionalPart = pickRandomPart(RoleId.NONE);
+            if (additionalPart == null) {
+                throw new FailedGenerationException(
+                        "Unable to retrieve sentence with role " + RoleId.NONE + " from dao layer");
+            }
+            wisdom.setContent(wisdom.getContent() + ". " + additionalPart.getContent());
+        }
+
+        return wisdom;
     }
 
     private Wisdom generateComplex() {
-        List<SentencePart> sentenceParts = sentencePartDao.getAllByRoleId(RoleId.COMPLEX);
-        if (sentenceParts.isEmpty()) {
-            throw new FailedGenerationException("Unable to retrieve sentences from dao layer");
-        }
-        Conjunction conjunction = conjunctionDao.getRandomByRoleId(RoleId.COMPLEX);
-        if (conjunction == null) {
-            throw new FailedGenerationException("Unable to retrieve conjunction from dao layer");
-        }
+        String firstPart = pickRandomPart(RoleId.COMPLEX).getContent();
+        String secondPart = pickRandomPart(RoleId.COMPLEX).getContent();
+        //todo avoid duplicates
 
         Wisdom wisdom = new Wisdom();
-        wisdom.setContent(String.format(
-                "%s %s %s",
-                sentenceParts.get(new Random().nextInt(sentenceParts.size())).getContent(),
-                conjunction.getContent(),
-                sentenceParts.get(new Random().nextInt(sentenceParts.size())).getContent()));
+        wisdom.setType("complex");
+        if (0 < new Random().nextInt(COMMA_SEPARATOR_RATIO)) {
+            wisdom.setContent(String.format(
+                    "%s %s %s", firstPart, pickRandomConjunction(RoleId.COMPLEX).getContent(), secondPart));
+        } else {
+            wisdom.setContent(String.format("%s, %s", firstPart, secondPart));
+        }
 
         return wisdom;
+    }
+
+    private Wisdom generateCompound() {
+        String firstPart = pickRandomPart(RoleId.COMPLEX).getContent();
+        String secondPart = pickRandomPart(RoleId.COMPOUND).getContent();
+        Wisdom wisdom = new Wisdom();
+        wisdom.setContent(String.format(
+                "%s %s %s", firstPart, pickRandomConjunction(RoleId.COMPOUND).getContent(), secondPart));
+        wisdom.setType("compound");
+
+        return wisdom;
+    }
+
+    private SentencePart pickRandomPart(RoleId roleId) {
+        if (null == sentenceParts) {
+            sentenceParts = sentencePartDao.getAll();
+            if (null == sentenceParts || sentenceParts.isEmpty()) {
+                throw new FailedGenerationException("Unable to retrieve sentences from dao layer");
+            }
+        }
+        SentencePart sentencePart;
+        do {
+            int randomIndex = new Random().nextInt(sentenceParts.size());
+            sentencePart = sentenceParts.get(randomIndex);
+        } while (roleId.value != sentencePart.getRole().getId());
+
+        return sentencePart;
+    }
+
+    private Conjunction pickRandomConjunction(RoleId roleId) {
+        if (null == conjunctions) {
+            conjunctions = conjunctionDao.getAll();
+            if (null == conjunctions || conjunctions.isEmpty()) {
+                throw new FailedGenerationException("Unable to retrieve conjunctions from dao layer");
+            }
+        }
+        Conjunction conjunction;
+        do {
+            int randomIndex = new Random().nextInt(conjunctions.size());
+            conjunction = conjunctions.get(randomIndex);
+        } while (roleId.value != conjunction.getRole().getId());
+
+        return conjunction;
     }
 }

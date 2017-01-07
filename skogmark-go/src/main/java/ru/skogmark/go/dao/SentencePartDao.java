@@ -1,6 +1,7 @@
 package ru.skogmark.go.dao;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -26,11 +27,28 @@ public class SentencePartDao {
     }
 
     @SuppressWarnings("unchecked")
+    public List<SentencePart> getAll() {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SentencePart.class);
+        criteria.addOrder(Order.asc("id"));
+
+        return (List<SentencePart>) criteria.list();
+    }
+
+    @SuppressWarnings("unchecked")
     public List<SentencePart> getAllByRoleId(RoleId roleId) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SentencePart.class);
         criteria.add(Restrictions.eq("role.id", roleId.value));
         criteria.addOrder(Order.asc("id"));
 
         return (List<SentencePart>) criteria.list();
+    }
+
+    public SentencePart getRandomByRoleId(RoleId roleId) {
+        Query query = sessionFactory
+                .getCurrentSession()
+                .createQuery("from SentencePart where role_id = " + roleId.value + " order by RAND()");
+        query.setMaxResults(1);
+
+        return (SentencePart) query.uniqueResult();
     }
 }

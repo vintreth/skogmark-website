@@ -6,6 +6,7 @@ package ru.skogmark.go.domain;
  */
 public class Wisdom {
     private String content;
+    private String type;
 
     public String getContent() {
         return content;
@@ -13,5 +14,13 @@ public class Wisdom {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
