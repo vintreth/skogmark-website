@@ -25,6 +25,7 @@ public class WisdomGenerator {
 
     private static final int COMMA_SEPARATOR_RATIO = 5;
     private static final int ADDITIONAL_WORDS_RATIO = 3;
+    private static final int ADVERBIAL_RATIO = 4;
 
     private List<String> localRepository;
 
@@ -121,9 +122,13 @@ public class WisdomGenerator {
     private Wisdom generateCompound() {
         String firstPart = pickRandomPart(RoleId.COMPLEX).getContent();
         String secondPart = pickRandomPart(RoleId.COMPOUND).getContent();
+        String content = String.format(
+                "%s %s %s", firstPart, pickRandomConjunction(RoleId.COMPOUND).getContent(), secondPart);
+        if (0 >= new Random().nextInt(ADVERBIAL_RATIO)) {
+            content += ", " + pickRandomPart(RoleId.ADVERBIAL).getContent();
+        }
         Wisdom wisdom = new Wisdom();
-        wisdom.setContent(String.format(
-                "%s %s %s", firstPart, pickRandomConjunction(RoleId.COMPOUND).getContent(), secondPart));
+        wisdom.setContent(content);
         wisdom.setType("compound");
 
         return wisdom;
