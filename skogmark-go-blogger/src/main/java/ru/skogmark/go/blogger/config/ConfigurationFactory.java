@@ -38,12 +38,13 @@ public class ConfigurationFactory {
     }
 
     private InputStream getConfigFileInputStream(String configFileName) throws ConfigurationLoadingException {
-        File externalConfigFile = new File(getConfigLocation() + configFileName);
+        File externalConfigFile = new File(getConfigLocation() + "/" + configFileName);
         try {
             if (externalConfigFile.exists() && externalConfigFile.isFile()) {
                 logger.debug("Loading config from external directory");
                 return new FileInputStream(externalConfigFile);
             } else {
+                logger.debug("Loading config from resources");
                 return Thread.currentThread().getContextClassLoader().getResourceAsStream(configFileName);
             }
         } catch (FileNotFoundException e) {
@@ -52,12 +53,11 @@ public class ConfigurationFactory {
     }
 
     private String getConfigLocation() {
-        String userDir = System.getProperty("user.dir");
         String configLocation;
         if (null != (configLocation = System.getProperty("app.configLocation"))) {
-            return userDir + configLocation;
+            return configLocation;
         }
-        return userDir + EXTERNAL_CONFIG_DIRECTORY_PATH;
+        return System.getProperty("user.dir") + EXTERNAL_CONFIG_DIRECTORY_PATH;
     }
 
     @SuppressWarnings("unchecked")
