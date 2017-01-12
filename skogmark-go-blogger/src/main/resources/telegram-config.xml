@@ -3,12 +3,12 @@
     <api>
         <url>https://api.telegram.org/bot%s/%s</url>
         <methods>
-            <sendMessage>sendMessage</sendMessage>
+            <method name="sendMessage" value="sendMessage"/>
         </methods>
     </api>
     <messageFormat>&lt;b&gt;%s&lt;/b&gt;</messageFormat>
-    <parseMode>
-        <html>HTML</html>
-        <markdown>Markdown</markdown>
-    </parseMode>
+    <parseModes>
+        <parseMode name="html" value="HTML"/>
+        <parseMode name="markdown" value="Markdown"/>
+    </parseModes>
 </telegramConfiguration>

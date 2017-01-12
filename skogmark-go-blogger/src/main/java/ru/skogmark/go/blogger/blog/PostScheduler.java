@@ -20,16 +20,26 @@ public class PostScheduler {
     private static final Logger logger = Logger.getLogger(PostScheduler.class);
 
     private Blog blog;
-    private ApplicationConfiguration configuration;
+    private ApplicationConfiguration applicationConfiguration;
     private WisdomService wisdomService;
 
     private Date postedDate;
 
     @Autowired
-    public PostScheduler(Blog blog, ApplicationConfiguration configuration, WisdomService wisdomService) {
+    public PostScheduler(Blog blog, ApplicationConfiguration applicationConfiguration, WisdomService wisdomService) {
         this.blog = blog;
-        this.configuration = configuration;
+        this.applicationConfiguration = applicationConfiguration;
         this.wisdomService = wisdomService;
+    }
+
+    /**
+     * Checks if a message need to be posted to a blog while starting application
+     */
+    public void checkPostWhileStarting() {
+        logger.debug("Checking if a message need to be posted while starting application");
+        if (!applicationConfiguration.isPostWhileStartingEnabled()) {
+            postedDate = new Date();
+        }
     }
 
     /**
@@ -49,7 +59,7 @@ public class PostScheduler {
         Date now = new Date();
 
         boolean timeSuitable = false;
-        Integer[] timeTable = configuration.getPostSchedulerParams().getTimeTable().getTimes();
+        Integer[] timeTable = applicationConfiguration.getPostSchedulerParams().getTimeTable().getTimes();
         for (Integer hour : timeTable) {
             todayCalendar.set(Calendar.HOUR_OF_DAY, hour);
             Date postDate = todayCalendar.getTime();
@@ -69,7 +79,7 @@ public class PostScheduler {
     }
 
     private boolean isTimeSuitable(Date now, Date postDate) {
-        long maxTaskDelayMs = configuration.getPostSchedulerParams().getMaxTaskDelayMinutes() * 60 * 1000L;
+        long maxTaskDelayMs = applicationConfiguration.getPostSchedulerParams().getMaxTaskDelayMinutes() * 60 * 1000L;
         return postDate.getTime() <= now.getTime() && now.getTime() < (postDate.getTime() + maxTaskDelayMs);
     }
 

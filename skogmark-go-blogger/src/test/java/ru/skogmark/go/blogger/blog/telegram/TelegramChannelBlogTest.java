@@ -71,7 +71,7 @@ public class TelegramChannelBlogTest {
         TelegramMessage message = new TelegramMessage();
         message.setChatId(telegramConfiguration.getChatId());
         message.setText(String.format(telegramConfiguration.getMessageFormat(), post.getContent()));
-        message.setParseMode(telegramConfiguration.getParseMode().getHtml());
+        message.setParseMode(telegramConfiguration.getParseModeByName("html").getValue());
 
         return message;
     }

@@ -1,7 +1,11 @@
 package ru.skogmark.go.blogger.blog.telegram;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
+import java.util.NoSuchElementException;
 
 /**
  * @author ksbogdan
@@ -9,57 +13,97 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 class TelegramConfiguration {
-    @XmlElement
     private long chatId;
-
-    @XmlElement
     private Api api;
-
-    @XmlElement
     private String messageFormat;
-
-    @XmlElement
-    private ParseMode parseMode;
+    private ParseMode[] parseModes;
 
     public static class Api {
-        @XmlElement
         private String url;
-
-        @XmlElement
-        private Methods methods;
+        private Method[] methods;
 
         public String getUrl() {
             return url;
         }
 
-        public Methods getMethods() {
+        public Method[] getMethods() {
             return methods;
+        }
+
+        @XmlElement
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        @XmlElementWrapper(name = "methods")
+        @XmlElement(name = "method")
+        public void setMethods(Method[] methods) {
+            this.methods = methods;
         }
     }
 
-    public static class Methods {
-        @XmlElement
-        private String sendMessage;
+    public static class Method {
+        private String name;
+        private String value;
 
-        public String getSendMessage() {
-            return sendMessage;
+        public String getName() {
+            return name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @XmlAttribute
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @XmlAttribute
+        public void setValue(String value) {
+            this.value = value;
         }
     }
 
     public static class ParseMode {
-        @XmlElement
-        private String html;
+        private String name;
+        private String value;
 
-        @XmlElement
-        private String markdown;
-
-        public String getHtml() {
-            return html;
+        public String getName() {
+            return name;
         }
 
-        public String getMarkdown() {
-            return markdown;
+        public String getValue() {
+            return value;
         }
+
+        @XmlAttribute
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @XmlAttribute
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
+    public Method getMethodByName(String name) {
+        for (Method method : getApi().getMethods()) {
+            if (name.equals(method.getName())) {
+                return method;
+            }
+        }
+        throw new NoSuchElementException("Unable to find method " + name);
+    }
+
+    public ParseMode getParseModeByName(String name) {
+        for (ParseMode parseMode : getParseModes()) {
+            if (name.equals(parseMode.getName())) {
+                return parseMode;
+            }
+        }
+        throw new NoSuchElementException("Unable to find parseMode " + name);
     }
 
     public long getChatId() {
@@ -74,7 +118,28 @@ class TelegramConfiguration {
         return messageFormat;
     }
 
-    public ParseMode getParseMode() {
-        return parseMode;
+    public ParseMode[] getParseModes() {
+        return parseModes;
+    }
+
+    @XmlElement
+    public void setChatId(long chatId) {
+        this.chatId = chatId;
+    }
+
+    @XmlElement
+    public void setApi(Api api) {
+        this.api = api;
+    }
+
+    @XmlElement
+    public void setMessageFormat(String messageFormat) {
+        this.messageFormat = messageFormat;
+    }
+
+    @XmlElementWrapper(name = "parseModes")
+    @XmlElement(name = "parseMode")
+    public void setParseModes(ParseMode[] parseModes) {
+        this.parseModes = parseModes;
     }
 }

@@ -15,4 +15,5 @@
   <userAgent>Mozilla/5.0</userAgent>
   <defaultCharset>utf-8</defaultCharset>
   <localMode>true</localMode>
+  <postWhileStartingEnabled>true</postWhileStartingEnabled>
 </applicationConfiguration>

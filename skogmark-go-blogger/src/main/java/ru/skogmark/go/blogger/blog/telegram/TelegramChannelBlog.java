@@ -47,7 +47,7 @@ public class TelegramChannelBlog implements Blog {
         TelegramMessage message = new TelegramMessage();
         message.setChatId(telegramConfiguration.getChatId());
         message.setText(String.format(telegramConfiguration.getMessageFormat(), post.getContent()));
-        message.setParseMode(telegramConfiguration.getParseMode().getHtml());
+        message.setParseMode(telegramConfiguration.getParseModeByName("html").getValue());
 
         return message;
     }
@@ -56,7 +56,7 @@ public class TelegramChannelBlog implements Blog {
         return String.format(
                 telegramConfiguration.getApi().getUrl(),
                 telegramBotToken.getValue(),
-                telegramConfiguration.getApi().getMethods().getSendMessage());
+                telegramConfiguration.getMethodByName("sendMessage").getValue());
     }
 
     private String createBody(TelegramMessage message) throws TelegramPostingException {

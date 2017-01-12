@@ -1,6 +1,6 @@
 <applicationConfiguration>
   <postScheduler>
-    <maxTaskDelayMinutes>10</maxTaskDelayMinutes>
+    <maxTaskDelayMinutes>180</maxTaskDelayMinutes>
     <taskIntervalSec>60</taskIntervalSec>
     <timeTable>
       <time>8</time>
@@ -14,5 +14,6 @@
   <generatorResourceUrl>http://go.skogmark.ru:8080/rest/gen/wisdom</generatorResourceUrl>
   <userAgent>Mozilla/5.0</userAgent>
   <defaultCharset>utf-8</defaultCharset>
-  <localMode>false</localMode>
+  <localMode>true</localMode>
+  <postWhileStartingEnabled>false</postWhileStartingEnabled>
 </applicationConfiguration>

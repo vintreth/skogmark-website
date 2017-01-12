@@ -35,6 +35,8 @@ class Application {
         logger.debug("Autowiring beans to the current application instance");
         applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
 
+        postScheduler.checkPostWhileStarting();
+
         logger.debug("Starting scheduled executor");
         executor.scheduleAtFixedRate(() -> {
             logger.debug("Running task");
