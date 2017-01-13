@@ -25,7 +25,7 @@ class Application {
     private PostScheduler postScheduler;
 
     @Autowired
-    private ApplicationConfiguration configuration;
+    private ApplicationConfiguration applicationConfiguration;
 
     /**
      * Starts the application
@@ -35,6 +35,7 @@ class Application {
         logger.debug("Autowiring beans to the current application instance");
         applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
 
+        logger.info(String.format("Local mode is %s", applicationConfiguration.isLocalMode() ? "enabled" : "disabled"));
         postScheduler.checkPostWhileStarting();
 
         logger.debug("Starting scheduled executor");
@@ -42,7 +43,7 @@ class Application {
             logger.debug("Running task");
             postScheduler.beABlogger();
             logger.debug("Done");
-        }, 0L, configuration.getPostSchedulerParams().getTaskIntervalSec(), TimeUnit.SECONDS);
+        }, 0L, applicationConfiguration.getPostSchedulerParams().getTaskIntervalSec(), TimeUnit.SECONDS);
     }
 
     /**
@@ -51,7 +52,7 @@ class Application {
     public void stop() {
         try {
             logger.info("Stopping the application. Awaiting termination.");
-            executor.awaitTermination(configuration.getAwaitTerminationTimeoutSec(), TimeUnit.SECONDS);
+            executor.awaitTermination(applicationConfiguration.getAwaitTerminationTimeoutSec(), TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             logger.warn("InterruptedException occurred while awaiting scheduler termination", e);
             Thread.currentThread().interrupt();
