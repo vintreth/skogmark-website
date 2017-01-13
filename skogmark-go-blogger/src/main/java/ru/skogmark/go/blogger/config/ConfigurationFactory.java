@@ -15,13 +15,13 @@ import java.io.*;
  */
 @Configuration
 public class ConfigurationFactory {
-    private static final String APPLICATION_CONFIG_PATH = "application-config.xml";
+    private static final String APPLICATION_CONFIG_FILE_NAME = "application-config.xml";
     private static final String EXTERNAL_CONFIG_DIRECTORY_PATH = "/../conf";
     private static final Logger logger = Logger.getLogger(ConfigurationFactory.class);
 
     @Bean(name = "configuration")
-    public ApplicationConfiguration getConfiguration() throws ConfigurationLoadingException {
-        return loadConfiguration(ApplicationConfiguration.class, APPLICATION_CONFIG_PATH);
+    public ApplicationConfiguration getApplicationConfiguration() throws ConfigurationLoadingException {
+        return loadConfiguration(ApplicationConfiguration.class, APPLICATION_CONFIG_FILE_NAME);
     }
 
     protected <T> T loadConfiguration(Class<T> configClass, String configFileName)
