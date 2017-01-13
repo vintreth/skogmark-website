@@ -1,0 +1,19 @@
+<applicationConfiguration>
+  <postScheduler>
+    <maxTaskDelayMinutes>180</maxTaskDelayMinutes>
+    <taskIntervalSec>60</taskIntervalSec>
+    <timeTable>
+      <time>8</time>
+      <time>12</time>
+      <time>16</time>
+      <time>20</time>
+      <time>23</time>
+    </timeTable>
+  </postScheduler>
+  <awaitTerminationTimeoutSec>30</awaitTerminationTimeoutSec>
+  <generatorResourceUrl>http://go.skogmark.ru:8080/rest/gen/wisdom</generatorResourceUrl>
+  <userAgent>Mozilla/5.0</userAgent>
+  <defaultCharset>utf-8</defaultCharset>
+  <localMode>true</localMode>
+  <postWhileStartingEnabled>false</postWhileStartingEnabled>
+</applicationConfiguration>

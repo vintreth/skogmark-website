@@ -19,9 +19,15 @@ public class ConfigurationFactory {
     private static final String EXTERNAL_CONFIG_DIRECTORY_PATH = "/../conf";
     private static final Logger logger = Logger.getLogger(ConfigurationFactory.class);
 
+    private String executionPath = System.getProperty("user.dir");
+
     @Bean(name = "configuration")
     public ApplicationConfiguration getApplicationConfiguration() throws ConfigurationLoadingException {
         return loadConfiguration(ApplicationConfiguration.class, APPLICATION_CONFIG_FILE_NAME);
+    }
+
+    public void setExecutionPath(String executionPath) {
+        this.executionPath = executionPath;
     }
 
     protected <T> T loadConfiguration(Class<T> configClass, String configFileName)
@@ -57,7 +63,7 @@ public class ConfigurationFactory {
         if (null != (configLocation = System.getProperty("app.configLocation"))) {
             return configLocation;
         }
-        return System.getProperty("user.dir") + EXTERNAL_CONFIG_DIRECTORY_PATH;
+        return executionPath + EXTERNAL_CONFIG_DIRECTORY_PATH;
     }
 
     @SuppressWarnings("unchecked")
