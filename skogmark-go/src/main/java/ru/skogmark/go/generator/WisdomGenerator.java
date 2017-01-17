@@ -10,6 +10,7 @@ import ru.skogmark.go.domain.*;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -45,8 +46,8 @@ public class WisdomGenerator {
         if (null == localRepository) {
             loadLocalRepository();
         }
-        int rand1 = new Random().nextInt(localRepository.size());
-        int rand2 = new Random().nextInt(localRepository.size());
+        int rand1 = random(localRepository.size());
+        int rand2 = random(localRepository.size());
         Wisdom wisdom = new Wisdom();
         wisdom.setContent(localRepository.get(rand1) + " " + localRepository.get(rand2));
 
@@ -82,15 +83,23 @@ public class WisdomGenerator {
     }
 
     public Wisdom generateOneAdvanced() {
+        // todo refactor using sentence templates
+        String[] sentenceTemplates = new String[] {
+                "complex & complex",
+                "complex, complex",
+                "complex & compound",
+                "complex & compound adverbial",
+        };
+        parseTemplate(sentenceTemplates[3]);
         GenerationStrategy[] generationStrategies = new GenerationStrategy[] {
                 this::generateComplex,
                 this::generateCompound,
                 // todo generateList
         };
-        GenerationStrategy generationStrategy = generationStrategies[new Random().nextInt(generationStrategies.length)];
+        GenerationStrategy generationStrategy = generationStrategies[random(generationStrategies.length)];
         Wisdom wisdom = generationStrategy.generate();
 
-        if (0 >= new Random().nextInt(ADDITIONAL_WORDS_RATIO)) {
+        if (0 >= random(ADDITIONAL_WORDS_RATIO)) {
             SentencePart additionalPart = pickRandomPart(RoleId.NONE);
             if (additionalPart == null) {
                 throw new FailedGenerationException(
@@ -102,6 +111,23 @@ public class WisdomGenerator {
         return wisdom;
     }
 
+    private String parseTemplate(String template) {
+        if (0 >= template.length()) {
+            throw new FailedGenerationException("Unable to parse empty template");
+        }
+        String[] templateParts = template.split("\\s");
+        String[] filledParts = new String[templateParts.length];
+        for (String templatePart : templateParts) {
+            if ("&".equals(templatePart)) {
+                //todo process conjunction
+            } else {
+                RoleId roleId = RoleId.valueOf(templatePart.toUpperCase());
+                SentencePart sentencePart = pickRandomPart(roleId);
+            }
+        }
+        return String.join(" ", filledParts);
+    }
+
     private Wisdom generateComplex() {
         String firstPart = pickRandomPart(RoleId.COMPLEX).getContent();
         String secondPart = pickRandomPart(RoleId.COMPLEX).getContent();
@@ -109,7 +135,7 @@ public class WisdomGenerator {
 
         Wisdom wisdom = new Wisdom();
         wisdom.setType("complex");
-        if (0 < new Random().nextInt(COMMA_SEPARATOR_RATIO)) {
+        if (0 < random(COMMA_SEPARATOR_RATIO)) {
             wisdom.setContent(String.format(
                     "%s %s %s", firstPart, pickRandomConjunction(RoleId.COMPLEX).getContent(), secondPart));
         } else {
@@ -124,7 +150,7 @@ public class WisdomGenerator {
         String secondPart = pickRandomPart(RoleId.COMPOUND).getContent();
         String content = String.format(
                 "%s %s %s", firstPart, pickRandomConjunction(RoleId.COMPOUND).getContent(), secondPart);
-        if (0 >= new Random().nextInt(ADVERBIAL_RATIO)) {
+        if (0 >= random(ADVERBIAL_RATIO)) {
             content += ", " + pickRandomPart(RoleId.ADVERBIAL).getContent();
         }
         Wisdom wisdom = new Wisdom();
@@ -132,6 +158,10 @@ public class WisdomGenerator {
         wisdom.setType("compound");
 
         return wisdom;
+    }
+
+    private int random(int bound) {
+        return new Random().nextInt(bound);
     }
 
     private SentencePart pickRandomPart(RoleId roleId) {
@@ -143,7 +173,7 @@ public class WisdomGenerator {
         }
         SentencePart sentencePart;
         do {
-            int randomIndex = new Random().nextInt(sentenceParts.size());
+            int randomIndex = random(sentenceParts.size());
             sentencePart = sentenceParts.get(randomIndex);
         } while (roleId.value != sentencePart.getRole().getId());
 
@@ -159,7 +189,7 @@ public class WisdomGenerator {
         }
         Conjunction conjunction;
         do {
-            int randomIndex = new Random().nextInt(conjunctions.size());
+            int randomIndex = random(conjunctions.size());
             conjunction = conjunctions.get(randomIndex);
         } while (roleId.value != conjunction.getRole().getId());
 
