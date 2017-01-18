@@ -14,9 +14,9 @@ import static org.junit.Assert.assertFalse;
  * @author svip
  *         2016-11-26
  */
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-//@ContextConfiguration(locations = {"classpath:test-context.xml", "classpath:session-mock-context.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+@ContextConfiguration(locations = {"classpath:test-context.xml", "classpath:session-mock-context.xml"})
 public class WisdomGeneratorTest {
     private WisdomGenerator wisdomGenerator;
 
@@ -25,15 +25,16 @@ public class WisdomGeneratorTest {
         this.wisdomGenerator = wisdomGenerator;
     }
 
-//    @Test
+    @Test
     public void testGeneration() throws Exception {
         Wisdom wisdom = wisdomGenerator.generateOne();
         assertFalse(wisdom.getContent().isEmpty());
     }
 
-//    @Test
+    @Test
     public void testAdvancedGeneration() throws Exception {
         Wisdom wisdom = wisdomGenerator.generateOneAdvanced();
         assertFalse(wisdom.getContent().isEmpty());
+        assertFalse(wisdom.getTemplate().isEmpty());
     }
 }

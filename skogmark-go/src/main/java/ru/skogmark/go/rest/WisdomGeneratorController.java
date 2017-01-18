@@ -1,5 +1,6 @@
 package ru.skogmark.go.rest;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,9 @@ import ru.skogmark.go.generator.WisdomGenerator;
 @Scope("session")
 @RequestMapping("/rest/gen")
 public class WisdomGeneratorController {
-    private final static Integer MAX_WISDOM_COUNT = 1000;
+    private static final Integer MAX_WISDOM_COUNT = 1000;
+
+    private static final Logger logger = Logger.getLogger(WisdomGeneratorController.class);
 
     private WisdomGenerator wisdomGenerator;
 
@@ -29,18 +32,21 @@ public class WisdomGeneratorController {
 
     @RequestMapping(value = "/wisdom", method = RequestMethod.GET)
     public @ResponseBody Wisdom randomMessage() {
+        logger.debug("Calling random message");
         return wisdomGenerator.generateOne();
     }
 
     @RequestMapping(value = "/wisdom-advanced", method = RequestMethod.GET)
     public @ResponseBody Wisdom randomMessageAdvanced() {
+        logger.debug("Calling random message advanced");
         return wisdomGenerator.generateOneAdvanced();
     }
 
     @RequestMapping(value = "/wisdoms", method = RequestMethod.GET)
     public @ResponseBody Wisdom[] randomMessages(@RequestParam(value = "count", required = false) Integer count) {
+        logger.debug("Calling random messages, count " + count);
         if (null == count || count > MAX_WISDOM_COUNT) {
-            count = MAX_WISDOM_COUNT;
+            wisdomGenerator.generateMany(MAX_WISDOM_COUNT);
         }
         return wisdomGenerator.generateMany(count);
     }

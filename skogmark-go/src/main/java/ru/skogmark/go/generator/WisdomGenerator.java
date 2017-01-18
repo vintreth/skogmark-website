@@ -1,5 +1,6 @@
 package ru.skogmark.go.generator;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -10,9 +11,10 @@ import ru.skogmark.go.domain.*;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author svip
@@ -23,10 +25,9 @@ import java.util.Random;
 public class WisdomGenerator {
     private static final String LOCAL_REPOSITORY = "local-wisdom.txt";
     private static final String LOCAL_REPOSITORY_ENCODING = "utf-8";
-
-    private static final int COMMA_SEPARATOR_RATIO = 5;
     private static final int ADDITIONAL_WORDS_RATIO = 3;
-    private static final int ADVERBIAL_RATIO = 4;
+
+    private static final Logger logger = Logger.getLogger(WisdomGenerator.class);
 
     private List<String> localRepository;
 
@@ -43,6 +44,7 @@ public class WisdomGenerator {
     }
 
     public Wisdom generateOne() {
+        logger.debug("Generating single wisdom");
         if (null == localRepository) {
             loadLocalRepository();
         }
@@ -51,10 +53,13 @@ public class WisdomGenerator {
         Wisdom wisdom = new Wisdom();
         wisdom.setContent(localRepository.get(rand1) + " " + localRepository.get(rand2));
 
+        logger.debug("Wisdom has been generated. Content: " + wisdom.getContent());
+
         return wisdom;
     }
 
     public Wisdom[] generateMany(int count) {
+        logger.debug("Generating " + count + " wisdoms");
         Wisdom[] wisdoms = new Wisdom[count];
         for (int i = 0; i < count; i++) {
             wisdoms[i] = generateOne();
@@ -63,6 +68,7 @@ public class WisdomGenerator {
     }
 
     private void loadLocalRepository() {
+        logger.debug("Loading local repository");
         URL localRepositoryUrl = Thread.currentThread().getContextClassLoader().getResource(LOCAL_REPOSITORY);
         if (null == localRepositoryUrl) {
             throw new FailedGenerationException("Unable to find local repository file " + LOCAL_REPOSITORY);
@@ -83,81 +89,77 @@ public class WisdomGenerator {
     }
 
     public Wisdom generateOneAdvanced() {
-        // todo refactor using sentence templates
+        logger.debug("Generating single wisdom");
         String[] sentenceTemplates = new String[] {
-                "complex & complex",
-                "complex, complex",
-                "complex & compound",
-                "complex & compound adverbial",
+                "<complex> <&complex> <complex>",
+                "<complex> <complex>", //todo fix comma problem
+                "<complex> <&compound> <compound>",
+                "<complex> <&compound> <compound> <adverbial>",
+                //todo lists
         };
-        parseTemplate(sentenceTemplates[3]);
-        GenerationStrategy[] generationStrategies = new GenerationStrategy[] {
-                this::generateComplex,
-                this::generateCompound,
-                // todo generateList
-        };
-        GenerationStrategy generationStrategy = generationStrategies[random(generationStrategies.length)];
-        Wisdom wisdom = generationStrategy.generate();
+        String template = sentenceTemplates[random(sentenceTemplates.length)];
+        String content = parseTemplate(template);
+
+        logger.debug("Content has been generated");
+        Wisdom wisdom = new Wisdom();
+        wisdom.setTemplate(template);
+        wisdom.setContent(content);
 
         if (0 >= random(ADDITIONAL_WORDS_RATIO)) {
+            logger.debug("Adding additional words");
             SentencePart additionalPart = pickRandomPart(RoleId.NONE);
             if (additionalPart == null) {
                 throw new FailedGenerationException(
                         "Unable to retrieve sentence with role " + RoleId.NONE + " from dao layer");
             }
+            logger.debug("Additional words: " + additionalPart.getContent());
             wisdom.setContent(wisdom.getContent() + ". " + additionalPart.getContent());
         }
+
+        logger.debug("Wisdom has been generated. Content: " + wisdom.getContent());
 
         return wisdom;
     }
 
     private String parseTemplate(String template) {
+        logger.debug("Parsing template " + template);
         if (0 >= template.length()) {
             throw new FailedGenerationException("Unable to parse empty template");
         }
         String[] templateParts = template.split("\\s");
         String[] filledParts = new String[templateParts.length];
-        for (String templatePart : templateParts) {
-            if ("&".equals(templatePart)) {
-                //todo process conjunction
+        for (int i = 0; i < templateParts.length; i++) {
+            if (isConjunctionVariable(templateParts[i])) {
+                Conjunction conjunction = pickRandomConjunction(getRoleIdByVariable(templateParts[i]));
+                logger.debug("Conjunction content: " + conjunction.getContent());
+                filledParts[i] = conjunction.getContent();
+            } else if (isPartVariable(templateParts[i])) {
+                SentencePart sentencePart = pickRandomPart(getRoleIdByVariable(templateParts[i]));
+                logger.debug("Sentence part content: " + sentencePart.getContent());
+                filledParts[i] = sentencePart.getContent();
             } else {
-                RoleId roleId = RoleId.valueOf(templatePart.toUpperCase());
-                SentencePart sentencePart = pickRandomPart(roleId);
+                logger.debug("Part " + templateParts[i]);
+                filledParts[i] = templateParts[i];
             }
         }
-        return String.join(" ", filledParts);
+        return String.join(" ", (CharSequence[]) filledParts);
     }
 
-    private Wisdom generateComplex() {
-        String firstPart = pickRandomPart(RoleId.COMPLEX).getContent();
-        String secondPart = pickRandomPart(RoleId.COMPLEX).getContent();
-        //todo avoid duplicates
-
-        Wisdom wisdom = new Wisdom();
-        wisdom.setType("complex");
-        if (0 < random(COMMA_SEPARATOR_RATIO)) {
-            wisdom.setContent(String.format(
-                    "%s %s %s", firstPart, pickRandomConjunction(RoleId.COMPLEX).getContent(), secondPart));
-        } else {
-            wisdom.setContent(String.format("%s, %s", firstPart, secondPart));
-        }
-
-        return wisdom;
+    private boolean isConjunctionVariable(String templatePart) {
+        return Pattern.compile("<&\\w+>").matcher(templatePart).matches();
     }
 
-    private Wisdom generateCompound() {
-        String firstPart = pickRandomPart(RoleId.COMPLEX).getContent();
-        String secondPart = pickRandomPart(RoleId.COMPOUND).getContent();
-        String content = String.format(
-                "%s %s %s", firstPart, pickRandomConjunction(RoleId.COMPOUND).getContent(), secondPart);
-        if (0 >= random(ADVERBIAL_RATIO)) {
-            content += ", " + pickRandomPart(RoleId.ADVERBIAL).getContent();
-        }
-        Wisdom wisdom = new Wisdom();
-        wisdom.setContent(content);
-        wisdom.setType("compound");
+    private boolean isPartVariable(String templatePart) {
+        return Pattern.compile("<\\w+>").matcher(templatePart).matches();
+    }
 
-        return wisdom;
+    private RoleId getRoleIdByVariable(String variable) {
+        logger.debug("Getting role identifier by variable " + variable);
+        Matcher matcher = Pattern.compile("<&?(\\w+)>").matcher(variable);
+        if (!matcher.matches()) {
+            throw new FailedGenerationException("Unable to parse template variable " + variable);
+        }
+        return RoleId.valueOf(matcher.replaceFirst("$1").toUpperCase());
     }
 
     private int random(int bound) {
@@ -165,6 +167,7 @@ public class WisdomGenerator {
     }
 
     private SentencePart pickRandomPart(RoleId roleId) {
+        logger.debug("Picking random sentence part, roleId " + roleId);
         if (null == sentenceParts) {
             sentenceParts = sentencePartDao.getAll();
             if (null == sentenceParts || sentenceParts.isEmpty()) {
@@ -181,6 +184,7 @@ public class WisdomGenerator {
     }
 
     private Conjunction pickRandomConjunction(RoleId roleId) {
+        logger.debug("Picking random conjunction, roleId " + roleId);
         if (null == conjunctions) {
             conjunctions = conjunctionDao.getAll();
             if (null == conjunctions || conjunctions.isEmpty()) {

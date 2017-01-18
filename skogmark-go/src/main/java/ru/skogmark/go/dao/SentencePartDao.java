@@ -1,5 +1,6 @@
 package ru.skogmark.go.dao;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -19,6 +20,8 @@ import java.util.List;
 @Repository
 @Transactional
 public class SentencePartDao {
+    private static final Logger logger = Logger.getLogger(SentencePartDao.class);
+
     private SessionFactory sessionFactory;
 
     @Autowired
@@ -28,6 +31,7 @@ public class SentencePartDao {
 
     @SuppressWarnings("unchecked")
     public List<SentencePart> getAll() {
+        logger.debug("Retrieving all sentence parts from db");
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SentencePart.class);
         criteria.addOrder(Order.asc("id"));
 
@@ -36,6 +40,7 @@ public class SentencePartDao {
 
     @SuppressWarnings("unchecked")
     public List<SentencePart> getAllByRoleId(RoleId roleId) {
+        logger.debug("Retrieving all sentence parts by roleId " + roleId);
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SentencePart.class);
         criteria.add(Restrictions.eq("role.id", roleId.value));
         criteria.addOrder(Order.asc("id"));
@@ -44,9 +49,11 @@ public class SentencePartDao {
     }
 
     public SentencePart getRandomByRoleId(RoleId roleId) {
+        logger.debug("Retrieving random sentence part by roleId " + roleId);
         Query query = sessionFactory
                 .getCurrentSession()
-                .createQuery("from SentencePart where role_id = " + roleId.value + " order by RAND()");
+                .createQuery("from SentencePart where role_id = ? order by RAND()");
+        query.setParameter(0, roleId.value);
         query.setMaxResults(1);
 
         return (SentencePart) query.uniqueResult();

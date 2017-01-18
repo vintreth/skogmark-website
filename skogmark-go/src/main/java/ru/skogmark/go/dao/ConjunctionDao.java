@@ -1,5 +1,6 @@
 package ru.skogmark.go.dao;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -18,6 +19,8 @@ import java.util.List;
 @Repository
 @Transactional
 public class ConjunctionDao {
+    private static final Logger logger = Logger.getLogger(ConjunctionDao.class);
+
     private SessionFactory sessionFactory;
 
     @Autowired
@@ -26,9 +29,11 @@ public class ConjunctionDao {
     }
 
     public Conjunction getRandomByRoleId(RoleId roleId) {
+        logger.debug("Retrieving random conjunction by roleId " + roleId);
         Query query = sessionFactory
                 .getCurrentSession()
-                .createQuery("from Conjunction where role_id = " + roleId.value + " order by RAND()");
+                .createQuery("from Conjunction where role_id = ? order by RAND()");
+        query.setParameter(0, roleId.value);
         query.setMaxResults(1);
 
         return (Conjunction) query.uniqueResult();
@@ -36,6 +41,7 @@ public class ConjunctionDao {
 
     @SuppressWarnings("unchecked")
     public List<Conjunction> getAll() {
+        logger.debug("Retrieving all conjunctions from db");
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Conjunction.class);
         criteria.addOrder(Order.asc("id"));
 
