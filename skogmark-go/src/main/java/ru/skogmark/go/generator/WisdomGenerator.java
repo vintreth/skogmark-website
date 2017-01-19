@@ -58,11 +58,11 @@ public class WisdomGenerator {
         return wisdom;
     }
 
-    public Wisdom[] generateMany(int count) {
+    public Wisdom[] generateMany(int count, GenerationStrategy generationStrategy) {
         logger.debug("Generating " + count + " wisdoms");
         Wisdom[] wisdoms = new Wisdom[count];
         for (int i = 0; i < count; i++) {
-            wisdoms[i] = generateOne();
+            wisdoms[i] = generationStrategy.generate();
         }
         return wisdoms;
     }

@@ -46,8 +46,8 @@ public class WisdomGeneratorController {
     public @ResponseBody Wisdom[] randomMessages(@RequestParam(value = "count", required = false) Integer count) {
         logger.debug("Calling random messages, count " + count);
         if (null == count || count > MAX_WISDOM_COUNT) {
-            wisdomGenerator.generateMany(MAX_WISDOM_COUNT);
+            wisdomGenerator.generateMany(MAX_WISDOM_COUNT, wisdomGenerator::generateOne);
         }
-        return wisdomGenerator.generateMany(count);
+        return wisdomGenerator.generateMany(count, wisdomGenerator::generateOne);
     }
 }
