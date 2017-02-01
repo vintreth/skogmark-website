@@ -40,7 +40,7 @@ public class SentencePartDao {
 
     @SuppressWarnings("unchecked")
     public List<SentencePart> getAllByRoleId(RoleId roleId) {
-        logger.debug("Retrieving all sentence parts by roleId " + roleId);
+        logger.debug("Retrieving all sentence parts by getRoleId " + roleId);
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SentencePart.class);
         criteria.add(Restrictions.eq("role.id", roleId.value));
         criteria.addOrder(Order.asc("id"));
@@ -49,7 +49,7 @@ public class SentencePartDao {
     }
 
     public SentencePart getRandomByRoleId(RoleId roleId) {
-        logger.debug("Retrieving random sentence part by roleId " + roleId);
+        logger.debug("Retrieving random sentence part by getRoleId " + roleId);
         Query query = sessionFactory
                 .getCurrentSession()
                 .createQuery("from SentencePart where role_id = ? order by RAND()");

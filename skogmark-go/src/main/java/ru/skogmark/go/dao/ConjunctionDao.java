@@ -29,7 +29,7 @@ public class ConjunctionDao {
     }
 
     public Conjunction getRandomByRoleId(RoleId roleId) {
-        logger.debug("Retrieving random conjunction by roleId " + roleId);
+        logger.debug("Retrieving random conjunction by getRoleId " + roleId);
         Query query = sessionFactory
                 .getCurrentSession()
                 .createQuery("from Conjunction where role_id = ? order by RAND()");

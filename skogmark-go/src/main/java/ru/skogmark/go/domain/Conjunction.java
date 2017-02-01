@@ -8,7 +8,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "dict_conjunction")
-public class Conjunction {
+public class Conjunction implements RoleCharacterized {
     @Id
     @GeneratedValue
     @Column

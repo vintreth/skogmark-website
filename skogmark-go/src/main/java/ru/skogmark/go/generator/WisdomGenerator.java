@@ -6,13 +6,24 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.skogmark.go.dao.ConjunctionDao;
 import ru.skogmark.go.dao.SentencePartDao;
-import ru.skogmark.go.domain.*;
+import ru.skogmark.go.domain.Conjunction;
+import ru.skogmark.go.domain.RoleCharacterized;
+import ru.skogmark.go.domain.RoleId;
+import ru.skogmark.go.domain.SentencePart;
+import ru.skogmark.go.domain.Wisdom;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -166,37 +177,72 @@ public class WisdomGenerator {
         return new Random().nextInt(bound);
     }
 
+    private static class EntityConnector<E extends RoleCharacterized> {
+        private RoleId roleId;
+        private Supplier<List<E>> daoCallSupplier;
+        private Supplier<List<E>> associatedFieldSupplier;
+        private Consumer<List<E>> associatedFieldConsumer;
+
+        public EntityConnector(RoleId roleId,
+                               Supplier<List<E>> daoCallSupplier,
+                               Supplier<List<E>> associatedFieldSupplier,
+                               Consumer<List<E>> associatedFieldConsumer) {
+            this.associatedFieldSupplier = associatedFieldSupplier;
+            this.associatedFieldConsumer = associatedFieldConsumer;
+            this.daoCallSupplier = daoCallSupplier;
+            this.roleId = roleId;
+        }
+
+        private List<E> getAssociatedField() {
+            return associatedFieldSupplier.get();
+        }
+
+        private void setAssociatedField(List<E> entities) {
+            associatedFieldConsumer.accept(entities);
+        }
+
+        private List<E> daoCall() {
+            return daoCallSupplier.get();
+        }
+
+        private RoleId getRoleId() {
+            return roleId;
+        }
+    }
+
     private SentencePart pickRandomPart(RoleId roleId) {
         logger.debug("Picking random sentence part, roleId " + roleId);
-        if (null == sentenceParts) {
-            sentenceParts = sentencePartDao.getAll();
-            if (null == sentenceParts || sentenceParts.isEmpty()) {
-                throw new FailedGenerationException("Unable to retrieve sentences from dao layer");
-            }
-        }
-        SentencePart sentencePart;
-        do {
-            int randomIndex = random(sentenceParts.size());
-            sentencePart = sentenceParts.get(randomIndex);
-        } while (roleId.value != sentencePart.getRole().getId());
-
-        return sentencePart;
+        return pickRandom(new EntityConnector<>(
+                roleId,
+                () -> sentencePartDao.getAll(),
+                () -> sentenceParts,
+                entities -> sentenceParts = entities));
     }
 
     private Conjunction pickRandomConjunction(RoleId roleId) {
         logger.debug("Picking random conjunction, roleId " + roleId);
-        if (null == conjunctions) {
-            conjunctions = conjunctionDao.getAll();
-            if (null == conjunctions || conjunctions.isEmpty()) {
-                throw new FailedGenerationException("Unable to retrieve conjunctions from dao layer");
+        return pickRandom(new EntityConnector<>(
+                roleId,
+                () -> conjunctionDao.getAll(),
+                () -> conjunctions,
+                entities -> conjunctions = entities));
+    }
+
+    private <E extends RoleCharacterized> E pickRandom(EntityConnector<E> entityConnector) {
+        if (null == entityConnector.getAssociatedField()) {
+            logger.debug("Delegating a call to dao layer for " + entityConnector);
+            entityConnector.setAssociatedField(entityConnector.daoCall());
+            if (null == entityConnector.getAssociatedField() || entityConnector.getAssociatedField().isEmpty()) {
+                throw new FailedGenerationException("Unable to retrieve entities " + entityConnector + " from dao " +
+                        "layer");
             }
         }
-        Conjunction conjunction;
+        E entity;
         do {
-            int randomIndex = random(conjunctions.size());
-            conjunction = conjunctions.get(randomIndex);
-        } while (roleId.value != conjunction.getRole().getId());
+            int randomIndex = random(entityConnector.getAssociatedField().size());
+            entity = entityConnector.getAssociatedField().get(randomIndex);
+        } while (entityConnector.getRoleId().value != entity.getRole().getId());
 
-        return conjunction;
+        return entity;
     }
 }
