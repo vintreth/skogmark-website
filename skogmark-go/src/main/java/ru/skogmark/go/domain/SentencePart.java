@@ -8,7 +8,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "sentence_part")
-public class SentencePart implements RoleCharacterized {
+public class SentencePart implements RoleBased {
     @Id
     @GeneratedValue
     @Column

@@ -8,7 +8,7 @@ package ru.skogmark.go.domain;
  *
  * @author Kirill Bogdanov (ksbogdan@nvision-group.com)
  */
-public interface RoleCharacterized {
+public interface RoleBased {
     Role getRole();
 
     void setRole(Role role);

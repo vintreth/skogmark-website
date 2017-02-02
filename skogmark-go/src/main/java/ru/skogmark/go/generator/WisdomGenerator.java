@@ -7,11 +7,12 @@ import org.springframework.stereotype.Component;
 import ru.skogmark.go.dao.ConjunctionDao;
 import ru.skogmark.go.dao.SentencePartDao;
 import ru.skogmark.go.domain.Conjunction;
-import ru.skogmark.go.domain.RoleCharacterized;
+import ru.skogmark.go.domain.RoleBased;
 import ru.skogmark.go.domain.RoleId;
 import ru.skogmark.go.domain.SentencePart;
 import ru.skogmark.go.domain.Wisdom;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,7 +23,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,6 +37,7 @@ public class WisdomGenerator {
     private static final String LOCAL_REPOSITORY = "local-wisdom.txt";
     private static final String LOCAL_REPOSITORY_ENCODING = "utf-8";
     private static final int ADDITIONAL_WORDS_RATIO = 3;
+    private static final int RANDOM_PICKING_MAX_TRIES_COUNT = 1000;
 
     private static final Logger logger = Logger.getLogger(WisdomGenerator.class);
 
@@ -45,13 +46,39 @@ public class WisdomGenerator {
     private SentencePartDao sentencePartDao;
     private ConjunctionDao conjunctionDao;
 
-    private List<SentencePart> sentenceParts;
-    private List<Conjunction> conjunctions;
+    private EntityCache<SentencePart> sentencePartCache;
+    private EntityCache<Conjunction> conjunctionCache;
 
     @Autowired
     public WisdomGenerator(SentencePartDao sentencePartDao, ConjunctionDao conjunctionDao) {
         this.sentencePartDao = sentencePartDao;
         this.conjunctionDao = conjunctionDao;
+    }
+
+    private static class EntityCache<E> {
+        private Supplier<List<E>> daoCallSupplier;
+        private List<E> cachedEntities;
+
+        private EntityCache(Supplier<List<E>> daoCallSupplier) {
+            this.daoCallSupplier = daoCallSupplier;
+        }
+
+        private List<E> getOrCreate() {
+            if (null == cachedEntities) {
+                logger.debug("Delegating a call to dao layer from " + this);
+                cachedEntities = daoCallSupplier.get();
+                if (null == cachedEntities || cachedEntities.isEmpty()) {
+                    throw new FailedGenerationException("Unable to retrieve entities from dao layer for " + this);
+                }
+            }
+            return cachedEntities;
+        }
+    }
+
+    @PostConstruct
+    public void initCaches() {
+        sentencePartCache = new EntityCache<>(sentencePartDao::getAll);
+        conjunctionCache = new EntityCache<>(conjunctionDao::getAll);
     }
 
     public Wisdom generateOne() {
@@ -110,12 +137,17 @@ public class WisdomGenerator {
         };
         String template = sentenceTemplates[random(sentenceTemplates.length)];
         String content = parseTemplate(template);
-
-        logger.debug("Content has been generated");
         Wisdom wisdom = new Wisdom();
         wisdom.setTemplate(template);
         wisdom.setContent(content);
 
+        sayAdditionalWords(wisdom);
+        logger.debug("Wisdom has been generated. Content: " + wisdom.getContent());
+
+        return wisdom;
+    }
+
+    private void sayAdditionalWords(Wisdom wisdom) {
         if (0 >= random(ADDITIONAL_WORDS_RATIO)) {
             logger.debug("Adding additional words");
             SentencePart additionalPart = pickRandomPart(RoleId.NONE);
@@ -126,10 +158,6 @@ public class WisdomGenerator {
             logger.debug("Additional words: " + additionalPart.getContent());
             wisdom.setContent(wisdom.getContent() + ". " + additionalPart.getContent());
         }
-
-        logger.debug("Wisdom has been generated. Content: " + wisdom.getContent());
-
-        return wisdom;
     }
 
     private String parseTemplate(String template) {
@@ -142,12 +170,16 @@ public class WisdomGenerator {
         for (int i = 0; i < templateParts.length; i++) {
             if (isConjunctionVariable(templateParts[i])) {
                 Conjunction conjunction = pickRandomConjunction(getRoleIdByVariable(templateParts[i]));
-                logger.debug("Conjunction content: " + conjunction.getContent());
-                filledParts[i] = conjunction.getContent();
+                if (null != conjunction) {
+                    logger.debug("Conjunction content: " + conjunction.getContent());
+                    filledParts[i] = conjunction.getContent();
+                }
             } else if (isPartVariable(templateParts[i])) {
                 SentencePart sentencePart = pickRandomPart(getRoleIdByVariable(templateParts[i]));
-                logger.debug("Sentence part content: " + sentencePart.getContent());
-                filledParts[i] = sentencePart.getContent();
+                if (null != sentencePart) {
+                    logger.debug("Sentence part content: " + sentencePart.getContent());
+                    filledParts[i] = sentencePart.getContent();
+                }
             } else {
                 logger.debug("Part " + templateParts[i]);
                 filledParts[i] = templateParts[i];
@@ -177,71 +209,27 @@ public class WisdomGenerator {
         return new Random().nextInt(bound);
     }
 
-    private static class EntityConnector<E extends RoleCharacterized> {
-        private RoleId roleId;
-        private Supplier<List<E>> daoCallSupplier;
-        private Supplier<List<E>> associatedFieldSupplier;
-        private Consumer<List<E>> associatedFieldConsumer;
-
-        public EntityConnector(RoleId roleId,
-                               Supplier<List<E>> daoCallSupplier,
-                               Supplier<List<E>> associatedFieldSupplier,
-                               Consumer<List<E>> associatedFieldConsumer) {
-            this.associatedFieldSupplier = associatedFieldSupplier;
-            this.associatedFieldConsumer = associatedFieldConsumer;
-            this.daoCallSupplier = daoCallSupplier;
-            this.roleId = roleId;
-        }
-
-        private List<E> getAssociatedField() {
-            return associatedFieldSupplier.get();
-        }
-
-        private void setAssociatedField(List<E> entities) {
-            associatedFieldConsumer.accept(entities);
-        }
-
-        private List<E> daoCall() {
-            return daoCallSupplier.get();
-        }
-
-        private RoleId getRoleId() {
-            return roleId;
-        }
-    }
-
     private SentencePart pickRandomPart(RoleId roleId) {
         logger.debug("Picking random sentence part, roleId " + roleId);
-        return pickRandom(new EntityConnector<>(
-                roleId,
-                () -> sentencePartDao.getAll(),
-                () -> sentenceParts,
-                entities -> sentenceParts = entities));
+        return pickRandom(roleId, sentencePartCache);
     }
 
     private Conjunction pickRandomConjunction(RoleId roleId) {
         logger.debug("Picking random conjunction, roleId " + roleId);
-        return pickRandom(new EntityConnector<>(
-                roleId,
-                () -> conjunctionDao.getAll(),
-                () -> conjunctions,
-                entities -> conjunctions = entities));
+        return pickRandom(roleId, conjunctionCache);
     }
 
-    private <E extends RoleCharacterized> E pickRandom(EntityConnector<E> entityConnector) {
-        if (null == entityConnector.getAssociatedField()) {
-            logger.debug("Delegating a call to dao layer for " + entityConnector);
-            entityConnector.setAssociatedField(entityConnector.daoCall());
-            if (null == entityConnector.getAssociatedField() || entityConnector.getAssociatedField().isEmpty()) {
-                throw new FailedGenerationException("Unable to retrieve entities " + entityConnector + " from dao " +
-                        "layer");
-            }
-        }
+    private <E extends RoleBased> E pickRandom(RoleId roleId, EntityCache<E> entityCache) {
         E entity;
+        int i = 0;
         do {
-            int randomIndex = random(entityConnector.getAssociatedField().size());
-            entity = entityConnector.getAssociatedField().get(randomIndex);
-        } while (entityConnector.getRoleId().value != entity.getRole().getId());
+            int randomIndex = random(entityCache.getOrCreate().size());
+            entity = entityCache.getOrCreate().get(randomIndex);
+            if (RANDOM_PICKING_MAX_TRIES_COUNT >= ++i) {
+                entity = null;
+                break;
+            }
+        } while (roleId.value != entity.getRole().getId());
 
         return entity;
     }
