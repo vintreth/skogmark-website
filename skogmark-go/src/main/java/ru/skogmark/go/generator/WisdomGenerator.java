@@ -225,7 +225,7 @@ public class WisdomGenerator {
         do {
             int randomIndex = random(entityCache.getOrCreate().size());
             entity = entityCache.getOrCreate().get(randomIndex);
-            if (RANDOM_PICKING_MAX_TRIES_COUNT >= ++i) {
+            if (RANDOM_PICKING_MAX_TRIES_COUNT <= ++i) {
                 entity = null;
                 break;
             }
