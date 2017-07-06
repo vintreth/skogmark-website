@@ -22,10 +22,10 @@ public class BeanConfiguration {
     public LocalSessionFactoryBean getSessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
-        sessionFactory.setPackagesToScan("ru.skogmark.go.domain");
+        sessionFactory.setPackagesToScan("ru.skogmark.go.gen.domain");
 
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLiteDialect");
         properties.setProperty("hibernate.show_sql", "true");
         sessionFactory.setHibernateProperties(properties);
 
@@ -35,10 +35,10 @@ public class BeanConfiguration {
     @Bean(name = "dataSource")
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://skogmark.ru/go");
-        dataSource.setUsername("go");
-        dataSource.setPassword("go");
+        dataSource.setDriverClassName("org.sqlite.JDBC");
+        dataSource.setUrl("jdbc:sqlite:test.db");
+        dataSource.setUsername("");
+        dataSource.setPassword("");
 
         return dataSource;
     }
