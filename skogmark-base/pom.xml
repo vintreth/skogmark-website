@@ -5,16 +5,13 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>skogmark-base</artifactId>
   <version>1.3-SNAPSHOT</version>
+  <name>Skogmark-Base</name>
   <packaging>pom</packaging>
   <parent>
     <groupId>ru.skogmark</groupId>
     <artifactId>skogmark-boot</artifactId>
     <version>1.0</version>
   </parent>
-  <modules>
-    <module>skogmark-go-blogger</module>
-    <module>skogmark-go-gen</module>
-  </modules>
   <properties>
     <jdk.version>1.8</jdk.version>
     <spring.security.version>4.0.4.RELEASE</spring.security.version>

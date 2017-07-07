@@ -6,6 +6,7 @@
   <groupId>ru.skogmark</groupId>
   <artifactId>skogmark-go-blogger</artifactId>
   <version>1.3-SNAPSHOT</version>
+  <name>Skogmark-Go-Blogger</name>
   <properties>
     <jdk.version>1.8</jdk.version>
     <spring.version>4.2.4.RELEASE</spring.version>
