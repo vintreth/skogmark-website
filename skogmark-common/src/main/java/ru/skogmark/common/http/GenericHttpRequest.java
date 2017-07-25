@@ -1,7 +1,6 @@
-package ru.skogmark.go.blogger.rest;
+package ru.skogmark.common.http;
 
 import org.apache.log4j.Logger;
-import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,49 +18,62 @@ import java.net.URL;
 public class GenericHttpRequest implements HttpRequest {
     private static final Logger logger = Logger.getLogger(GenericHttpRequest.class);
 
-    private ApplicationConfiguration configuration;
+    private String userAgent;
+    private String defaultCharset;
 
-    public GenericHttpRequest(ApplicationConfiguration configuration) {
-        this.configuration = configuration;
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    public String getDefaultCharset() {
+        return defaultCharset;
+    }
+
+    public void setDefaultCharset(String defaultCharset) {
+        this.defaultCharset = defaultCharset;
     }
 
     @Override
-    public String doGet(String url) throws HttpException {
+    public String doGet(String url) {
         return makeRequest(Method.GET, url);
     }
 
     @Override
-    public String doPost(String url, String body) throws HttpException {
+    public String doPost(String url, String body) {
         return makeRequest(Method.POST, url, body);
     }
 
     @Override
-    public String doPut(String url, String body) throws HttpException {
+    public String doPut(String url, String body) {
         return makeRequest(Method.PUT, url, body);
     }
 
     @Override
-    public String doDelete(String url, String body) throws HttpException {
+    public String doDelete(String url, String body) {
         return makeRequest(Method.DELETE, url, body);
     }
 
-    private String makeRequest(Method method, String urlAddress) throws HttpException {
+    private String makeRequest(Method method, String urlAddress) {
         return makeRequest(method, urlAddress, null);
     }
 
-    private String makeRequest(Method method, String urlAddress, String body) throws HttpException {
+    private String makeRequest(Method method, String urlAddress, String body) {
         try {
             logger.info("Sending request " + method + " " + urlAddress);
             URL url = new URL(urlAddress);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(method.name());
             //todo set headers explicitly
-            connection.setRequestProperty("User-Agent", configuration.getUserAgent());
+            connection.setRequestProperty("User-Agent", userAgent);
             connection.setRequestProperty("Content-Type", "application/json");
             if (null != body && !body.isEmpty()) {
                 connection.setDoOutput(true);
                 try (OutputStreamWriter writer = new OutputStreamWriter(
-                    connection.getOutputStream(), configuration.getDefaultCharset())) {
+                    connection.getOutputStream(), defaultCharset)) {
                     writer.write(body);
                     writer.flush();
                 }
@@ -80,10 +92,10 @@ public class GenericHttpRequest implements HttpRequest {
         }
     }
 
-    private String getContent(HttpURLConnection connection) throws HttpException {
+    private String getContent(HttpURLConnection connection) {
         logger.debug("Retrieving content from http connection");
         try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(connection.getInputStream(), configuration.getDefaultCharset()))) {
+            new InputStreamReader(connection.getInputStream(), defaultCharset))) {
             String line;
             StringBuilder builder = new StringBuilder();
             while (null != (line = reader.readLine())) {

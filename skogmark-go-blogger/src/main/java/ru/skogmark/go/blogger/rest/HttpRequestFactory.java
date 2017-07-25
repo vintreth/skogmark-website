@@ -2,6 +2,8 @@ package ru.skogmark.go.blogger.rest;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.skogmark.common.http.GenericHttpRequest;
+import ru.skogmark.common.http.HttpRequest;
 import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 
 /**
@@ -15,6 +17,9 @@ public class HttpRequestFactory {
         if (configuration.isLocalMode()) {
             return new LocalStubHttpRequest();
         }
-        return new GenericHttpRequest(configuration);
+        GenericHttpRequest httpRequest = new GenericHttpRequest();
+        httpRequest.setDefaultCharset(configuration.getDefaultCharset());
+        httpRequest.setUserAgent(configuration.getUserAgent());
+        return httpRequest;
     }
 }

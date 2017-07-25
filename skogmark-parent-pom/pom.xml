@@ -3,15 +3,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <groupId>ru.skogmark</groupId>
   <artifactId>skogmark-parent-pom</artifactId>
   <version>1.3-SNAPSHOT</version>
   <name>Skogmark-Parent-Pom</name>
   <packaging>pom</packaging>
-  <parent>
-    <groupId>ru.skogmark</groupId>
-    <artifactId>skogmark-boot</artifactId>
-    <version>1.0</version>
-  </parent>
   <properties>
     <jdk.version>1.8</jdk.version>
     <spring.security.version>4.0.4.RELEASE</spring.security.version>
@@ -27,6 +23,7 @@
     <javaee-api.version>7.0</javaee-api.version>
     <jta.version>1.1</jta.version>
     <mockito.version>2.0.2-beta</mockito.version>
+    <skogmark.version>1.3-SNAPSHOT</skogmark.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -115,6 +112,12 @@
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>${mysql.connector.version}</version>
+      </dependency>
+      <!-- Skogmark -->
+      <dependency>
+        <groupId>ru.skogmark</groupId>
+        <artifactId>skogmark-common</artifactId>
+        <version>${skogmark.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

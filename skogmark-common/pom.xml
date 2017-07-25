@@ -3,19 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>skogmark-telegram-bot</artifactId>
+    <artifactId>skogmark-parent-pom</artifactId>
     <groupId>ru.skogmark</groupId>
     <version>1.3-SNAPSHOT</version>
-    <relativePath>../skogmark-telegram-bot/pom.xml</relativePath>
+    <relativePath>../skogmark-parent-pom/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>skogmark-telegram-votebot</artifactId>
-  <name>Skogmark-Telegram-Votebot</name>
+  <artifactId>skogmark-common</artifactId>
+  <name>Skogmark-Common</name>
   <dependencies>
     <dependency>
-      <groupId>ru.skogmark</groupId>
-      <artifactId>skogmark-telegram-bot</artifactId>
-      <version>1.3-SNAPSHOT</version>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
     </dependency>
   </dependencies>
 </project>

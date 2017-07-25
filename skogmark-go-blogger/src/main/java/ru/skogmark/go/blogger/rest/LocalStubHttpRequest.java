@@ -1,6 +1,8 @@
 package ru.skogmark.go.blogger.rest;
 
 import org.apache.log4j.Logger;
+import ru.skogmark.common.http.HttpException;
+import ru.skogmark.common.http.HttpRequest;
 
 /**
  * Local mode stub for http request
@@ -19,19 +21,19 @@ public class LocalStubHttpRequest implements HttpRequest {
     }
 
     @Override
-    public String doPost(String url, String body) throws HttpException {
+    public String doPost(String url, String body) {
         logger.info(String.format(LOGGER_MESSAGE, Method.POST, url));
         return null;
     }
 
     @Override
-    public String doPut(String url, String body) throws HttpException {
+    public String doPut(String url, String body) {
         logger.info(String.format(LOGGER_MESSAGE, Method.PUT, url));
         return null;
     }
 
     @Override
-    public String doDelete(String url, String body) throws HttpException {
+    public String doDelete(String url, String body) {
         logger.info(String.format(LOGGER_MESSAGE, Method.DELETE, url));
         return null;
     }

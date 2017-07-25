@@ -1,12 +1,10 @@
-package ru.skogmark.go.blogger.rest;
-
-import ru.skogmark.go.blogger.exception.ApplicationLevelException;
+package ru.skogmark.common.http;
 
 /**
  * @author svip
  *         2016-12-17
  */
-public class HttpException extends ApplicationLevelException {
+public class HttpException extends RuntimeException {
     private int responseCode;
     private String responseBody;
 
