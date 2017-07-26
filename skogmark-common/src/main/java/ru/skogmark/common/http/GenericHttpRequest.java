@@ -20,7 +20,7 @@ public class GenericHttpRequest implements HttpRequest {
     private static final Logger log = LoggerFactory.getLogger(GenericHttpRequest.class);
 
     private String userAgent;
-    private String defaultCharset;
+    private String defaultCharset = "utf-8";
 
     public String getUserAgent() {
         return userAgent;

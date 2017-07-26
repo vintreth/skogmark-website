@@ -11,10 +11,18 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>skogmark-telegram-bot</artifactId>
   <name>Skogmark-Telegram-Bot</name>
+  <properties>
+    <telegram-api.version>3.2.0</telegram-api.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>ru.skogmark</groupId>
       <artifactId>skogmark-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.github.pengrad</groupId>
+      <artifactId>java-telegram-bot-api</artifactId>
+      <version>${telegram-api.version}</version>
     </dependency>
   </dependencies>
 </project>

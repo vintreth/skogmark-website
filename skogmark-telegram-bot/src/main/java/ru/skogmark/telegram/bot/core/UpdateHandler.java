@@ -1,5 +1,8 @@
 package ru.skogmark.telegram.bot.core;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pengrad.telegrambot.request.GetUpdates;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +32,6 @@ public class UpdateHandler {
     private static final Logger log = LoggerFactory.getLogger(UpdateHandler.class);
 
     private final HttpRequest httpRequest;
-
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     private ScheduledFuture<?> updateFuture;
@@ -50,7 +52,20 @@ public class UpdateHandler {
     }
 
     private void callGetUpdates() {
-//        httpRequest.doGet();
+        String response = httpRequest.doPost(
+            "https://api.telegram.org/bot%s/getUpdates", createBody());
+    }
+
+    private String createBody() {
+        try {
+            GetUpdates request = new GetUpdates();
+            request.offset(0);
+            request.limit(100);
+            return new ObjectMapper().writeValueAsString(request);
+        } catch (JsonProcessingException e) {
+            //todo
+            return null;
+        }
     }
 
     /**
