@@ -1,15 +1,14 @@
 package ru.skogmark.telegram.bot.core;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pengrad.telegrambot.request.GetUpdates;
+import com.pengrad.telegrambot.model.Update;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import ru.skogmark.common.http.HttpRequest;
+import ru.skogmark.telegram.bot.core.client.UpdateClient;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -31,14 +30,14 @@ public class UpdateHandler {
 
     private static final Logger log = LoggerFactory.getLogger(UpdateHandler.class);
 
-    private final HttpRequest httpRequest;
+    private final UpdateClient updateClient;
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     private ScheduledFuture<?> updateFuture;
 
     @Autowired
-    public UpdateHandler(HttpRequest httpRequest) {
-        this.httpRequest = httpRequest;
+    public UpdateHandler(UpdateClient updateClient) {
+        this.updateClient = updateClient;
     }
 
     /**
@@ -52,20 +51,7 @@ public class UpdateHandler {
     }
 
     private void callGetUpdates() {
-        String response = httpRequest.doPost(
-            "https://api.telegram.org/bot%s/getUpdates", createBody());
-    }
-
-    private String createBody() {
-        try {
-            GetUpdates request = new GetUpdates();
-            request.offset(0);
-            request.limit(100);
-            return new ObjectMapper().writeValueAsString(request);
-        } catch (JsonProcessingException e) {
-            //todo
-            return null;
-        }
+        List<Update> updates = updateClient.getUpdates();
     }
 
     /**
