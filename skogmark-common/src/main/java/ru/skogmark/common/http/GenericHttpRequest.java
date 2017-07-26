@@ -1,6 +1,7 @@
 package ru.skogmark.common.http;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.net.URL;
  *         2016-12-24
  */
 public class GenericHttpRequest implements HttpRequest {
-    private static final Logger logger = Logger.getLogger(GenericHttpRequest.class);
+    private static final Logger log = LoggerFactory.getLogger(GenericHttpRequest.class);
 
     private String userAgent;
     private String defaultCharset;
@@ -63,7 +64,7 @@ public class GenericHttpRequest implements HttpRequest {
 
     private String makeRequest(Method method, String urlAddress, String body) {
         try {
-            logger.info("Sending request " + method + " " + urlAddress);
+            log.info("Sending request " + method + " " + urlAddress);
             URL url = new URL(urlAddress);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(method.name());
@@ -93,7 +94,7 @@ public class GenericHttpRequest implements HttpRequest {
     }
 
     private String getContent(HttpURLConnection connection) {
-        logger.debug("Retrieving content from http connection");
+        log.debug("Retrieving content from http connection");
         try (BufferedReader reader = new BufferedReader(
             new InputStreamReader(connection.getInputStream(), defaultCharset))) {
             String line;
@@ -101,7 +102,7 @@ public class GenericHttpRequest implements HttpRequest {
             while (null != (line = reader.readLine())) {
                 builder.append(line);
             }
-            logger.debug("Content has been retrieved: " + builder);
+            log.debug("Content has been retrieved: " + builder);
             return builder.toString();
         } catch (IOException e) {
             throw new HttpException("Exception caught while retrieving content from http connection", e);

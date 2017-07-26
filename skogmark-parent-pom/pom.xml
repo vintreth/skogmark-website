@@ -9,15 +9,18 @@
   <name>Skogmark-Parent-Pom</name>
   <packaging>pom</packaging>
   <properties>
+    <java.version>1.8</java.version>
     <jdk.version>1.8</jdk.version>
     <spring.security.version>4.0.4.RELEASE</spring.security.version>
     <junit.version>4.12</junit.version>
     <spring.orm.version>4.2.4.RELEASE</spring.orm.version>
+    <spring.version>4.3.10.RELEASE</spring.version>
     <cglib.version>3.2.0</cglib.version>
     <hibernate.version>5.0.6.Final</hibernate.version>
     <mysql.connector.version>5.1.38</mysql.connector.version>
     <jstl.version>1.2</jstl.version>
     <log4j.version>1.2.17</log4j.version>
+    <slf4j.version>1.7.5</slf4j.version>
     <jsp.api.version>2.0</jsp.api.version>
     <sqlite.version>3.19.3</sqlite.version>
     <javaee-api.version>7.0</javaee-api.version>
@@ -28,21 +31,9 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-test</artifactId>
         <version>${spring.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-all</artifactId>
-        <version>${mockito.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -121,4 +112,38 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <dependencies>
+    <!-- Tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>${jdk.version}</source>
+          <target>${jdk.version}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
