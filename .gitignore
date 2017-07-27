@@ -3,4 +3,4 @@ target
 *.iml
 log
 logs
-skogmark-go-blogger/src/main/resources/telegram-bot-token.xml
+telegram-bot-token.xml

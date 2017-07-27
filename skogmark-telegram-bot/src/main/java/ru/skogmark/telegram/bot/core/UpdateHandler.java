@@ -1,11 +1,11 @@
 package ru.skogmark.telegram.bot.core;
 
-import com.pengrad.telegrambot.model.Update;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import ru.skogmark.telegram.bot.api.dto.Update;
 import ru.skogmark.telegram.bot.core.client.UpdateClient;
 
 import java.util.List;
@@ -52,6 +52,7 @@ public class UpdateHandler {
 
     private void callGetUpdates() {
         List<Update> updates = updateClient.getUpdates();
+        log.debug("Got updates " + updates);
     }
 
     /**
