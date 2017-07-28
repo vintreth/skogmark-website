@@ -9,6 +9,7 @@ import ru.skogmark.telegram.bot.api.TelegramBotApiMethod;
 import ru.skogmark.telegram.bot.api.TelegramBotApiUrlProvider;
 import ru.skogmark.telegram.bot.api.request.UpdateRequest;
 import ru.skogmark.telegram.bot.api.dto.Update;
+import ru.skogmark.telegram.bot.api.response.UpdateResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,10 @@ public class UpdateClient {
         updateRequest.setOffset(0);
         updateRequest.setLimit(100);
 
-        httpRequest.makeRequest(header, updateRequest);
-        return new ArrayList<>();
+        UpdateResponse updateResponse = httpRequest.makeRequest(header, updateRequest, UpdateResponse.class);
+        if (!updateResponse.isOk()) {
+            throw new ApiResponseException("Response is not ok: " + updateResponse);
+        }
+        return updateResponse.getResult();
     }
 }

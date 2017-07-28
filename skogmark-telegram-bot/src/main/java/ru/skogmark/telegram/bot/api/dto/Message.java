@@ -5,4 +5,5 @@ package ru.skogmark.telegram.bot.api.dto;
  *         2017-07-28
  */
 public class Message {
+    //todo write code
 }
