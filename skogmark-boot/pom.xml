@@ -11,9 +11,6 @@
   <artifactId>skogmark-boot</artifactId>
   <name>Skogmark-Boot</name>
   <packaging>pom</packaging>
-  <properties>
-    <spring.boot.version>1.5.5.RELEASE</spring.boot.version>
-  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
