@@ -1,6 +1,7 @@
 package ru.skogmark.go.gen.core;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,7 @@ public class WisdomGenerator {
     private static final int ADDITIONAL_WORDS_RATIO = 3;
     private static final int RANDOM_PICKING_MAX_TRIES_COUNT = 1000;
 
-    private static final Logger logger = Logger.getLogger(WisdomGenerator.class);
+    private static final Logger logger = LoggerFactory.getLogger(WisdomGenerator.class);
 
     private List<String> localRepository;
 
@@ -107,12 +108,7 @@ public class WisdomGenerator {
 
     private void loadLocalRepository() {
         logger.debug("Loading local repository");
-        URL localRepositoryUrl = Thread.currentThread().getContextClassLoader().getResource(LOCAL_REPOSITORY);
-        if (null == localRepositoryUrl) {
-            throw new FailedGenerationException("Unable to find local repository file " + LOCAL_REPOSITORY);
-        }
-
-        try (InputStream inputStream = new FileInputStream(localRepositoryUrl.getFile())) {
+        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(LOCAL_REPOSITORY)) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, LOCAL_REPOSITORY_ENCODING));
             localRepository = new ArrayList<>();
             String line;

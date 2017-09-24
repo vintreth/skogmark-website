@@ -25,8 +25,10 @@ public class BeanConfiguration {
         sessionFactory.setPackagesToScan("ru.skogmark.go.gen.domain");
 
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLiteDialect");
+        properties.setProperty("hibernate.dialect", "com.enigmabridge.hibernate.dialect.SQLiteDialect");
         properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("hibernate.format_sql", "true");
+
         sessionFactory.setHibernateProperties(properties);
 
         return sessionFactory;

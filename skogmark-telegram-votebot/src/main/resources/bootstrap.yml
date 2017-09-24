@@ -1,0 +1,9 @@
+# Spring properties
+spring:
+  application:
+    name: skogmark-telegram-votebot
+
+# HTTP Server
+server:
+  # HTTP (Tomcat) port
+  port: 8082

@@ -1,0 +1,9 @@
+# Spring properties
+spring:
+  application:
+    name: skogmark-go-gen
+
+# HTTP Server
+server:
+  # HTTP (Tomcat) port
+  port: 8084

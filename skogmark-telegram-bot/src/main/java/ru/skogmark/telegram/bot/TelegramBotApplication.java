@@ -21,6 +21,9 @@ public class TelegramBotApplication {
 //            }
             applicationContext = SpringApplication.run(applicationClass, args);
             startUpdateHandler(applicationContext);
+        } catch (Exception e) {
+            log.error("Exception caught during application runtime", e);
+            throw e;
         } finally {
             if (null != applicationContext) {
                 applicationContext.close();
