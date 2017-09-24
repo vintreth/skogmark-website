@@ -4,10 +4,11 @@ import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.skogmark.go.api.Wisdom;
 import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 import ru.skogmark.go.blogger.rest.EntityRetrievingException;
-import ru.skogmark.go.blogger.rest.HttpException;
-import ru.skogmark.go.blogger.rest.HttpRequest;
+import ru.skogmark.common.http.HttpException;
+import ru.skogmark.common.http.HttpRequest;
 
 import java.io.IOException;
 
