@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import ru.skogmark.go.blogger.blog.Blog;
 import ru.skogmark.go.blogger.blog.Post;
 import ru.skogmark.go.blogger.rest.HttpException;
-import ru.skogmark.go.blogger.rest.HttpRequest;
+import ru.skogmark.common.http.HttpRequest;
 
 /**
  * Blog implementation for telegram channel

@@ -1,4 +1,4 @@
-package ru.skogmark.go.gen.core.domain;
+package ru.skogmark.go.api;
 
 /**
  * @author svip
@@ -6,7 +6,7 @@ package ru.skogmark.go.gen.core.domain;
  */
 public class Wisdom {
     private String content;
-    private String template;
+//    private String template;
 
     public String getContent() {
         return content;
@@ -16,11 +16,11 @@ public class Wisdom {
         this.content = content;
     }
 
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template;
-    }
+//    public String getTemplate() {
+//        return template;
+//    }
+//
+//    public void setTemplate(String template) {
+//        this.template = template;
+//    }
 }

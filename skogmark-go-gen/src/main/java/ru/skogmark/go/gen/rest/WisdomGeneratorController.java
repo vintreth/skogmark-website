@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skogmark.go.gen.core.WisdomGenerator;
-import ru.skogmark.go.gen.core.domain.Wisdom;
+import ru.skogmark.go.api.Wisdom;
 
 /**
  * @author svip

@@ -73,6 +73,10 @@
       <groupId>ru.skogmark</groupId>
       <artifactId>skogmark-common</artifactId>
     </dependency>
+    <dependency>
+      <groupId>ru.skogmark</groupId>
+      <artifactId>skogmark-go-api</artifactId>
+    </dependency>
     <!--Tests-->
     <dependency>
       <groupId>junit</groupId>

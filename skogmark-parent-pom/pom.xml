@@ -139,6 +139,11 @@
         <artifactId>skogmark-common</artifactId>
         <version>${skogmark.version}</version>
       </dependency>
+      <dependency>
+        <groupId>ru.skogmark</groupId>
+        <artifactId>skogmark-go-api</artifactId>
+        <version>${skogmark.version}</version>
+      </dependency>
       <!-- Jackson -->
       <dependency>
         <groupId>org.codehaus.jackson</groupId>

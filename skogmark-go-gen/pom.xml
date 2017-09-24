@@ -63,5 +63,9 @@
       <groupId>com.enigmabridge</groupId>
       <artifactId>hibernate4-sqlite-dialect</artifactId>
     </dependency>
+    <dependency>
+      <groupId>ru.skogmark</groupId>
+      <artifactId>skogmark-go-api</artifactId>
+    </dependency>
   </dependencies>
 </project>

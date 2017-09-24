@@ -11,16 +11,14 @@ import ru.skogmark.go.gen.core.domain.Conjunction;
 import ru.skogmark.go.gen.core.domain.RoleBased;
 import ru.skogmark.go.gen.core.domain.RoleId;
 import ru.skogmark.go.gen.core.domain.SentencePart;
-import ru.skogmark.go.gen.core.domain.Wisdom;
+import ru.skogmark.go.api.Wisdom;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -134,7 +132,7 @@ public class WisdomGenerator {
         String template = sentenceTemplates[random(sentenceTemplates.length)];
         String content = parseTemplate(template);
         Wisdom wisdom = new Wisdom();
-        wisdom.setTemplate(template);
+//        wisdom.setTemplate(template);
         wisdom.setContent(content);
 
         sayAdditionalWords(wisdom);

@@ -8,7 +8,6 @@ import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 import ru.skogmark.go.blogger.rest.EntityRetrievingException;
 import ru.skogmark.go.blogger.rest.HttpException;
 import ru.skogmark.go.blogger.rest.HttpRequest;
-import ru.skogmark.go.blogger.rest.entity.Wisdom;
 
 import java.io.IOException;
 
