@@ -24,7 +24,7 @@ public class TelegramBotBeanConfiguration {
      * Configuration factory bean
      */
     @Bean
-    public ConfigurationFactory getConfigurationFactory() {
+    public ConfigurationFactory configurationFactory() {
         return new ConfigurationFactory();
     }
 
@@ -32,7 +32,7 @@ public class TelegramBotBeanConfiguration {
      * Application {@link Serializer} interface implementation
      */
     @Bean
-    public Serializer getSerializer() {
+    public Serializer serializer() {
         return new JacksonObjectMapperSerializerAdapter();
     }
 
@@ -40,22 +40,22 @@ public class TelegramBotBeanConfiguration {
      * Object with bot token value
      */
     @Bean
-    public TelegramBotToken getTelegramBotToken(ConfigurationFactory configurationFactory) {
+    public TelegramBotToken telegramBotToken(ConfigurationFactory configurationFactory) {
         return configurationFactory.loadConfiguration(TelegramBotToken.class, TELEGRAM_BOT_TOKEN_CONFIG_FILE);
     }
 
     @Bean
-    public TelegramBotApiUrlProvider getTelegramBotApiUrlProvider(TelegramBotToken telegramBotToken) {
+    public TelegramBotApiUrlProvider telegramBotApiUrlProvider(TelegramBotToken telegramBotToken) {
         return new TelegramBotApiUrlProvider(telegramBotToken);
     }
 
     @Bean
-    public UpdateClient getUpdateClient(HttpRequest httpRequest, TelegramBotApiUrlProvider urlProvider) {
+    public UpdateClient updateClient(HttpRequest httpRequest, TelegramBotApiUrlProvider urlProvider) {
         return new UpdateClient(httpRequest, urlProvider);
     }
 
     @Bean
-    public UpdateHandler getUpdateHandler(UpdateClient updateClient) {
+    public UpdateHandler updateHandler(UpdateClient updateClient) {
         return new UpdateHandler(updateClient);
     }
 }
