@@ -16,12 +16,12 @@ import java.net.URL;
  * @author svip
  *         2016-12-24
  */
-class GenericHttpRequest implements HttpRequest {
-    private static final Logger log = LoggerFactory.getLogger(GenericHttpRequest.class);
+public class SerializerAwareHttpRequest implements HttpRequest {
+    private static final Logger log = LoggerFactory.getLogger(SerializerAwareHttpRequest.class);
 
     private final Serializer serializer;
 
-    public GenericHttpRequest(Serializer serializer) {
+    public SerializerAwareHttpRequest(Serializer serializer) {
         this.serializer = serializer;
     }
 

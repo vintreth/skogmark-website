@@ -11,10 +11,11 @@ import java.io.IOException;
  * @author svip
  *         2017-07-27
  */
-class JsonSerializerFacade implements Serializer {
+public class JacksonObjectMapperSerializerAdapter implements Serializer {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Override public String serialize(Object data) {
+    @Override
+    public String serialize(Object data) {
         try {
             return objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException e) {
@@ -22,7 +23,8 @@ class JsonSerializerFacade implements Serializer {
         }
     }
 
-    @Override public <T> T deserialize(String data, Class<T> resultType) {
+    @Override
+    public <T> T deserialize(String data, Class<T> resultType) {
         try {
             return objectMapper.readValue(data, resultType);
         } catch (IOException e) {

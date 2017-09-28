@@ -8,9 +8,12 @@ import javax.xml.bind.annotation.XmlValue;
 import java.util.NoSuchElementException;
 
 /**
+ * todo remove this class
+ *
  * @author ksbogdan
  *         20.12.2016 11:00
  */
+@Deprecated
 @XmlRootElement
 class TelegramConfiguration {
     private long chatId;

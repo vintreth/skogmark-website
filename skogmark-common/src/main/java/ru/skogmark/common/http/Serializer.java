@@ -6,7 +6,7 @@ package ru.skogmark.common.http;
  * @author svip
  *         2017-07-27
  */
-interface Serializer {
+public interface Serializer {
     /**
      * Serializes some data object to a string
      *

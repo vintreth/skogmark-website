@@ -1,42 +1,43 @@
 package ru.skogmark.go.blogger.blog;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skogmark.go.blogger.config.ApplicationConfiguration;
-import ru.skogmark.go.blogger.rest.EntityRetrievingException;
 import ru.skogmark.go.api.Wisdom;
-import ru.skogmark.go.blogger.rest.service.WisdomService;
+import ru.skogmark.go.blogger.client.GeneratorClient;
+import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 
 import java.util.Calendar;
 import java.util.Date;
 
 /**
  * @author svip
- *         2016-12-17
+ * 2016-12-17
  */
 @Component
 public class PostScheduler {
-    private static final Logger logger = Logger.getLogger(PostScheduler.class);
+    private static final Logger log = LoggerFactory.getLogger(PostScheduler.class);
 
-    private Blog blog;
-    private ApplicationConfiguration applicationConfiguration;
-    private WisdomService wisdomService;
+    private final Blog blog;
+    private final ApplicationConfiguration applicationConfiguration;
+    private final GeneratorClient generatorClient;
 
     private Date postedDate;
 
     @Autowired
-    public PostScheduler(Blog blog, ApplicationConfiguration applicationConfiguration, WisdomService wisdomService) {
+    public PostScheduler(Blog blog, ApplicationConfiguration applicationConfiguration,
+                         GeneratorClient generatorClient) {
         this.blog = blog;
         this.applicationConfiguration = applicationConfiguration;
-        this.wisdomService = wisdomService;
+        this.generatorClient = generatorClient;
     }
 
     /**
      * Checks if a message need to be posted to a blog while starting application
      */
     public void checkPostWhileStarting() {
-        logger.debug("Checking if a message need to be posted while starting application");
+        log.debug("Checking if a message need to be posted while starting application");
         if (!applicationConfiguration.isPostWhileStartingEnabled()) {
             postedDate = new Date();
         }
@@ -51,7 +52,7 @@ public class PostScheduler {
      * or the message hasn't been posted at necessary time.
      */
     public void beABlogger() {
-        logger.debug("Checking for time to post a message");
+        log.debug("Checking for time to post a message");
         Calendar todayCalendar = Calendar.getInstance();
         todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
         todayCalendar.set(Calendar.MINUTE, 0);
@@ -64,13 +65,13 @@ public class PostScheduler {
             todayCalendar.set(Calendar.HOUR_OF_DAY, hour);
             Date postDate = todayCalendar.getTime();
             if (!isPostedAlready(postDate) && isTimeSuitable(now, postDate)) {
-                logger.debug("It's about time");
+                log.debug("It's about time");
                 timeSuitable = true;
                 retrieveAndPost();
             }
         }
         if (!timeSuitable) {
-            logger.debug("It's not the time to post something");
+            log.debug("It's not the time to post something");
         }
     }
 
@@ -91,8 +92,8 @@ public class PostScheduler {
             Post post = retrieve();
             post(post);
             postedDate = new Date();
-        } catch (EntityRetrievingException | PostingException e) {
-            logger.error("Unable to post a message", e);
+        } catch (PostingException e) {
+            log.error("Unable to post a message", e);
         }
     }
 
@@ -100,14 +101,12 @@ public class PostScheduler {
      * Retrieves wisdom from service and creating a post
      *
      * @return new post
-     * @throws EntityRetrievingException if error occurred while getting wisdom
      */
-    private Post retrieve() throws EntityRetrievingException {
-        Wisdom wisdom = wisdomService.getWisdom();
-        logger.debug("Creating the post: " + wisdom.getContent());
+    private Post retrieve() {
+        Wisdom wisdom = generatorClient.getRandomWisdom();
+        log.debug("Creating the post: " + wisdom.getContent());
         Post post = new Post();
         post.setContent(wisdom.getContent());
-
         return post;
     }
 

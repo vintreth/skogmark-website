@@ -33,11 +33,6 @@ public abstract class AbstractBaseTelegramBotApplication implements TelegramBotA
         }
     }
 
-    @Override
-    public void onStartUp() {
-        // do nothing by default
-    }
-
     private void startUpdateHandler(ConfigurableApplicationContext applicationContext) {
         log.debug("Getting UpdateHandler bean from ApplicationContext");
         UpdateHandler updateHandler = applicationContext.getBeanFactory().getBean(UpdateHandler.class);
@@ -45,7 +40,12 @@ public abstract class AbstractBaseTelegramBotApplication implements TelegramBotA
     }
 
     @Override
-    public void stop() {
+    public void onStartUp() {
+        // do nothing by default
+    }
+
+    @Override
+    public void beforeStop() {
         // todo write code
     }
 }

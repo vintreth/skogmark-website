@@ -5,7 +5,8 @@ package ru.skogmark.telegram.bot.api;
  *         2017-07-28
  */
 public enum TelegramBotApiMethod {
-    GET_UPDATES("getUpdates");
+    GET_UPDATES("getUpdates"),
+    SEND_MESSAGE("sendMessage");
 
     /**
      * Name of the method in API as string

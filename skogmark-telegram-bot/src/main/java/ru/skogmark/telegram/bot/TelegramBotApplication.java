@@ -19,7 +19,7 @@ public interface TelegramBotApplication {
     void onStartUp();
 
     /**
-     * Stops the application
+     * Custom actions for current application implementations
      */
-    void stop();
+    void beforeStop();
 }

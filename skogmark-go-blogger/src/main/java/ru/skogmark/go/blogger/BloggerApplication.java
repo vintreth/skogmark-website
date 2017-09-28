@@ -4,10 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.skogmark.common.http.HttpRequest;
+import ru.skogmark.common.http.LocalStubHttpRequest;
+import ru.skogmark.common.http.Serializer;
+import ru.skogmark.common.http.SerializerAwareHttpRequest;
 import ru.skogmark.go.blogger.blog.PostScheduler;
 import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 import ru.skogmark.telegram.bot.AbstractBaseTelegramBotApplication;
@@ -24,12 +27,13 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackages = {"ru.skogmark.telegram.bot"})
-public class GoBloggerApplication extends AbstractBaseTelegramBotApplication {
-    private static final Logger log = LoggerFactory.getLogger(GoBloggerApplication.class);
+public class BloggerApplication extends AbstractBaseTelegramBotApplication {
+    private static final String TELEGRAM_CONFIG = "telegram-config.xml";
+
+    private static final Logger log = LoggerFactory.getLogger(BloggerApplication.class);
 
     //todo move executor to application context
-    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    private ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beans.xml");
+    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     @Autowired
     private PostScheduler postScheduler;
@@ -38,13 +42,13 @@ public class GoBloggerApplication extends AbstractBaseTelegramBotApplication {
     private ApplicationConfiguration applicationConfiguration;
 
     public static void main(String[] args) {
-        TelegramBotApplication application = new GoBloggerApplication();
-        application.start(GoBloggerApplication.class, args);
+        TelegramBotApplication application = new BloggerApplication();
+        application.start(BloggerApplication.class, args);
     }
 
     @Override
     public void onStartUp() {
-        log.debug("{} onStartUp handler", GoBloggerApplication.class);
+        log.debug("{} onStartUp handler", BloggerApplication.class);
 
         log.info(String.format("Local mode is %s", applicationConfiguration.isLocalMode() ? "enabled" : "disabled"));
         postScheduler.checkPostWhileStarting();
@@ -60,7 +64,8 @@ public class GoBloggerApplication extends AbstractBaseTelegramBotApplication {
     /**
      * Stops the application
      */
-    public void stop() {
+    @Override
+    public void beforeStop() {
         try {
             log.info("Stopping the application. Awaiting termination.");
             executor.awaitTermination(applicationConfiguration.getAwaitTerminationTimeoutSec(), TimeUnit.SECONDS);
@@ -73,5 +78,16 @@ public class GoBloggerApplication extends AbstractBaseTelegramBotApplication {
                 executor.shutdownNow();
             }
         }
+    }
+
+    /**
+     * Factory method to instantiate {@link HttpRequest} object
+     */
+    @Bean
+    public HttpRequest getHttpRequest(Serializer serializer) {
+        if (applicationConfiguration.isLocalMode()) {
+            return new LocalStubHttpRequest();
+        }
+        return new SerializerAwareHttpRequest(serializer);
     }
 }
