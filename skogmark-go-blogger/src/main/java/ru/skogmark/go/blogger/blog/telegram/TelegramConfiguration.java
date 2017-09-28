@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
  */
 @Deprecated
 @XmlRootElement
-class TelegramConfiguration {
+public class TelegramConfiguration {
     private long chatId;
     private Api api;
     private String messageFormat;

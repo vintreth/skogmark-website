@@ -21,8 +21,6 @@ import java.util.concurrent.TimeUnit;
  * @author svip
  *         2017-07-25
  */
-@Component
-@Scope("singleton")
 public class UpdateHandler {
     private static final long SCHEDULER_INITIAL_DELAY = 0L;
     private static final long SCHEDULER_DELAY = 5L;

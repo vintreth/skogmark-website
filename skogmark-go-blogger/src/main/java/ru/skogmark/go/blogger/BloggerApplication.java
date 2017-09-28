@@ -3,18 +3,20 @@ package ru.skogmark.go.blogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import ru.skogmark.common.config.ConfigurationFactory;
 import ru.skogmark.common.http.HttpRequest;
 import ru.skogmark.common.http.LocalStubHttpRequest;
 import ru.skogmark.common.http.Serializer;
 import ru.skogmark.common.http.SerializerAwareHttpRequest;
 import ru.skogmark.go.blogger.blog.PostScheduler;
+import ru.skogmark.go.blogger.blog.telegram.TelegramConfiguration;
 import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 import ru.skogmark.telegram.bot.AbstractBaseTelegramBotApplication;
 import ru.skogmark.telegram.bot.TelegramBotApplication;
+import ru.skogmark.telegram.bot.core.config.TelegramBotBeanConfiguration;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -24,9 +26,8 @@ import java.util.concurrent.TimeUnit;
  * Central class of the blogger application
  */
 // todo remove componentScan and replace it with explicit bean definitions
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan(basePackages = {"ru.skogmark.telegram.bot"})
+@SpringBootApplication
+@Import({TelegramBotBeanConfiguration.class})
 public class BloggerApplication extends AbstractBaseTelegramBotApplication {
     private static final String TELEGRAM_CONFIG = "telegram-config.xml";
 
@@ -89,5 +90,10 @@ public class BloggerApplication extends AbstractBaseTelegramBotApplication {
             return new LocalStubHttpRequest();
         }
         return new SerializerAwareHttpRequest(serializer);
+    }
+
+    @Bean(name = "telegramConfiguration")
+    public TelegramConfiguration getTelegramConfiguration(ConfigurationFactory configurationFactory) {
+        return configurationFactory.loadConfiguration(TelegramConfiguration.class, TELEGRAM_CONFIG);
     }
 }

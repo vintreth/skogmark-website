@@ -10,7 +10,6 @@ import ru.skogmark.telegram.bot.core.config.TelegramBotToken;
  * @author svip
  *         2017-07-28
  */
-@Component
 public class TelegramBotApiUrlProvider {
     private static final String API_URL_PATTERN = "https://api.telegram.org/bot%s/%s";
 

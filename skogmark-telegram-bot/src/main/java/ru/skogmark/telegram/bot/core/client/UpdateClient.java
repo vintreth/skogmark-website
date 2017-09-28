@@ -20,7 +20,6 @@ import java.util.List;
  * @author svip
  *         2017-07-27
  */
-@Component
 public class UpdateClient {
     private static final String DEFAULT_CHARSET = "utf-8";
     private static final String USER_AGENT = "Mozilla/5.0";
