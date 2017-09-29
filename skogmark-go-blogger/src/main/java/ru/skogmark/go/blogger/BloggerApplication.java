@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import ru.skogmark.common.config.ConfigurationFactory;
@@ -16,7 +17,7 @@ import ru.skogmark.go.blogger.blog.telegram.TelegramConfiguration;
 import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 import ru.skogmark.telegram.bot.AbstractBaseTelegramBotApplication;
 import ru.skogmark.telegram.bot.TelegramBotApplication;
-import ru.skogmark.telegram.bot.core.config.TelegramBotBeanConfiguration;
+import ru.skogmark.telegram.bot.core.config.TelegramBotConfiguration;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,20 +28,11 @@ import java.util.concurrent.TimeUnit;
  */
 // todo remove componentScan and replace it with explicit bean definitions
 @SpringBootApplication
-@Import({TelegramBotBeanConfiguration.class})
 public class BloggerApplication extends AbstractBaseTelegramBotApplication {
-    private static final String TELEGRAM_CONFIG = "telegram-config.xml";
-
     private static final Logger log = LoggerFactory.getLogger(BloggerApplication.class);
 
     //todo move executor to application context
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-
-    @Autowired
-    private PostScheduler postScheduler;
-
-    @Autowired
-    private ApplicationConfiguration applicationConfiguration;
 
     public static void main(String[] args) {
         TelegramBotApplication application = new BloggerApplication();
@@ -48,10 +40,12 @@ public class BloggerApplication extends AbstractBaseTelegramBotApplication {
     }
 
     @Override
-    public void onStartUp() {
-        log.debug("{} onStartUp handler", BloggerApplication.class);
-
+    public void onStartUp(ApplicationContext applicationContext) {
+        log.debug("OnStartUp handler", BloggerApplication.class);
+        ApplicationConfiguration applicationConfiguration = applicationContext.getBean(ApplicationConfiguration.class);
         log.info(String.format("Local mode is %s", applicationConfiguration.isLocalMode() ? "enabled" : "disabled"));
+
+        PostScheduler postScheduler = applicationContext.getBean(PostScheduler.class);
         postScheduler.checkPostWhileStarting();
 
         log.debug("Starting scheduled executor");
@@ -66,9 +60,11 @@ public class BloggerApplication extends AbstractBaseTelegramBotApplication {
      * Stops the application
      */
     @Override
-    public void beforeStop() {
+    public void beforeStop(ApplicationContext applicationContext) {
         try {
             log.info("Stopping the application. Awaiting termination.");
+            ApplicationConfiguration applicationConfiguration = applicationContext.getBean(
+                    ApplicationConfiguration.class);
             executor.awaitTermination(applicationConfiguration.getAwaitTerminationTimeoutSec(), TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             log.warn("InterruptedException occurred while awaiting scheduler termination", e);
@@ -79,21 +75,5 @@ public class BloggerApplication extends AbstractBaseTelegramBotApplication {
                 executor.shutdownNow();
             }
         }
-    }
-
-    /**
-     * Factory method to instantiate {@link HttpRequest} object
-     */
-    @Bean
-    public HttpRequest getHttpRequest(Serializer serializer) {
-        if (applicationConfiguration.isLocalMode()) {
-            return new LocalStubHttpRequest();
-        }
-        return new SerializerAwareHttpRequest(serializer);
-    }
-
-    @Bean(name = "telegramConfiguration")
-    public TelegramConfiguration getTelegramConfiguration(ConfigurationFactory configurationFactory) {
-        return configurationFactory.loadConfiguration(TelegramConfiguration.class, TELEGRAM_CONFIG);
     }
 }

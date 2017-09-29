@@ -1,6 +1,7 @@
 package ru.skogmark.go.blogger.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.skogmark.common.http.HttpMethod;
 import ru.skogmark.common.http.HttpRequest;
 import ru.skogmark.common.http.HttpRequestHeader;
@@ -10,6 +11,7 @@ import ru.skogmark.go.blogger.config.ApplicationConfiguration;
 /**
  * Http client for making requests to go-generator service
  */
+@Service
 public class GeneratorClient {
     private final ApplicationConfiguration applicationConfiguration;
     private final HttpRequest httpRequest;

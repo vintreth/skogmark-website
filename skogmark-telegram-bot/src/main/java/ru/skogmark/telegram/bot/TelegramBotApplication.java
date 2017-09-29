@@ -1,5 +1,7 @@
 package ru.skogmark.telegram.bot;
 
+import org.springframework.context.ApplicationContext;
+
 /**
  * Base interface of a telegram bot application
  */
@@ -15,11 +17,15 @@ public interface TelegramBotApplication {
     /**
      * Custom actions for current application implementations
      * By default this method will be call after application context created
+     *
+     * @param applicationContext created ApplicationContext
      */
-    void onStartUp();
+    void onStartUp(ApplicationContext applicationContext);
 
     /**
      * Custom actions for current application implementations
+     *
+     * @param applicationContext created ApplicationContext
      */
-    void beforeStop();
+    void beforeStop(ApplicationContext applicationContext);
 }

@@ -8,6 +8,9 @@ import ru.skogmark.common.http.HttpRequestHeader;
 import ru.skogmark.telegram.bot.api.TelegramBotApiMethod;
 import ru.skogmark.telegram.bot.api.TelegramBotApiUrlProvider;
 
+/**
+ * Http client to make requests to Telegram API
+ */
 @Service
 public class TelegramClient {
     private static final String DEFAULT_CHARSET = "utf-8";

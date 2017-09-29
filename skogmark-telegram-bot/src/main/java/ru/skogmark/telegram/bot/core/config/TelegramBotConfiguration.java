@@ -17,7 +17,7 @@ import ru.skogmark.telegram.bot.core.client.UpdateClient;
  * 2017-07-26
  */
 @Configuration
-public class TelegramBotBeanConfiguration {
+public class TelegramBotConfiguration {
     private static final String TELEGRAM_BOT_TOKEN_CONFIG_FILE = "telegram-bot-token.xml";
 
     /**
