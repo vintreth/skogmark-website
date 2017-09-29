@@ -7,10 +7,10 @@
     </encoder>
   </appender>
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>/opt/skogmark-go-gen/logs/generator.log</file>
+    <file>/opt/skogmark-go-blogger/logs/blogger.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- daily rollover -->
-      <fileNamePattern>/opt/skogmark-go-gen/logs/generator.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>/opt/skogmark-go-blogger/logs/blogger.%d{yyyy-MM-dd}.log</fileNamePattern>
       <maxHistory>30</maxHistory>
     </rollingPolicy>
     <encoder>
@@ -20,7 +20,7 @@
 
   <logger name="ru.skogmark" level="debug">
     <appender-ref ref="STDOUT"/>
-    <!--<appender-ref ref="FILE"/>-->
+    <appender-ref ref="FILE"/>
   </logger>
 
   <logger name="org.springframework" level="debug">
