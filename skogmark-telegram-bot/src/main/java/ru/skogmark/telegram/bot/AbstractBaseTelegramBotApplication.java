@@ -22,7 +22,6 @@ public abstract class AbstractBaseTelegramBotApplication implements TelegramBotA
 //                AuthConfigFactory.setFactory(new AuthConfigFactoryImpl());
 //            }
             applicationContext = SpringApplication.run(applicationClass, args);
-            startUpdateHandler(applicationContext);
             onStartUp(applicationContext);
         } catch (Exception e) {
             log.error("Exception caught during application runtime", e);
@@ -32,6 +31,12 @@ public abstract class AbstractBaseTelegramBotApplication implements TelegramBotA
         }
     }
 
+    @Override
+    public void onStartUp(ApplicationContext applicationContext) {
+        log.debug("OnStartUp handler");
+        startUpdateHandler(applicationContext);
+    }
+
     private void startUpdateHandler(ApplicationContext applicationContext) {
         log.debug("Getting UpdateHandler bean from ApplicationContext");
         UpdateHandler updateHandler = applicationContext.getBean(UpdateHandler.class);
@@ -39,12 +44,8 @@ public abstract class AbstractBaseTelegramBotApplication implements TelegramBotA
     }
 
     @Override
-    public void onStartUp(ApplicationContext applicationContext) {
-        // do nothing by default
-    }
-
-    @Override
     public void beforeStop(ApplicationContext applicationContext) {
-        // todo write code
+        UpdateHandler updateHandler = applicationContext.getBean(UpdateHandler.class);
+        updateHandler.stop();
     }
 }

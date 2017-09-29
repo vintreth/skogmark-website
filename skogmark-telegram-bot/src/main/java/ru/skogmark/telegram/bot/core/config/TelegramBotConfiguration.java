@@ -8,7 +8,10 @@ import ru.skogmark.common.http.JacksonObjectMapperSerializerAdapter;
 import ru.skogmark.common.http.Serializer;
 import ru.skogmark.telegram.bot.api.TelegramBotApiUrlProvider;
 import ru.skogmark.telegram.bot.core.UpdateHandler;
+import ru.skogmark.telegram.bot.core.UpdateHandlerExecutorHolder;
 import ru.skogmark.telegram.bot.core.client.UpdateClient;
+
+import java.util.concurrent.Executors;
 
 /**
  * Class for configuring beans
@@ -54,8 +57,21 @@ public class TelegramBotConfiguration {
         return new UpdateClient(httpRequest, urlProvider);
     }
 
+    /**
+     * Executor holder for update handler
+     */
     @Bean
-    public UpdateHandler updateHandler(UpdateClient updateClient) {
-        return new UpdateHandler(updateClient);
+    public UpdateHandlerExecutorHolder updateHandlerExecutorHolder() {
+        return new UpdateHandlerExecutorHolder(
+                Executors.newSingleThreadScheduledExecutor(
+                        runnable -> new Thread(runnable, "updateHandler-thread")));
+    }
+
+    /**
+     * Update handler
+     */
+    @Bean
+    public UpdateHandler updateHandler(UpdateClient updateClient, UpdateHandlerExecutorHolder executorHolder) {
+        return new UpdateHandler(updateClient, executorHolder);
     }
 }

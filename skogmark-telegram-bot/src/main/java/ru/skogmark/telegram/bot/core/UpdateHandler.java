@@ -2,15 +2,10 @@ package ru.skogmark.telegram.bot.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import ru.skogmark.telegram.bot.api.dto.Update;
 import ru.skogmark.telegram.bot.core.client.UpdateClient;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * and handles it in some way
  *
  * @author svip
- *         2017-07-25
+ * 2017-07-25
  */
 public class UpdateHandler {
     private static final long SCHEDULER_INITIAL_DELAY = 0L;
@@ -29,13 +24,13 @@ public class UpdateHandler {
     private static final Logger log = LoggerFactory.getLogger(UpdateHandler.class);
 
     private final UpdateClient updateClient;
-    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private final UpdateHandlerExecutorHolder executorHolder;
 
     private ScheduledFuture<?> updateFuture;
 
-    @Autowired
-    public UpdateHandler(UpdateClient updateClient) {
+    public UpdateHandler(UpdateClient updateClient, UpdateHandlerExecutorHolder executorHolder) {
         this.updateClient = updateClient;
+        this.executorHolder = executorHolder;
     }
 
     /**
@@ -44,8 +39,8 @@ public class UpdateHandler {
     public void start() {
         log.debug("Starting UpdateHandler");
         //todo: move delays to config
-        scheduledExecutorService.scheduleWithFixedDelay(
-            this::callGetUpdates, SCHEDULER_INITIAL_DELAY, SCHEDULER_DELAY, SCHEDULER_TIME_UNIT);
+        executorHolder.getExecutor().scheduleWithFixedDelay(
+                this::callGetUpdates, SCHEDULER_INITIAL_DELAY, SCHEDULER_DELAY, SCHEDULER_TIME_UNIT);
     }
 
     private void callGetUpdates() {

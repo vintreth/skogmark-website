@@ -41,7 +41,7 @@ public class BloggerApplication extends AbstractBaseTelegramBotApplication {
 
     @Override
     public void onStartUp(ApplicationContext applicationContext) {
-        log.debug("OnStartUp handler", BloggerApplication.class);
+        super.onStartUp(applicationContext);
         ApplicationConfiguration applicationConfiguration = applicationContext.getBean(ApplicationConfiguration.class);
         log.info(String.format("Local mode is %s", applicationConfiguration.isLocalMode() ? "enabled" : "disabled"));
 
@@ -61,6 +61,7 @@ public class BloggerApplication extends AbstractBaseTelegramBotApplication {
      */
     @Override
     public void beforeStop(ApplicationContext applicationContext) {
+        super.beforeStop(applicationContext);
         try {
             log.info("Stopping the application. Awaiting termination.");
             ApplicationConfiguration applicationConfiguration = applicationContext.getBean(
