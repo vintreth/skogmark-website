@@ -11,6 +11,9 @@ import ru.skogmark.common.http.SerializerAwareHttpRequest;
 import ru.skogmark.go.blogger.blog.telegram.TelegramConfiguration;
 import ru.skogmark.telegram.bot.core.config.TelegramBotConfiguration;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 /**
  * Blogger application beans configuration
  */
@@ -45,5 +48,13 @@ public class BloggerConfiguration {
     @Bean
     public TelegramConfiguration telegramConfiguration(ConfigurationFactory configurationFactory) {
         return configurationFactory.loadConfiguration(TelegramConfiguration.class, TELEGRAM_CONFIG_PATH);
+    }
+
+    /**
+     * Executor for {@link ru.skogmark.go.blogger.blog.PostScheduler}
+     */
+    @Bean
+    public ScheduledExecutorService postSchedulerExecutor() {
+        return Executors.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, "postScheduler"));
     }
 }

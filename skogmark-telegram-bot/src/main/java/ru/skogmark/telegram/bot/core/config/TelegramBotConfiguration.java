@@ -1,5 +1,6 @@
 package ru.skogmark.telegram.bot.core.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.skogmark.common.config.ConfigurationFactory;
@@ -8,10 +9,10 @@ import ru.skogmark.common.http.JacksonObjectMapperSerializerAdapter;
 import ru.skogmark.common.http.Serializer;
 import ru.skogmark.telegram.bot.api.TelegramBotApiUrlProvider;
 import ru.skogmark.telegram.bot.core.UpdateHandler;
-import ru.skogmark.telegram.bot.core.UpdateHandlerExecutorHolder;
 import ru.skogmark.telegram.bot.core.client.UpdateClient;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Class for configuring beans
@@ -61,17 +62,16 @@ public class TelegramBotConfiguration {
      * Executor holder for update handler
      */
     @Bean
-    public UpdateHandlerExecutorHolder updateHandlerExecutorHolder() {
-        return new UpdateHandlerExecutorHolder(
-                Executors.newSingleThreadScheduledExecutor(
-                        runnable -> new Thread(runnable, "updateHandler-thread")));
+    public ScheduledExecutorService updateHandlerScheduledExecutor() {
+        return Executors.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, "updateHandler"));
     }
 
     /**
      * Update handler
      */
     @Bean
-    public UpdateHandler updateHandler(UpdateClient updateClient, UpdateHandlerExecutorHolder executorHolder) {
-        return new UpdateHandler(updateClient, executorHolder);
+    public UpdateHandler updateHandler(UpdateClient updateClient,
+                                       @Qualifier("updateHandlerScheduledExecutor") ScheduledExecutorService executor) {
+        return new UpdateHandler(updateClient, executor);
     }
 }
