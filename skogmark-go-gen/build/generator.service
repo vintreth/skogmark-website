@@ -1,0 +1,13 @@
+[Unit]
+Description=generator
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/skogmark-go-gen/lib
+ExecStart=/usr/bin/java -jar /opt/skogmark-go-gen/lib/skogmark-go-gen-1.3-SNAPSHOT.jar
+
+User=svip
+
+[Install]
+WantedBy=multi-user.target
