@@ -10,25 +10,34 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 public class LocalRepositoryConverter {
     private static final String LOCAL_WISDOM_FILE = "local-wisdom.txt";
     private static final String SENTENCE_DATE_SQL_FILE = "ru/skogmark/go/gen/sentence.data.sql";
 
-    private static final String INSERT_QUERY = "INSERT INTO sentence (date_created, content, role) VALUES ";
+    private static final String INSERT_QUERY = "INSERT INTO sentence (date_created, content, role) VALUES \r\n ";
     private static final String QUERY_VALUE_TEMPLATE = "('%s', '%s', %d)";
     private static final String CURRENT_DATETIME = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+
+    private List<QueryValue> queryValues;
 
     /**
      * Script for converting old local-wisdom.txt file to sql
      */
     @Test
     public void convertTxtToSql() throws Exception {
-        List<String> values = readContent(LOCAL_WISDOM_FILE).stream()
-                .map(line -> createQueryValue(line, getRoleBySentence(line)))
-                .collect(Collectors.toList());
-//        System.out.println(values);
+        String values = readContent(LOCAL_WISDOM_FILE).stream()
+                .map(line -> createQueryValue(line).asString())
+                .collect(Collectors.joining("\r\n,"));
+        String query = INSERT_QUERY + values + "\r\n;";
+        System.out.println(query);
+        // todo write file
     }
 
     private static List<String> readContent(String filePath) {
@@ -45,22 +54,64 @@ public class LocalRepositoryConverter {
         return sentences;
     }
 
-    private static String createQueryValue(String line, int role) {
-        return String.format(QUERY_VALUE_TEMPLATE, CURRENT_DATETIME, line, role);
+    private QueryValue createQueryValue(String line) {
+        return new QueryValue(null, CURRENT_DATETIME, line, getRoleBySentence(line));
     }
 
-    private static int getRoleBySentence(String sentence) {
-        return readContent(SENTENCE_DATE_SQL_FILE).stream()
-                // todo
-                // нужно полное соответствие,
-                // надо распарсить строку, извлечь content и сравнивать на equals
-                // заодно нужен последний параметр - role, поэтому удобнее всего будет парсить и создавать объект
-                .filter(queryValue -> queryValue.contains(sentence))
-                .map(queryValue -> {
-                    System.out.println(queryValue);
-                    return 1;
-                })
+    private int getRoleBySentence(String sentence) {
+        return getQueryValuesFromSentenceData().stream()
+                .filter(queryValue -> queryValue.content.equals(sentence))
+                .map(queryValue -> queryValue.role)
                 .findFirst()
                 .orElse(0);
+    }
+
+    private List<QueryValue> getQueryValuesFromSentenceData() {
+        if (isNull(queryValues)) {
+            queryValues = readContent(SENTENCE_DATE_SQL_FILE).stream()
+                    .map(LocalRepositoryConverter::parseQueryValue)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
+        }
+        return queryValues;
+    }
+
+    private static Optional<QueryValue> parseQueryValue(String queryValueString) {
+        Matcher matcher = Pattern.compile("\\((\\d+)[,\\s]*([A-Z()]+)[,\\s]*'(.*)'[,\\s]*(\\d+)\\)").matcher(queryValueString);
+        if (!matcher.find()) {
+            return Optional.empty();
+        }
+        // todo тут надо перемапить айдишники
+        return Optional.of(new QueryValue(null, matcher.group(2), matcher.group(3),
+                Integer.parseInt(matcher.group(4))));
+    }
+
+    private static class QueryValue {
+        final Integer creatorId;
+        final String dateCreated;
+        final String content;
+        final int role;
+
+        QueryValue(Integer creatorId, String dateCreated, String content, int role) {
+            this.creatorId = creatorId;
+            this.dateCreated = dateCreated;
+            this.content = content;
+            this.role = role;
+        }
+
+        String asString() {
+            return String.format(QUERY_VALUE_TEMPLATE, dateCreated, content, role);
+        }
+
+        @Override
+        public String toString() {
+            return "QueryValue{" +
+                    "creatorId=" + creatorId +
+                    ", dateCreated='" + dateCreated + '\'' +
+                    ", content='" + content + '\'' +
+                    ", role=" + role +
+                    '}';
+        }
     }
 }
