@@ -2,10 +2,7 @@ package ru.skogmark.go.gen;
 
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,9 +14,14 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
+/**
+ * Script for converting old local-wisdom.txt file to sql
+ */
 public class LocalRepositoryConverter {
     private static final String LOCAL_WISDOM_FILE = "local-wisdom.txt";
-    private static final String SENTENCE_DATE_SQL_FILE = "ru/skogmark/go/gen/sentence.data.sql";
+    private static final String SENTENCE_DATA_SQL_FILE = "ru/skogmark/go/gen/sentence.data.sql";
+    private static final String TEMPLATE_FILE = "ru/skogmark/go/gen/sentence.template.sql";
+    private static final String OUTPUT_FILE = "sentence.table.sql";
 
     private static final String INSERT_QUERY = "INSERT INTO sentence (date_created, content, role) VALUES \r\n ";
     private static final String QUERY_VALUE_TEMPLATE = "('%s', '%s', %d)";
@@ -27,17 +29,13 @@ public class LocalRepositoryConverter {
 
     private List<QueryValue> queryValues;
 
-    /**
-     * Script for converting old local-wisdom.txt file to sql
-     */
     @Test
     public void convertTxtToSql() throws Exception {
         String values = readContent(LOCAL_WISDOM_FILE).stream()
                 .map(line -> createQueryValue(line).asString())
                 .collect(Collectors.joining("\r\n,"));
-        String query = INSERT_QUERY + values + "\r\n;";
-        System.out.println(query);
-        // todo write file
+        String content = processTemplate(values);
+        writeContent(content);
     }
 
     private static List<String> readContent(String filePath) {
@@ -54,6 +52,19 @@ public class LocalRepositoryConverter {
         return sentences;
     }
 
+    private String processTemplate(String dynamicContent) {
+        String template = String.join("\r\n", readContent(TEMPLATE_FILE));
+        return template + "\r\n" + INSERT_QUERY + dynamicContent + "\r\n;";
+    }
+
+    private static void writeContent(String content) throws IOException {
+        System.out.println(content);
+        File file = new File(System.getProperty("user.dir") + "/target/" + OUTPUT_FILE);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(content);
+        }
+    }
+
     private QueryValue createQueryValue(String line) {
         return new QueryValue(null, CURRENT_DATETIME, line, getRoleBySentence(line));
     }
@@ -68,7 +79,7 @@ public class LocalRepositoryConverter {
 
     private List<QueryValue> getQueryValuesFromSentenceData() {
         if (isNull(queryValues)) {
-            queryValues = readContent(SENTENCE_DATE_SQL_FILE).stream()
+            queryValues = readContent(SENTENCE_DATA_SQL_FILE).stream()
                     .map(LocalRepositoryConverter::parseQueryValue)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
