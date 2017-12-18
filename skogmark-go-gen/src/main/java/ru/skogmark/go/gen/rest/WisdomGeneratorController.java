@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skogmark.go.gen.core.WisdomGenerator;
+import ru.skogmark.go.gen.core.OldDumbWisdomGenerator;
 import ru.skogmark.go.api.Wisdom;
 
 /**
@@ -22,10 +22,10 @@ public class WisdomGeneratorController {
 
     private static final Logger logger = Logger.getLogger(WisdomGeneratorController.class);
 
-    private WisdomGenerator wisdomGenerator;
+    private OldDumbWisdomGenerator wisdomGenerator;
 
     @Autowired
-    public WisdomGeneratorController(WisdomGenerator wisdomGenerator) {
+    public WisdomGeneratorController(OldDumbWisdomGenerator wisdomGenerator) {
         this.wisdomGenerator = wisdomGenerator;
     }
 
