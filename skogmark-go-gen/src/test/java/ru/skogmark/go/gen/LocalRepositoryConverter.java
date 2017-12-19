@@ -1,11 +1,14 @@
 package ru.skogmark.go.gen;
 
 import org.junit.Test;
+import ru.skogmark.go.gen.core.domain.RoleId;
+import ru.skogmark.go.gen.core.domain.SentenceRole;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -93,9 +96,8 @@ public class LocalRepositoryConverter {
         if (!matcher.find()) {
             return Optional.empty();
         }
-        // todo тут надо перемапить айдишники
         return Optional.of(new QueryValue(null, matcher.group(2), matcher.group(3),
-                Integer.parseInt(matcher.group(4))));
+                getSentenceRoleByOldId(matcher.group(4)).code));
     }
 
     private static class QueryValue {
@@ -124,5 +126,26 @@ public class LocalRepositoryConverter {
                     ", role=" + role +
                     '}';
         }
+    }
+
+    private static SentenceRole getSentenceRoleByOldId(String oldId) {
+        return getRoleIdByCode(Integer.parseInt(oldId))
+                .map(roleId -> {
+                    if (RoleId.COMPLEX.equals(roleId)) {
+                        return SentenceRole.MAIN;
+                    } else if (RoleId.COMPOUND.equals(roleId)) {
+                        return SentenceRole.SECONDARY;
+                    } else if (RoleId.ADVERBIAL.equals(roleId)) {
+                        return SentenceRole.ADVERBIAL;
+                    } else {
+                        return null;
+                    }
+                }).orElse(SentenceRole.NONE);
+    }
+
+    private static Optional<RoleId> getRoleIdByCode(int code) {
+        return Arrays.stream(RoleId.values())
+                .filter(roleId -> roleId.value == code)
+                .findFirst();
     }
 }
