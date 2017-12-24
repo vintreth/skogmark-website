@@ -4,10 +4,13 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/opt/skogmark-go-gen/lib
-ExecStart=/usr/bin/java -jar /opt/skogmark-go-gen/lib/skogmark-go-gen-1.3-SNAPSHOT.jar
+WorkingDirectory=/opt/generator/bin
+ExecStart=/bin/sh /opt/generator/bin/bootstrap.sh
 
 User=svip
+Group=svip
+TimeoutSec=300
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

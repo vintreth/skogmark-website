@@ -11,9 +11,9 @@
     </timeTable>
   </postScheduler>
   <awaitTerminationTimeoutSec>30</awaitTerminationTimeoutSec>
-  <generatorResourceUrl>http://go.skogmark.ru:8080/rest/gen/wisdom</generatorResourceUrl>
+  <generatorResourceUrl>http://localhost:8084/rest/gen/wisdom</generatorResourceUrl>
   <userAgent>Mozilla/5.0</userAgent>
   <defaultCharset>utf-8</defaultCharset>
-  <localMode>true</localMode>
+  <localMode>false</localMode>
   <postWhileStartingEnabled>false</postWhileStartingEnabled>
 </applicationConfiguration>
