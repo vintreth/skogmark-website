@@ -28,7 +28,7 @@ public class SerializerAwareHttpRequest implements HttpRequest {
     @Override
     public String makeRequest(HttpRequestHeader header, Object body) {
         try {
-            log.info("Sending request " + header.getHttpMethod() + " " + header.getUrl());
+            log.debug("Sending request " + header.getHttpMethod() + " " + header.getUrl());
             URL url = new URL(header.getUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(header.getHttpMethod().name());
