@@ -31,6 +31,7 @@
     <skogmark.version>1.3-SNAPSHOT</skogmark.version>
     <jackson.version>1.9.13</jackson.version>
     <jackson.databind.version>2.5.0</jackson.databind.version>
+    <postgresql.version>42.1.4</postgresql.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -132,6 +133,11 @@
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>${mysql.connector.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>${postgresql.version}</version>
       </dependency>
       <!-- Skogmark -->
       <dependency>
