@@ -57,7 +57,7 @@ public class BeanConfiguration {
     DataSource postgresDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://skogmark.ru:5432/generator");
+        dataSource.setUrl("jdbc:postgresql://skogmark.ru:5432/postgres");
         dataSource.setUsername("generator");
         dataSource.setPassword("generator");
         return dataSource;

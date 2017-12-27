@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,16 +34,18 @@ public class MigrationManager {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @PostConstruct
     public void applyMigrations() {
         log.info("Starting applying migrations to database");
         Arrays.stream(migrationFiles).forEach(this::migrate);
+        log.info("Migrations finished");
     }
 
     private void migrate(String migrationFile) {
         log.info("Applying migration: file={}", migrationFile);
         try {
             String sql = getMigrationFileContent(migrationFile);
-//            jdbcTemplate.getJdbcOperations().execute(sql);
+            jdbcTemplate.getJdbcOperations().execute(sql);
         } catch (IOException e) {
             log.warn("Failure to apply migration: file=" + migrationFile, e);
         }
