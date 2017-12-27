@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.PostConstruct;
@@ -45,7 +47,12 @@ public class MigrationManager {
         log.info("Applying migration: file={}", migrationFile);
         try {
             String sql = getMigrationFileContent(migrationFile);
-            jdbcTemplate.getJdbcOperations().execute(sql);
+            transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus status) {
+                    jdbcTemplate.getJdbcOperations().execute(sql);
+                }
+            });
         } catch (IOException e) {
             log.warn("Failure to apply migration: file=" + migrationFile, e);
         }
