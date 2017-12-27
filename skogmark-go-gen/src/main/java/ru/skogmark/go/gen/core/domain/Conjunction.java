@@ -1,12 +1,6 @@
 package ru.skogmark.go.gen.core.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -32,6 +26,8 @@ public class Conjunction implements RoleBased {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    private ConjunctionType type;
 
     public int getId() {
         return id;
@@ -71,5 +67,13 @@ public class Conjunction implements RoleBased {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public ConjunctionType getType() {
+        return type;
+    }
+
+    public void setType(ConjunctionType type) {
+        this.type = type;
     }
 }
