@@ -1,8 +1,7 @@
 package ru.skogmark.go.gen.core.pipeline;
 
-public class WisdomFormationHandler implements PipelineHandler<WisdomGenerationPayload> {
+public class WisdomFormationHandler implements PipelineHandler<WisdomPayload> {
     @Override
-    public WisdomGenerationPayload handle(WisdomGenerationPayload wisdomGenerationPayload) {
-        return null;
+    public void handle(WisdomPayload wisdomPayload) {
     }
 }

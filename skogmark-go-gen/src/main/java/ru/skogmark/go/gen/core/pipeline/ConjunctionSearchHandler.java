@@ -1,8 +1,7 @@
 package ru.skogmark.go.gen.core.pipeline;
 
-public class ConjunctionSearchHandler implements PipelineHandler<WisdomGenerationPayload> {
+public class ConjunctionSearchHandler implements PipelineHandler<WisdomPayload> {
     @Override
-    public WisdomGenerationPayload handle(WisdomGenerationPayload wisdomGenerationPayload) {
-        return null;
+    public void handle(WisdomPayload wisdomPayload) {
     }
 }

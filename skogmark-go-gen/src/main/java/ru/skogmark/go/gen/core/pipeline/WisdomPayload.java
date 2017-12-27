@@ -1,5 +1,5 @@
 package ru.skogmark.go.gen.core.pipeline;
 
-public class WisdomGenerationPayload {
+public class WisdomPayload {
     private String template;
 }
