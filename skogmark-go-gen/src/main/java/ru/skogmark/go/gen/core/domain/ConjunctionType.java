@@ -1,6 +1,6 @@
 package ru.skogmark.go.gen.core.domain;
 
-public enum ConjunctionType implements SentencePart {
+public enum ConjunctionType {
     COMPLEX(0),
     COMPOUND(1),
     COMMA(2);
@@ -9,10 +9,5 @@ public enum ConjunctionType implements SentencePart {
 
     ConjunctionType(int value) {
         this.value = value;
-    }
-
-    @Override
-    public int getValue() {
-        return value;
     }
 }

@@ -2,9 +2,11 @@ package ru.skogmark.go.gen.core.pipeline;
 
 import ru.skogmark.go.gen.core.domain.SentenceTemplate;
 
+import java.util.List;
+
 public class WisdomPayload {
     private SentenceTemplate sentenceTemplate;
-    private String[] valueParts;
+    private List<String> contentParts;
 
     public SentenceTemplate getSentenceTemplate() {
         return sentenceTemplate;
@@ -14,11 +16,11 @@ public class WisdomPayload {
         this.sentenceTemplate = sentenceTemplate;
     }
 
-    public String[] getValueParts() {
-        return valueParts;
+    public List<String> getContentParts() {
+        return contentParts;
     }
 
-    public void setValueParts(String[] valueParts) {
-        this.valueParts = valueParts;
+    public void setContentParts(List<String> contentParts) {
+        this.contentParts = contentParts;
     }
 }

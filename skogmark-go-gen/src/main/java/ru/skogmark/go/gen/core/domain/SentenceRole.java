@@ -1,6 +1,6 @@
 package ru.skogmark.go.gen.core.domain;
 
-public enum SentenceRole implements SentencePart {
+public enum SentenceRole {
     NONE(0),
     MAIN(1),
     SECONDARY(2),
@@ -13,10 +13,5 @@ public enum SentenceRole implements SentencePart {
 
     SentenceRole(int value) {
         this.value = value;
-    }
-
-    @Override
-    public int getValue() {
-        return value;
     }
 }
