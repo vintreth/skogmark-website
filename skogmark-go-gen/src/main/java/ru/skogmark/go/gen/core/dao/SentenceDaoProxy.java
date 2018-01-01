@@ -2,7 +2,7 @@ package ru.skogmark.go.gen.core.dao;
 
 import ru.skogmark.go.gen.core.domain.SentenceRole;
 
-public enum  SentenceDaoProxy implements DaoProxy {
+public enum SentenceDaoProxy implements DaoProxy {
     NONE(SentenceRole.NONE),
     MAIN(SentenceRole.MAIN),
     SECONDARY(SentenceRole.SECONDARY),
@@ -16,6 +16,7 @@ public enum  SentenceDaoProxy implements DaoProxy {
 
     @Override
     public String getRandomContent() {
+
         return null;
     }
 }

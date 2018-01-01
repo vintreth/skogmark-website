@@ -24,6 +24,17 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class BeanConfiguration {
     @Bean
+    @Primary
+    DataSource sqLiteDataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.sqlite.JDBC");
+        dataSource.setUrl("jdbc:sqlite:test.db");
+        dataSource.setUsername("");
+        dataSource.setPassword("");
+        return dataSource;
+    }
+
+    @Bean
     LocalSessionFactoryBean sessionFactory(@Qualifier("sqLiteDataSource") DataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
@@ -35,17 +46,6 @@ public class BeanConfiguration {
         properties.setProperty("hibernate.format_sql", "true");
         sessionFactory.setHibernateProperties(properties);
         return sessionFactory;
-    }
-
-    @Bean
-    @Primary
-    DataSource sqLiteDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.sqlite.JDBC");
-        dataSource.setUrl("jdbc:sqlite:test.db");
-        dataSource.setUsername("");
-        dataSource.setPassword("");
-        return dataSource;
     }
 
     @Bean
