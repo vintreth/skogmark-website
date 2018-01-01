@@ -1,4 +1,4 @@
-package ru.skogmark.go.gen.core.domain;
+package ru.skogmark.go.gen.core.domain.old;
 
 /**
  * PROPRIETARY/CONFIDENTIAL.  Use of this product is subject to license terms.
@@ -8,7 +8,7 @@ package ru.skogmark.go.gen.core.domain;
  *
  * @author Kirill Bogdanov (ksbogdan@nvision-group.com)
  */
-public interface RoleBased {
+public interface RoleAwareEntity {
     Role getRole();
 
     void setRole(Role role);

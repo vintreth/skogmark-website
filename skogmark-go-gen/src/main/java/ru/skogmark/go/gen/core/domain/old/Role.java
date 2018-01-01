@@ -1,14 +1,18 @@
-package ru.skogmark.go.gen.core.domain;
+package ru.skogmark.go.gen.core.domain.old;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * Created by SwEEp on 06.01.2017.
  */
 @Entity
-@Table(name = "dict_conjunction")
-public class Conjunction implements RoleBased {
+@Table(name = "dict_role")
+public class Role {
     @Id
     @GeneratedValue
     @Column
@@ -21,13 +25,7 @@ public class Conjunction implements RoleBased {
     private Date dateCreated;
 
     @Column(length = 32, nullable = false)
-    private String content;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
-
-    private ConjunctionType type;
+    private String code;
 
     public int getId() {
         return id;
@@ -53,27 +51,11 @@ public class Conjunction implements RoleBased {
         this.dateCreated = dateCreated;
     }
 
-    public String getContent() {
-        return content;
+    public String getCode() {
+        return code;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public ConjunctionType getType() {
-        return type;
-    }
-
-    public void setType(ConjunctionType type) {
-        this.type = type;
+    public void setCode(String code) {
+        this.code = code;
     }
 }

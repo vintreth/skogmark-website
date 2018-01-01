@@ -5,13 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import ru.skogmark.go.api.Wisdom;
 import ru.skogmark.go.gen.core.dao.ConjunctionDao;
 import ru.skogmark.go.gen.core.dao.SentencePartDao;
-import ru.skogmark.go.gen.core.domain.Conjunction;
-import ru.skogmark.go.gen.core.domain.RoleBased;
-import ru.skogmark.go.gen.core.domain.RoleId;
-import ru.skogmark.go.gen.core.domain.SentencePart;
-import ru.skogmark.go.api.Wisdom;
+import ru.skogmark.go.gen.core.domain.old.Conjunction;
+import ru.skogmark.go.gen.core.domain.old.RoleAwareEntity;
+import ru.skogmark.go.gen.core.domain.old.RoleId;
+import ru.skogmark.go.gen.core.domain.old.SentencePart;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
@@ -219,7 +219,7 @@ public class OldDumbWisdomGenerator implements WisdomGenerator {
         return pickRandom(roleId, conjunctionCache);
     }
 
-    private <E extends RoleBased> E pickRandom(RoleId roleId, EntityCache<E> entityCache) {
+    private <E extends RoleAwareEntity> E pickRandom(RoleId roleId, EntityCache<E> entityCache) {
         E entity;
         int i = 0;
         do {

@@ -1,6 +1,6 @@
 package ru.skogmark.go.gen.core.domain;
 
-public enum SentenceRole {
+public enum SentenceRole implements SentencePart {
     NONE(0),
     MAIN(1),
     SECONDARY(2),
@@ -9,9 +9,14 @@ public enum SentenceRole {
      */
     ADVERBIAL(3);
 
-    public final int code;
+    public final int value;
 
-    SentenceRole(int code) {
-        this.code = code;
+    SentenceRole(int value) {
+        this.value = value;
+    }
+
+    @Override
+    public int getValue() {
+        return value;
     }
 }

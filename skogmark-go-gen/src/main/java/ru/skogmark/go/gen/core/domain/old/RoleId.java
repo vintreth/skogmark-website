@@ -1,4 +1,4 @@
-package ru.skogmark.go.gen.core.domain;
+package ru.skogmark.go.gen.core.domain.old;
 
 /**
  * Created by SwEEp on 06.01.2017.

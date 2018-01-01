@@ -4,26 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class WisdomPipelineBuilder {
     private final TemplateSelectionHandler templateSelectionHandler;
-    private final SentenceSearchHandler sentenceSearchHandler;
-    private final ConjunctionSearchHandler conjunctionSearchHandler;
+    private final PartSearchHandler partSearchHandler;
     private final WisdomFormationHandler wisdomFormationHandler;
 
     @Autowired
     public WisdomPipelineBuilder(TemplateSelectionHandler templateSelectionHandler,
-                                 SentenceSearchHandler sentenceSearchHandler,
-                                 ConjunctionSearchHandler conjunctionSearchHandler,
+                                 PartSearchHandler partSearchHandler,
                                  WisdomFormationHandler wisdomFormationHandler) {
         this.templateSelectionHandler = templateSelectionHandler;
-        this.sentenceSearchHandler = sentenceSearchHandler;
-        this.conjunctionSearchHandler = conjunctionSearchHandler;
+        this.partSearchHandler = partSearchHandler;
         this.wisdomFormationHandler = wisdomFormationHandler;
     }
 
     public Pipeline<WisdomPayload> build() {
         return new LinkedListPipeline<WisdomPayload>()
                 .addLast(templateSelectionHandler)
-                .addLast(sentenceSearchHandler)
-                .addLast(conjunctionSearchHandler)
+                .addLast(partSearchHandler)
                 .addLast(wisdomFormationHandler);
     }
 }

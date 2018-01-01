@@ -7,8 +7,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.skogmark.go.gen.core.domain.Conjunction;
-import ru.skogmark.go.gen.core.domain.RoleId;
+import ru.skogmark.go.gen.core.domain.old.Conjunction;
+import ru.skogmark.go.gen.core.domain.old.RoleId;
 
 import javax.transaction.Transactional;
 import java.util.List;

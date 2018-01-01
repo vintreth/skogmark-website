@@ -1,12 +1,16 @@
 package ru.skogmark.go.gen;
 
 import org.junit.Test;
-import ru.skogmark.go.gen.core.domain.RoleId;
 import ru.skogmark.go.gen.core.domain.SentenceRole;
+import ru.skogmark.go.gen.core.domain.old.RoleId;
 
-import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +32,7 @@ public class LocalRepositoryConverter {
 
     private static final String INSERT_QUERY = "INSERT INTO sentence (date_created, content, role) VALUES \r\n ";
     private static final String QUERY_VALUE_TEMPLATE = "('%s', '%s', %d)";
-    private static final String CURRENT_DATETIME = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+    private static final String CURRENT_DATETIME = "NOW()";
 
     private List<QueryValue> queryValues;
 
@@ -97,7 +101,7 @@ public class LocalRepositoryConverter {
             return Optional.empty();
         }
         return Optional.of(new QueryValue(null, matcher.group(2), matcher.group(3),
-                getSentenceRoleByOldId(matcher.group(4)).code));
+                getSentenceRoleByOldId(matcher.group(4)).value));
     }
 
     private static class QueryValue {

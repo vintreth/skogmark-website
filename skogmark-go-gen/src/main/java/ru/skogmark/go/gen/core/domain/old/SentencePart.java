@@ -1,9 +1,11 @@
-package ru.skogmark.go.gen.core.domain;
+package ru.skogmark.go.gen.core.domain.old;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -11,8 +13,8 @@ import java.util.Date;
  * Created by SwEEp on 06.01.2017.
  */
 @Entity
-@Table(name = "dict_role")
-public class Role {
+@Table(name = "sentence_part")
+public class SentencePart implements RoleAwareEntity {
     @Id
     @GeneratedValue
     @Column
@@ -24,8 +26,12 @@ public class Role {
     @Column(name = "date_created", nullable = false)
     private Date dateCreated;
 
-    @Column(length = 32, nullable = false)
-    private String code;
+    @Column(length = 255, nullable = false)
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public int getId() {
         return id;
@@ -51,11 +57,19 @@ public class Role {
         this.dateCreated = dateCreated;
     }
 
-    public String getCode() {
-        return code;
+    public String getContent() {
+        return content;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
