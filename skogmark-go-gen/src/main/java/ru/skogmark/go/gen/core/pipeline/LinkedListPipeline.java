@@ -23,7 +23,7 @@ class LinkedListPipeline<T> implements Pipeline<T> {
     }
 
     @Override
-    public void process(@Nonnull T payload) {
+    public void flow(@Nonnull T payload) {
         requireNonNull(payload, "Payload should not be null");
         handlers.forEach(handler -> handler.handle(payload));
     }

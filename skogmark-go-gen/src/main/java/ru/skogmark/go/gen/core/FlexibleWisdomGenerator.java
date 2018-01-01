@@ -2,8 +2,8 @@ package ru.skogmark.go.gen.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.skogmark.go.api.Wisdom;
-import ru.skogmark.go.gen.core.pipeline.WisdomPayload;
 import ru.skogmark.go.gen.core.pipeline.Pipeline;
+import ru.skogmark.go.gen.core.pipeline.WisdomPayload;
 import ru.skogmark.go.gen.core.pipeline.WisdomPipelineBuilder;
 
 /**
@@ -21,7 +21,7 @@ public class FlexibleWisdomGenerator implements WisdomGenerator {
     public Wisdom generateOne() {
         Pipeline<WisdomPayload> pipeline = pipelineBuilder.build();
         WisdomPayload payload = new WisdomPayload();
-        pipeline.process(payload);
+        pipeline.flow(payload);
         return null;
     }
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.skogmark.go.gen.core.domain.Sentence;
 import ru.skogmark.go.gen.core.domain.SentenceRole;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 @Repository
@@ -18,6 +19,7 @@ public class SentenceDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Nullable
     public Sentence getRandomSentenceByRole(SentenceRole sentenceRole) {
         String sql = "select id, creator_id, date_created, content, role from sentence " +
                 "where role = :role " +

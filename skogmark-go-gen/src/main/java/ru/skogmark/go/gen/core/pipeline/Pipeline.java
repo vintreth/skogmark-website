@@ -5,5 +5,5 @@ public interface Pipeline<T> {
 
     Pipeline<T> addLast(PipelineHandler<T> pipelineHandler);
 
-    void process(T payload);
+    void flow(T payload);
 }
