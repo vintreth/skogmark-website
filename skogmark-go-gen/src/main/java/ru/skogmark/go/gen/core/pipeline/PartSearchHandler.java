@@ -19,9 +19,9 @@ class PartSearchHandler implements PipelineHandler<WisdomPayload> {
         requireNonNull(wisdomPayload.getSentenceTemplate(), "Sentence template should not be null");
         log.info("Searching parts for template: template={}", wisdomPayload.getSentenceTemplate());
         List<String> contentParts = Arrays.stream(wisdomPayload.getSentenceTemplate().getTemplateParts())
-                .map(proxy -> proxy.getRandomContent()
+                .map(templatePart -> templatePart.getRandomContent()
                         .orElseThrow(() -> new PipelineHandlerException(
-                                "Unable to obtain content from dao: templatePart=" + proxy)))
+                                "Unable to obtain content from dao: templatePart=" + templatePart)))
                 .collect(Collectors.toList());
         log.info("Search complete: contentParts={}", contentParts);
         wisdomPayload.setContentParts(contentParts);

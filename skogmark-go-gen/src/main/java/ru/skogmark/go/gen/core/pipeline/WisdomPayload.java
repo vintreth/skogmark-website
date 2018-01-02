@@ -1,5 +1,6 @@
 package ru.skogmark.go.gen.core.pipeline;
 
+import ru.skogmark.go.api.Wisdom;
 import ru.skogmark.go.gen.core.domain.SentenceTemplate;
 
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.List;
 public class WisdomPayload {
     private SentenceTemplate sentenceTemplate;
     private List<String> contentParts;
+    private String formattedContent;
+    private Wisdom wisdom;
 
     public SentenceTemplate getSentenceTemplate() {
         return sentenceTemplate;
@@ -22,5 +25,21 @@ public class WisdomPayload {
 
     public void setContentParts(List<String> contentParts) {
         this.contentParts = contentParts;
+    }
+
+    public String getFormattedContent() {
+        return formattedContent;
+    }
+
+    public void setFormattedContent(String formattedContent) {
+        this.formattedContent = formattedContent;
+    }
+
+    public Wisdom getWisdom() {
+        return wisdom;
+    }
+
+    public void setWisdom(Wisdom wisdom) {
+        this.wisdom = wisdom;
     }
 }

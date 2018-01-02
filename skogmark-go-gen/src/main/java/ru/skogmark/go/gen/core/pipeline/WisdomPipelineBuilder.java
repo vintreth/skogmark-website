@@ -8,20 +8,24 @@ public class WisdomPipelineBuilder {
     private final TemplateSelectionHandler templateSelectionHandler;
     private final PartSearchHandler partSearchHandler;
     private final WisdomFormationHandler wisdomFormationHandler;
+    private final WisdomMapperHandler wisdomMapperHandler;
 
     @Autowired
     public WisdomPipelineBuilder(TemplateSelectionHandler templateSelectionHandler,
                                  PartSearchHandler partSearchHandler,
-                                 WisdomFormationHandler wisdomFormationHandler) {
+                                 WisdomFormationHandler wisdomFormationHandler,
+                                 WisdomMapperHandler wisdomMapperHandler) {
         this.templateSelectionHandler = templateSelectionHandler;
         this.partSearchHandler = partSearchHandler;
         this.wisdomFormationHandler = wisdomFormationHandler;
+        this.wisdomMapperHandler = wisdomMapperHandler;
     }
 
     public Pipeline<WisdomPayload> build() {
         return new LinkedListPipeline<WisdomPayload>()
                 .addLast(templateSelectionHandler)
                 .addLast(partSearchHandler)
-                .addLast(wisdomFormationHandler);
+                .addLast(wisdomFormationHandler)
+                .addLast(wisdomMapperHandler);
     }
 }

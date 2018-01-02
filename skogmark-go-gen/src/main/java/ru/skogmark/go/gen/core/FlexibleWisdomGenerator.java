@@ -7,6 +7,8 @@ import ru.skogmark.go.gen.core.pipeline.Pipeline;
 import ru.skogmark.go.gen.core.pipeline.WisdomPayload;
 import ru.skogmark.go.gen.core.pipeline.WisdomPipelineBuilder;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * New flexible implementation of {@link WisdomGenerator}
  */
@@ -24,7 +26,8 @@ public class FlexibleWisdomGenerator implements WisdomGenerator {
         Pipeline<WisdomPayload> pipeline = pipelineBuilder.build();
         WisdomPayload payload = new WisdomPayload();
         pipeline.flow(payload);
-        return null;
+        requireNonNull(payload.getWisdom(), "Wisdom should not be null");
+        return payload.getWisdom();
     }
 
     @Override
