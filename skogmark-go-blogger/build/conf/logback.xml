@@ -19,11 +19,10 @@
   </appender>
 
   <logger name="ru.skogmark" level="info">
-    <appender-ref ref="STDOUT"/>
     <appender-ref ref="FILE"/>
   </logger>
 
   <logger name="org.springframework" level="info">
-    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="FILE"/>
   </logger>
 </configuration>

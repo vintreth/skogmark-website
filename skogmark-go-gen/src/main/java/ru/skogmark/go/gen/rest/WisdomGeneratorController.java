@@ -36,12 +36,6 @@ public class WisdomGeneratorController {
     @RequestMapping(value = "/wisdom", method = RequestMethod.GET)
     public Wisdom randomMessage() {
         log.debug("Calling random message");
-        return oldDumbWisdomGenerator.generateOne();
-    }
-
-    @RequestMapping(value = "/wisdom-advanced", method = RequestMethod.GET)
-    public Wisdom randomMessageAdvanced() {
-        log.debug("Calling random message advanced");
         return flexibleWisdomGenerator.generateOne();
     }
 
