@@ -17,7 +17,7 @@ import static ru.skogmark.go.gen.core.domain.SentenceRole.NONE;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.SECONDARY;
 
 @Component
-public class TemplateBuilder {
+class TemplateBuilder {
     private final SentenceDao sentenceDao;
     private final ConjunctionDao conjunctionDao;
 
@@ -56,17 +56,19 @@ public class TemplateBuilder {
     }
 
     public TemplateBuilder complex() {
-        templateParts.add(new ConjunctionTemplatePart(COMPLEX, conjunctionDao));
+        templateParts.add(new ComplexConjunctionFormationDecorator(new ConjunctionTemplatePart(
+                COMPLEX, conjunctionDao)));
         return this;
     }
 
     public TemplateBuilder compound() {
-        templateParts.add(new ConjunctionTemplatePart(COMPOUND, conjunctionDao));
+        templateParts.add(new CompoundConjunctionFormationDecorator(new ConjunctionTemplatePart(
+                COMPOUND, conjunctionDao)));
         return this;
     }
 
     public TemplateBuilder comma() {
-        templateParts.add(new ConjunctionTemplatePart(COMMA, conjunctionDao));
+        templateParts.add(new CommaFormationDecorator(new ConjunctionTemplatePart(COMMA, conjunctionDao)));
         return this;
     }
 }

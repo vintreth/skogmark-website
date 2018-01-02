@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 
@@ -16,6 +18,6 @@ class WisdomFormationHandler implements PipelineHandler<WisdomPayload> {
         requireNonNull(wisdomPayload.getContentParts(), "Content parts should not be null");
         checkArgument(!wisdomPayload.getContentParts().isEmpty(), "Content parts should not be empty");
         log.info("Formatting wisdom content: contentParts={}", wisdomPayload.getContentParts());
-        wisdomPayload.setFormattedContent(String.join(" ", wisdomPayload.getContentParts()));
+        wisdomPayload.setFormattedContent(wisdomPayload.getContentParts().stream().collect(Collectors.joining()));
     }
 }

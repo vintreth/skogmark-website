@@ -6,7 +6,7 @@ import ru.skogmark.go.gen.core.domain.SentenceRole;
 
 import java.util.Optional;
 
-public class SentenceTemplatePart implements TemplatePart {
+class SentenceTemplatePart implements TemplatePart {
     private final SentenceRole sentenceRole;
     private final SentenceDao sentenceDao;
 

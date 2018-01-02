@@ -6,7 +6,7 @@ import ru.skogmark.go.gen.core.domain.old.Conjunction;
 
 import java.util.Optional;
 
-public class ConjunctionTemplatePart implements TemplatePart {
+class ConjunctionTemplatePart implements TemplatePart {
     private final ConjunctionType conjunctionType;
     private final ConjunctionDao conjunctionDao;
 
