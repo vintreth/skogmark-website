@@ -2,13 +2,15 @@ package ru.skogmark.go.gen.rest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skogmark.go.gen.core.OldDumbWisdomGenerator;
 import ru.skogmark.go.api.Wisdom;
+import ru.skogmark.go.gen.core.OldDumbWisdomGenerator;
+import ru.skogmark.go.gen.core.WisdomGenerator;
 
 /**
  * @author svip
@@ -19,34 +21,36 @@ import ru.skogmark.go.api.Wisdom;
 @RequestMapping("/rest/gen")
 public class WisdomGeneratorController {
     private static final Integer MAX_WISDOM_COUNT = 1000;
+    private static final Logger log = Logger.getLogger(WisdomGeneratorController.class);
 
-    private static final Logger logger = Logger.getLogger(WisdomGeneratorController.class);
-
-    private OldDumbWisdomGenerator wisdomGenerator;
+    private final OldDumbWisdomGenerator oldDumbWisdomGenerator;
+    private final WisdomGenerator flexibleWisdomGenerator;
 
     @Autowired
-    public WisdomGeneratorController(OldDumbWisdomGenerator wisdomGenerator) {
-        this.wisdomGenerator = wisdomGenerator;
+    public WisdomGeneratorController(OldDumbWisdomGenerator oldDumbWisdomGenerator,
+                                     @Qualifier("flexibleWisdomGenerator") WisdomGenerator flexibleWisdomGenerator) {
+        this.oldDumbWisdomGenerator = oldDumbWisdomGenerator;
+        this.flexibleWisdomGenerator = flexibleWisdomGenerator;
     }
 
     @RequestMapping(value = "/wisdom", method = RequestMethod.GET)
     public Wisdom randomMessage() {
-        logger.debug("Calling random message");
-        return wisdomGenerator.generateOne();
+        log.debug("Calling random message");
+        return oldDumbWisdomGenerator.generateOne();
     }
 
     @RequestMapping(value = "/wisdom-advanced", method = RequestMethod.GET)
     public Wisdom randomMessageAdvanced() {
-        logger.debug("Calling random message advanced");
-        return wisdomGenerator.generateOneAdvanced();
+        log.debug("Calling random message advanced");
+        return flexibleWisdomGenerator.generateOne();
     }
 
     @RequestMapping(value = "/wisdoms", method = RequestMethod.GET)
     public Wisdom[] randomMessages(@RequestParam(value = "count", required = false) Integer count) {
-        logger.debug("Calling random messages, count " + count);
+        log.debug("Calling random messages, count " + count);
         if (null == count || count > MAX_WISDOM_COUNT) {
-            wisdomGenerator.generateMany(MAX_WISDOM_COUNT, wisdomGenerator::generateOne);
+            oldDumbWisdomGenerator.generateMany(MAX_WISDOM_COUNT, oldDumbWisdomGenerator::generateOne);
         }
-        return wisdomGenerator.generateMany(count, wisdomGenerator::generateOne);
+        return oldDumbWisdomGenerator.generateMany(count, oldDumbWisdomGenerator::generateOne);
     }
 }

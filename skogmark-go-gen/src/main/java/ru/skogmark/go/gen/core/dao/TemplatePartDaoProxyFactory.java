@@ -1,14 +1,11 @@
-package ru.skogmark.go.gen.core.config;
+package ru.skogmark.go.gen.core.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import ru.skogmark.go.gen.core.dao.ConjunctionDao;
-import ru.skogmark.go.gen.core.dao.SentenceDao;
-import ru.skogmark.go.gen.core.dao.TemplatePartDaoProxy;
+import org.springframework.stereotype.Component;
 import ru.skogmark.go.gen.core.domain.ConjunctionType;
 import ru.skogmark.go.gen.core.domain.Sentence;
 import ru.skogmark.go.gen.core.domain.SentenceRole;
+import ru.skogmark.go.gen.core.domain.old.Conjunction;
 
 import java.util.Optional;
 
@@ -20,13 +17,60 @@ import static ru.skogmark.go.gen.core.domain.SentenceRole.MAIN;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.NONE;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.SECONDARY;
 
-@Configuration
-public class TemplatePartConfiguration {
-    @Autowired
-    private SentenceDao sentenceDao;
+@Component
+public class TemplatePartDaoProxyFactory {
+    private final SentenceDao sentenceDao;
+    private final ConjunctionDao conjunctionDao;
+
+    private final TemplatePartDaoProxy none;
+    private final TemplatePartDaoProxy main;
+    private final TemplatePartDaoProxy secondary;
+    private final TemplatePartDaoProxy adverbial;
+    private final TemplatePartDaoProxy complex;
+    private final TemplatePartDaoProxy compound;
+    private final TemplatePartDaoProxy comma;
 
     @Autowired
-    private ConjunctionDao conjunctionDao;
+    public TemplatePartDaoProxyFactory(SentenceDao sentenceDao, ConjunctionDao conjunctionDao) {
+        this.sentenceDao = sentenceDao;
+        this.conjunctionDao = conjunctionDao;
+
+        none = new SentenceDaoProxy(NONE);
+        main = new SentenceDaoProxy(MAIN);
+        secondary = new SentenceDaoProxy(SECONDARY);
+        adverbial = new SentenceDaoProxy(ADVERBIAL);
+        complex = new ConjunctionDaoProxy(COMPLEX);
+        compound = new ConjunctionDaoProxy(COMPOUND);
+        comma = new ConjunctionDaoProxy(COMMA);
+    }
+
+    public TemplatePartDaoProxy none() {
+        return none;
+    }
+
+    public TemplatePartDaoProxy main() {
+        return main;
+    }
+
+    public TemplatePartDaoProxy secondary() {
+        return secondary;
+    }
+
+    public TemplatePartDaoProxy adverbial() {
+        return adverbial;
+    }
+
+    public TemplatePartDaoProxy complex() {
+        return complex;
+    }
+
+    public TemplatePartDaoProxy compound() {
+        return compound;
+    }
+
+    public TemplatePartDaoProxy comma() {
+        return comma;
+    }
 
     private class SentenceDaoProxy implements TemplatePartDaoProxy {
         private final SentenceRole sentenceRole;
@@ -53,26 +97,6 @@ public class TemplatePartConfiguration {
         }
     }
 
-    @Bean
-    public TemplatePartDaoProxy none() {
-        return new SentenceDaoProxy(NONE);
-    }
-
-    @Bean
-    public TemplatePartDaoProxy main() {
-        return new SentenceDaoProxy(MAIN);
-    }
-
-    @Bean
-    public TemplatePartDaoProxy secondary() {
-        return new SentenceDaoProxy(SECONDARY);
-    }
-
-    @Bean
-    public TemplatePartDaoProxy adverbial() {
-        return new SentenceDaoProxy(ADVERBIAL);
-    }
-
     private class ConjunctionDaoProxy implements TemplatePartDaoProxy {
         private final ConjunctionType conjunctionType;
 
@@ -82,7 +106,8 @@ public class TemplatePartConfiguration {
 
         @Override
         public Optional<String> getRandomContent() {
-            return Optional.empty();
+            return Optional.ofNullable(conjunctionDao.getRandomConjunctionByType(conjunctionType))
+                    .map(Conjunction::getContent);
         }
 
         @Override
@@ -96,20 +121,5 @@ public class TemplatePartConfiguration {
                     "conjunctionType=" + conjunctionType +
                     '}';
         }
-    }
-
-    @Bean
-    public TemplatePartDaoProxy complex() {
-        return new ConjunctionDaoProxy(COMPLEX);
-    }
-
-    @Bean
-    public TemplatePartDaoProxy compound() {
-        return new ConjunctionDaoProxy(COMPOUND);
-    }
-
-    @Bean
-    public TemplatePartDaoProxy comma() {
-        return new ConjunctionDaoProxy(COMMA);
     }
 }

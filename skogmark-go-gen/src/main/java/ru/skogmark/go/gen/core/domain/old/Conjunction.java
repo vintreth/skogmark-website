@@ -20,10 +20,10 @@ public class Conjunction implements RoleAwareEntity {
     @Id
     @GeneratedValue
     @Column
-    private int id;
+    private long id;
 
     @Column(name = "creator_id", nullable = false)
-    private int creatorId;
+    private long creatorId;
 
     @Column(name = "date_created", nullable = false)
     private Date dateCreated;
@@ -37,19 +37,19 @@ public class Conjunction implements RoleAwareEntity {
 
     private ConjunctionType type;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getCreatorId() {
+    public long getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(long creatorId) {
         this.creatorId = creatorId;
     }
 
@@ -83,5 +83,17 @@ public class Conjunction implements RoleAwareEntity {
 
     public void setType(ConjunctionType type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Conjunction{" +
+                "id=" + id +
+                ", creatorId=" + creatorId +
+                ", dateCreated=" + dateCreated +
+                ", content='" + content + '\'' +
+                ", role=" + role +
+                ", type=" + type +
+                '}';
     }
 }

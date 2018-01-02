@@ -2,6 +2,7 @@ package ru.skogmark.go.gen.core.pipeline;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
+@Component
 class PartSearchHandler implements PipelineHandler<WisdomPayload> {
     private static final Logger log = LoggerFactory.getLogger(PartSearchHandler.class);
 

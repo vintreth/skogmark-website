@@ -48,4 +48,15 @@ public class Sentence {
     public void setRole(SentenceRole role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "Sentence{" +
+                "id=" + id +
+                ", creatorId=" + creatorId +
+                ", dateCreated=" + dateCreated +
+                ", content='" + content + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

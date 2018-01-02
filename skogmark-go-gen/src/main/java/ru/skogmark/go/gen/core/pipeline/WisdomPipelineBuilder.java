@@ -1,7 +1,9 @@
 package ru.skogmark.go.gen.core.pipeline;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class WisdomPipelineBuilder {
     private final TemplateSelectionHandler templateSelectionHandler;
     private final PartSearchHandler partSearchHandler;

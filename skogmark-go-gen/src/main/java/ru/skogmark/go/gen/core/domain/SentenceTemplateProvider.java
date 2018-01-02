@@ -2,7 +2,7 @@ package ru.skogmark.go.gen.core.domain;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skogmark.go.gen.core.config.TemplatePartConfiguration;
+import ru.skogmark.go.gen.core.dao.TemplatePartDaoProxyFactory;
 
 import java.util.Optional;
 
@@ -11,13 +11,13 @@ public class SentenceTemplateProvider {
     private final SentenceTemplate[] sentenceTemplates;
 
     @Autowired
-    public SentenceTemplateProvider(TemplatePartConfiguration configuration) {
+    public SentenceTemplateProvider(TemplatePartDaoProxyFactory factory) {
         sentenceTemplates = new SentenceTemplate[]{
-                new SentenceTemplate(configuration.main(), configuration.complex(), configuration.main()),
-                new SentenceTemplate(configuration.main(), configuration.comma(), configuration.main()),
-                new SentenceTemplate(configuration.main(), configuration.compound(), configuration.secondary()),
-                new SentenceTemplate(configuration.main(), configuration.compound(), configuration.secondary(),
-                        configuration.comma(), configuration.adverbial())};
+                new SentenceTemplate(factory.main(), factory.comma(), factory.main()),
+                new SentenceTemplate(factory.main(), factory.complex(), factory.main()),
+                new SentenceTemplate(factory.main(), factory.compound(), factory.secondary()),
+                new SentenceTemplate(factory.main(), factory.compound(), factory.secondary(),
+                        factory.comma(), factory.adverbial())};
     }
 
     public SentenceTemplate[] getSentenceTemplates() {

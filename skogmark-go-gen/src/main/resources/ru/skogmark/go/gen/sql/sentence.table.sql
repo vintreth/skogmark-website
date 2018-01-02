@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS sentence;
 CREATE TABLE sentence (
   id           BIGSERIAL PRIMARY KEY,
   creator_id   BIGINT,
-  date_created TIMESTAMP WITH TIME ZONE,
+  date_created TIMESTAMP,
   content      VARCHAR(255) NOT NULL,
   role         INTEGER
 );
