@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,10 +15,10 @@ class PartSearchHandler implements PipelineHandler<WisdomPayload> {
 
     @Override
     public void handle(WisdomPayload wisdomPayload) {
-        requireNonNull(wisdomPayload.getSentenceTemplate(), "Sentence template should not be null");
-        log.info("Searching parts for template: template={}", wisdomPayload.getSentenceTemplate());
-        List<String> contentParts = Arrays.stream(wisdomPayload.getSentenceTemplate().getTemplateParts())
-                .map(templatePart -> templatePart.getRandomContent()
+        requireNonNull(wisdomPayload.getTemplate(), "Sentence template should not be null");
+        log.info("Searching parts for template: template={}", wisdomPayload.getTemplate());
+        List<String> contentParts = wisdomPayload.getTemplate().getTemplateParts().stream()
+                .map(templatePart -> templatePart.getContent()
                         .orElseThrow(() -> new PipelineHandlerException(
                                 "Unable to obtain content from dao: templatePart=" + templatePart)))
                 .collect(Collectors.toList());

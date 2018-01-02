@@ -1,22 +1,22 @@
 package ru.skogmark.go.gen.core.pipeline;
 
 import ru.skogmark.go.api.Wisdom;
-import ru.skogmark.go.gen.core.domain.SentenceTemplate;
+import ru.skogmark.go.gen.core.template.Template;
 
 import java.util.List;
 
 public class WisdomPayload {
-    private SentenceTemplate sentenceTemplate;
+    private Template template;
     private List<String> contentParts;
     private String formattedContent;
     private Wisdom wisdom;
 
-    public SentenceTemplate getSentenceTemplate() {
-        return sentenceTemplate;
+    public Template getTemplate() {
+        return template;
     }
 
-    public void setSentenceTemplate(SentenceTemplate sentenceTemplate) {
-        this.sentenceTemplate = sentenceTemplate;
+    public void setTemplate(Template template) {
+        this.template = template;
     }
 
     public List<String> getContentParts() {

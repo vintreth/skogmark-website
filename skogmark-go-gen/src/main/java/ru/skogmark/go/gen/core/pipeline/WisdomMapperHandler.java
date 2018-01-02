@@ -17,6 +17,7 @@ class WisdomMapperHandler implements PipelineHandler<WisdomPayload> {
         log.info("Creating wisdom: content={}", payload.getFormattedContent());
         Wisdom wisdom = new Wisdom();
         wisdom.setContent(payload.getFormattedContent());
+        wisdom.setTemplate(payload.getTemplate().asString());
         log.info("Wisdom created: wisdom={}", wisdom);
         payload.setWisdom(wisdom);
     }
