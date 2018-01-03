@@ -11,7 +11,8 @@ public enum SentenceRole {
      * Дополнение
      */
     ADVERBIAL(3),
-    SINGLE(4);
+    SINGLE(4),
+    LIST(5);
 
     public final int value;
 

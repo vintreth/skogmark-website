@@ -24,4 +24,11 @@ class SentenceTemplatePart implements TemplatePart {
     public String getCode() {
         return sentenceRole.toString();
     }
+
+    @Override
+    public String toString() {
+        return "SentenceTemplatePart{" +
+                "sentenceRole=" + sentenceRole +
+                '}';
+    }
 }

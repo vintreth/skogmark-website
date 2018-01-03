@@ -25,4 +25,11 @@ class ConjunctionTemplatePart implements TemplatePart {
     public String getCode() {
         return conjunctionType.toString();
     }
+
+    @Override
+    public String toString() {
+        return "ConjunctionTemplatePart{" +
+                "conjunctionType=" + conjunctionType +
+                '}';
+    }
 }
