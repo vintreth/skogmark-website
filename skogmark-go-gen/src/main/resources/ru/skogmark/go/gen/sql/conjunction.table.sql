@@ -30,7 +30,7 @@ INSERT INTO conjunction (creator_id, date_created, content, type) VALUES
 ,(0, NOW(), 'где', 1)
 ,(0, NOW(), 'куда', 1)
 ,(0, NOW(), 'откуда', 1)
-,(0, NOW(), 'как будто', 1)
+,(0, NOW(), 'как-будто', 1)
 ,(0, NOW(), 'как бы', 1)
 ,(0, NOW(), 'столько', 1)
 ,(0, NOW(), 'потому что', 1)
@@ -40,4 +40,5 @@ INSERT INTO conjunction (creator_id, date_created, content, type) VALUES
 ,(0, NOW(), 'хотя', 1)
 ,(0, NOW(), 'так что', 1)
 ,(0, NOW(), ',', 2)
+,(0, NOW(), ' ', 3)
 ;

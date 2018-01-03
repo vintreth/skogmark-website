@@ -2,10 +2,10 @@ package ru.skogmark.go.gen.core.template;
 
 import java.util.Optional;
 
-class CompoundConjunctionFormationDecorator implements TemplatePart {
+class CompoundFormationDecorator implements TemplatePart {
     private final TemplatePart templatePart;
 
-    public CompoundConjunctionFormationDecorator(TemplatePart templatePart) {
+    public CompoundFormationDecorator(TemplatePart templatePart) {
         this.templatePart = templatePart;
     }
 

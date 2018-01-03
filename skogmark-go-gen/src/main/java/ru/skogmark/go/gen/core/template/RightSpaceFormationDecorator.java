@@ -2,10 +2,10 @@ package ru.skogmark.go.gen.core.template;
 
 import java.util.Optional;
 
-class CommaFormationDecorator implements TemplatePart {
+class RightSpaceFormationDecorator implements TemplatePart {
     private final TemplatePart templatePart;
 
-    public CommaFormationDecorator(TemplatePart templatePart) {
+    public RightSpaceFormationDecorator(TemplatePart templatePart) {
         this.templatePart = templatePart;
     }
 

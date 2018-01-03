@@ -11,10 +11,12 @@ import java.util.List;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMMA;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMPLEX;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMPOUND;
+import static ru.skogmark.go.gen.core.domain.ConjunctionType.EMPTY;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.ADVERBIAL;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.MAIN;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.NONE;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.SECONDARY;
+import static ru.skogmark.go.gen.core.domain.SentenceRole.SINGLE;
 
 @Component
 class TemplateBuilder {
@@ -55,20 +57,30 @@ class TemplateBuilder {
         return this;
     }
 
+    public TemplateBuilder single() {
+        templateParts.add(new SentenceTemplatePart(SINGLE, sentenceDao));
+        return this;
+    }
+
     public TemplateBuilder complex() {
-        templateParts.add(new ComplexConjunctionFormationDecorator(new ConjunctionTemplatePart(
+        templateParts.add(new DoubleSpaceFormationDecorator(new ConjunctionTemplatePart(
                 COMPLEX, conjunctionDao)));
         return this;
     }
 
     public TemplateBuilder compound() {
-        templateParts.add(new CompoundConjunctionFormationDecorator(new ConjunctionTemplatePart(
+        templateParts.add(new CompoundFormationDecorator(new ConjunctionTemplatePart(
                 COMPOUND, conjunctionDao)));
         return this;
     }
 
     public TemplateBuilder comma() {
-        templateParts.add(new CommaFormationDecorator(new ConjunctionTemplatePart(COMMA, conjunctionDao)));
+        templateParts.add(new RightSpaceFormationDecorator(new ConjunctionTemplatePart(COMMA, conjunctionDao)));
+        return this;
+    }
+
+    public TemplateBuilder empty() {
+        templateParts.add(new ConjunctionTemplatePart(EMPTY, conjunctionDao));
         return this;
     }
 }
