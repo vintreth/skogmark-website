@@ -14,14 +14,25 @@ import static ru.skogmark.go.gen.core.domain.Gender.PLURAL;
 
 @Component
 public class TemplateProvider {
+    private static final long CONJUNCTION_ID_IS = 1L;
     private static final long CONJUNCTION_ID_AND = 3L;
+
     private static final long SENTENCE_ID_METAL_IN_RUSSIA = 290L;
+    private static final long SENTENCE_ID_THE_SAME_AS_PLURAL = 130L;
+    private static final long SENTENCE_ID_THE_SAME_AS_MALE = 131L;
+    private static final long SENTENCE_ID_THE_SAME_AS_FEMALE = 728L;
+    private static final long SENTENCE_ID_THE_SAME_AS_NONE = 729L;
+    private static final long SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES = 592L;
+    private static final long SENTENCE_ID_STANDING_NEAR_THE_STAGE_AND_THINKING = 31L;
+    private static final long SENTENCE_ID_HAVING_MORE_THAN_200_DOLLARS = 21L;
+    private static final long SENTENCE_ID_BEING_ON_STAGE = 20L;
+    private static final long SENTENCE_ID_DEEP_THOUGHT = 10L;
 
     private final List<Template> templates;
 
     @Autowired
     public TemplateProvider(TemplateBuilder templateBuilder) {
-        templates = ImmutableList.of(//templateBuilder.single().build(),
+        templates = ImmutableList.of(templateBuilder.single().build(),
                 templateBuilder.none().empty().main().build(),
                 templateBuilder.none().empty().main().empty().adverbial().build(),
                 templateBuilder.none().empty().main().compound().secondary().build(),
@@ -38,16 +49,18 @@ public class TemplateProvider {
                 templateBuilder.custom("слева ").main().comma().custom("справа ").main().build(),
                 templateBuilder.list().empty().secondary().conjunction(CONJUNCTION_ID_AND).secondary().build(),
                 templateBuilder.sentence(SENTENCE_ID_METAL_IN_RUSSIA).empty().main().build(),
-                templateBuilder.custom("такое же по строению ").main(NONE).custom(" только за 200 тысяч (или чего там?) километров").build(),
-                templateBuilder.custom("такой же по строению ").main(MALE).custom(" только за 200 тысяч (или чего там?) километров").build(),
-                templateBuilder.custom("такая же по строению ").main(FEMALE).custom(" только за 200 тысяч (или чего там?) километров").build(),
-                templateBuilder.custom("такие же по строению ").main(PLURAL).custom(" только за 200 тысяч (или чего там?) километров").build()
-        );
+                templateBuilder.sentence(SENTENCE_ID_THE_SAME_AS_NONE).empty().main(NONE).empty()
+                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).build(),
+                templateBuilder.sentence(SENTENCE_ID_THE_SAME_AS_MALE).empty().main(MALE).empty()
+                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).build(),
+                templateBuilder.sentence(SENTENCE_ID_THE_SAME_AS_FEMALE).empty().main(FEMALE).empty()
+                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).build(),
+                templateBuilder.sentence(SENTENCE_ID_THE_SAME_AS_PLURAL).empty().main(PLURAL).empty()
+                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).build(),
+                templateBuilder.sentence(SENTENCE_ID_STANDING_NEAR_THE_STAGE_AND_THINKING).empty().main().build(),
+                templateBuilder.sentence(SENTENCE_ID_BEING_ON_STAGE).empty().secondary().build(),
+                templateBuilder.secondary().conjunction(CONJUNCTION_ID_IS).sentence(SENTENCE_ID_DEEP_THOUGHT).build());
         // todo буду там в качестве
-        // todo я у сцены стою и думаю
-        // todo 200 долларов
-        // todo выходят на сцену
-        // todo глубокая мысль
     }
 
     public List<Template> getTemplates() {
