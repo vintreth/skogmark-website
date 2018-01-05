@@ -17,7 +17,7 @@ class SentenceTemplatePart implements TemplatePart {
 
     @Override
     public Optional<String> getContent() {
-        return Optional.ofNullable(sentenceDao.getRandomSentenceByRole(sentenceRole)).map(Sentence::getContent);
+        return Optional.ofNullable(sentenceDao.getRandomByRole(sentenceRole)).map(Sentence::getContent);
     }
 
     @Override

@@ -17,7 +17,7 @@ class ConjunctionTemplatePart implements TemplatePart {
 
     @Override
     public Optional<String> getContent() {
-        return Optional.ofNullable(conjunctionDao.getRandomConjunctionByType(conjunctionType))
+        return Optional.ofNullable(conjunctionDao.getRandomByType(conjunctionType))
                 .map(Conjunction::getContent);
     }
 

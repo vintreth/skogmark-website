@@ -7,8 +7,16 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+import static ru.skogmark.go.gen.core.domain.Gender.FEMALE;
+import static ru.skogmark.go.gen.core.domain.Gender.MALE;
+import static ru.skogmark.go.gen.core.domain.Gender.NONE;
+import static ru.skogmark.go.gen.core.domain.Gender.PLURAL;
+
 @Component
 public class TemplateProvider {
+    private static final long CONJUNCTION_ID_AND = 3L;
+    private static final long SENTENCE_ID_METAL_IN_RUSSIA = 290L;
+
     private final List<Template> templates;
 
     @Autowired
@@ -26,12 +34,16 @@ public class TemplateProvider {
                 templateBuilder.main().compound().secondary().empty().adverbial().build(),
                 templateBuilder.adverbial().empty().main().build(),
                 templateBuilder.adverbial().empty().main().comma().none().build(),
-                templateBuilder.adverbial().empty().main().compound().secondary().build());
-        // todo списки
-        // todo слева что-то справа что-то
+                templateBuilder.adverbial().empty().main().compound().secondary().build(),
+                templateBuilder.custom("слева ").main().comma().custom("справа ").main().build(),
+                templateBuilder.list().empty().secondary().conjunction(CONJUNCTION_ID_AND).secondary().build(),
+                templateBuilder.sentence(SENTENCE_ID_METAL_IN_RUSSIA).empty().main().build(),
+                templateBuilder.custom("такое же по строению ").main(NONE).custom(" только за 200 тысяч (или чего там?) километров").build(),
+                templateBuilder.custom("такой же по строению ").main(MALE).custom(" только за 200 тысяч (или чего там?) километров").build(),
+                templateBuilder.custom("такая же по строению ").main(FEMALE).custom(" только за 200 тысяч (или чего там?) километров").build(),
+                templateBuilder.custom("такие же по строению ").main(PLURAL).custom(" только за 200 тысяч (или чего там?) километров").build()
+        );
         // todo буду там в качестве
-        // todo метал в России
-        // todo за 200 тысяч
         // todo я у сцены стою и думаю
         // todo 200 долларов
         // todo выходят на сцену

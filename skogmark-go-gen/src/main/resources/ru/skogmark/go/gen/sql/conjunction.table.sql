@@ -32,7 +32,7 @@ INSERT INTO conjunction (creator_id, date_created, content, type) VALUES
 ,(0, NOW(), 'откуда', 1)
 ,(0, NOW(), 'как-будто', 1)
 ,(0, NOW(), 'как бы', 1)
-,(0, NOW(), 'столько', 1)
+,(0, NOW(), 'только', 1)
 ,(0, NOW(), 'потому что', 1)
 ,(0, NOW(), 'посему', 1)
 ,(0, NOW(), 'так как', 1)

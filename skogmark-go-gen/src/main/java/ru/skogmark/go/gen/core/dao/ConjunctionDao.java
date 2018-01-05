@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.skogmark.go.gen.core.domain.ConjunctionType;
@@ -15,14 +16,16 @@ import ru.skogmark.go.gen.core.domain.old.Conjunction;
 import ru.skogmark.go.gen.core.domain.old.RoleId;
 
 import javax.annotation.Nullable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by SwEEp on 06.01.2017.
  */
 @Repository
 public class ConjunctionDao {
+    private static final String FIELDS = "id, creator_id, date_created, content, type";
     private static final Logger log = LoggerFactory.getLogger(ConjunctionDao.class);
 
     private final SessionFactory sessionFactory;
@@ -55,23 +58,38 @@ public class ConjunctionDao {
     }
 
     @Nullable
-    public Conjunction getRandomConjunctionByType(ConjunctionType conjunctionType) {
+    public Conjunction getRandomByType(ConjunctionType conjunctionType) {
         log.info("Finding random conjunction: type={}", conjunctionType);
-        String sql = "select id, creator_id, date_created, content, type from conjunction " +
+        String sql = "select " + FIELDS + " from conjunction " +
                 "where type = :type " +
                 "order by random() " +
                 "limit 1";
-        Map<String, Integer> paramMap = ImmutableMap.of("type", conjunctionType.value);
-        Conjunction foundConjunction = jdbcTemplate.queryForObject(sql, paramMap, (resultSet, rowNum) -> {
+        Conjunction conjunction = jdbcTemplate.queryForObject(sql, ImmutableMap.of("type", conjunctionType.value),
+                new ConjunctionRowMapper());
+        log.info("Found random conjunction: conjunction={}", conjunction);
+        return conjunction;
+    }
+
+    @Nullable
+    public Conjunction getById(long id) {
+        log.info("Finding conjunction by: id={}", id);
+        String sql = "select " + FIELDS + " from conjunction where id = :id";
+        Conjunction conjunction = jdbcTemplate.queryForObject(sql, ImmutableMap.of("id", id),
+                new ConjunctionRowMapper());
+        log.info("Found conjunction: conjunction={}", conjunction);
+        return conjunction;
+    }
+
+    private static class ConjunctionRowMapper implements RowMapper<Conjunction> {
+        @Override
+        public Conjunction mapRow(ResultSet rs, int rowNum) throws SQLException {
             Conjunction conjunction = new Conjunction();
-            conjunction.setId(resultSet.getLong("id"));
-            conjunction.setCreatorId(resultSet.getLong("creator_id"));
-            conjunction.setDateCreated(resultSet.getDate("date_created"));
-            conjunction.setContent(resultSet.getString("content"));
-            conjunction.setType(ConjunctionType.getByValue(resultSet.getInt("type")).orElse(null));
+            conjunction.setId(rs.getLong("id"));
+            conjunction.setCreatorId(rs.getLong("creator_id"));
+            conjunction.setDateCreated(rs.getDate("date_created"));
+            conjunction.setContent(rs.getString("content"));
+            conjunction.setType(ConjunctionType.getByValue(rs.getInt("type")).orElse(null));
             return conjunction;
-        });
-        log.info("Found random conjunction: conjunction={}", foundConjunction);
-        return foundConjunction;
+        }
     }
 }

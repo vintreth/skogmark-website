@@ -8,6 +8,7 @@ public class Sentence {
     private LocalDateTime dateCreated;
     private String content;
     private SentenceRole role;
+    private Gender gender;
 
     public long getId() {
         return id;
@@ -49,6 +50,14 @@ public class Sentence {
         this.role = role;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         return "Sentence{" +
@@ -57,6 +66,7 @@ public class Sentence {
                 ", dateCreated=" + dateCreated +
                 ", content='" + content + '\'' +
                 ", role=" + role +
+                ", gender=" + gender +
                 '}';
     }
 }
