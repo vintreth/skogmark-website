@@ -61,6 +61,7 @@ public class TemplateProvider {
                 templateBuilder.sentence(SENTENCE_ID_BEING_ON_STAGE).empty().secondary().build(),
                 templateBuilder.secondary().conjunction(CONJUNCTION_ID_IS).sentence(SENTENCE_ID_DEEP_THOUGHT).build());
         // todo буду там в качестве
+        // todo и в мыслях нет... хотя конечно иногда хочется...
     }
 
     public List<Template> getTemplates() {

@@ -120,4 +120,20 @@ public class Update {
     public void setPreCheckoutQuery(PreCheckoutQuery preCheckoutQuery) {
         this.preCheckoutQuery = preCheckoutQuery;
     }
+
+    @Override
+    public String toString() {
+        return "Update{" +
+                "updateId=" + updateId +
+                ", message=" + message +
+                ", editedMessage=" + editedMessage +
+                ", channelPost=" + channelPost +
+                ", editedChannelPost=" + editedChannelPost +
+                ", inlineQuery=" + inlineQuery +
+                ", chosenInlineResult=" + chosenInlineResult +
+                ", callbackQuery=" + callbackQuery +
+                ", shippingQuery=" + shippingQuery +
+                ", preCheckoutQuery=" + preCheckoutQuery +
+                '}';
+    }
 }

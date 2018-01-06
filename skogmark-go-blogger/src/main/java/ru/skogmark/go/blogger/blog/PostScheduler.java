@@ -55,26 +55,30 @@ public class PostScheduler {
      * or the message hasn't been posted at necessary time.
      */
     public void schedule() {
-        log.debug("Checking for time to post a message");
-        Calendar todayCalendar = Calendar.getInstance();
-        todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        todayCalendar.set(Calendar.MINUTE, 0);
-        todayCalendar.set(Calendar.SECOND, 0);
-        Date now = new Date();
+        try {
+            log.debug("Checking for time to post a message");
+            Calendar todayCalendar = Calendar.getInstance();
+            todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            todayCalendar.set(Calendar.MINUTE, 0);
+            todayCalendar.set(Calendar.SECOND, 0);
+            Date now = new Date();
 
-        boolean timeSuitable = false;
-        Integer[] timeTable = bloggerSettings.getPostSchedulerParams().getTimeTable().getTimes();
-        for (Integer hour : timeTable) {
-            todayCalendar.set(Calendar.HOUR_OF_DAY, hour);
-            Date postDate = todayCalendar.getTime();
-            if (!isPostedAlready(postDate) && isTimeSuitable(now, postDate)) {
-                log.debug("It's about time");
-                timeSuitable = true;
-                retrieveAndPost();
+            boolean timeSuitable = false;
+            Integer[] timeTable = bloggerSettings.getPostSchedulerParams().getTimeTable().getTimes();
+            for (Integer hour : timeTable) {
+                todayCalendar.set(Calendar.HOUR_OF_DAY, hour);
+                Date postDate = todayCalendar.getTime();
+                if (!isPostedAlready(postDate) && isTimeSuitable(now, postDate)) {
+                    log.debug("It's about time");
+                    timeSuitable = true;
+                    retrieveAndPost();
+                }
             }
-        }
-        if (!timeSuitable) {
-            log.debug("It's not the time to post something");
+            if (!timeSuitable) {
+                log.debug("It's not the time to post something");
+            }
+        } catch (Exception e) {
+            log.error("Exception caught while scheduling posts", e);
         }
     }
 
