@@ -1,5 +1,6 @@
 package ru.skogmark.telegram.bot.api.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ru.skogmark.telegram.bot.api.dto.Update;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author svip
  *         2017-07-29
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateResponse {
     @JsonProperty("ok")
     private boolean ok;

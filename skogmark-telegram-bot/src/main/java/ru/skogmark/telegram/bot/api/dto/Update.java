@@ -1,5 +1,6 @@
 package ru.skogmark.telegram.bot.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author svip
  *         2017-07-28
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Update {
     @JsonProperty("update_id")
     private Integer updateId;

@@ -2,14 +2,8 @@ package ru.skogmark.go.blogger.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import ru.skogmark.common.config.ConfigurationFactory;
-import ru.skogmark.common.http.HttpRequest;
-import ru.skogmark.common.http.LocalStubHttpRequest;
-import ru.skogmark.common.http.Serializer;
-import ru.skogmark.common.http.SerializerAwareHttpRequest;
-import ru.skogmark.go.blogger.blog.telegram.TelegramConfiguration;
-import ru.skogmark.telegram.bot.core.config.TelegramBotConfiguration;
+import ru.skogmark.go.blogger.blog.telegram.TelegramSettings;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -18,10 +12,9 @@ import java.util.concurrent.ScheduledExecutorService;
  * Blogger application beans configuration
  */
 @Configuration
-@Import({TelegramBotConfiguration.class})
 public class BloggerConfiguration {
-    private static final String TELEGRAM_CONFIG_PATH = "telegram-config.xml";
-    private static final String APPLICATION_CONFIG_PATH = "application-config.xml";
+    private static final String TELEGRAM_SETTINGS_PATH = "telegram-settings.xml";
+    private static final String BLOGGER_SETTINGS_PATH = "blogger-settings.xml";
 
     /**
      * Application configuration bean
@@ -30,24 +23,13 @@ public class BloggerConfiguration {
      * @return application configuration
      */
     @Bean
-    public ApplicationConfiguration applicationConfiguration(ConfigurationFactory configurationFactory) {
-        return configurationFactory.loadConfiguration(ApplicationConfiguration.class, APPLICATION_CONFIG_PATH);
-    }
-
-    /**
-     * Factory method to instantiate {@link HttpRequest} object
-     */
-    @Bean
-    public HttpRequest httpRequest(Serializer serializer, ApplicationConfiguration applicationConfiguration) {
-        if (applicationConfiguration.isLocalMode()) {
-            return new LocalStubHttpRequest();
-        }
-        return new SerializerAwareHttpRequest(serializer);
+    public BloggerSettings bloggerSettings(ConfigurationFactory configurationFactory) {
+        return configurationFactory.loadConfiguration(BloggerSettings.class, BLOGGER_SETTINGS_PATH);
     }
 
     @Bean
-    public TelegramConfiguration telegramConfiguration(ConfigurationFactory configurationFactory) {
-        return configurationFactory.loadConfiguration(TelegramConfiguration.class, TELEGRAM_CONFIG_PATH);
+    public TelegramSettings telegramConfiguration(ConfigurationFactory configurationFactory) {
+        return configurationFactory.loadConfiguration(TelegramSettings.class, TELEGRAM_SETTINGS_PATH);
     }
 
     /**

@@ -12,5 +12,5 @@ public interface Blog {
      *
      * @throws PostingException if errors occurred while posting
      */
-    void post(Post post) throws PostingException;
+    void post(Post post);
 }

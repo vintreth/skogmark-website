@@ -7,19 +7,22 @@ import org.springframework.stereotype.Component;
 import ru.skogmark.go.blogger.blog.Blog;
 import ru.skogmark.go.blogger.blog.Post;
 
+import static ru.skogmark.telegram.bot.api.ParseMode.HTML;
+
 /**
  * Blog implementation for telegram channel
  */
-@Component
+@Component("telegramChannelBlog")
 public class TelegramChannelBlog implements Blog {
+    private static final String MESSAGE_FORMAT = "<b>%s</b>";
     private static final Logger log = LoggerFactory.getLogger(TelegramChannelBlog.class);
 
-    private final TelegramConfiguration telegramConfiguration;
+    private final TelegramSettings telegramSettings;
     private final TelegramClient telegramClient;
 
     @Autowired
-    public TelegramChannelBlog(TelegramConfiguration telegramConfiguration, TelegramClient telegramClient) {
-        this.telegramConfiguration = telegramConfiguration;
+    public TelegramChannelBlog(TelegramSettings telegramSettings, TelegramClient telegramClient) {
+        this.telegramSettings = telegramSettings;
         this.telegramClient = telegramClient;
     }
 
@@ -33,9 +36,9 @@ public class TelegramChannelBlog implements Blog {
 
     private TelegramMessage createTelegramMessage(Post post) {
         TelegramMessage message = new TelegramMessage();
-        message.setChatId(telegramConfiguration.getChatId());
-        message.setText(String.format(telegramConfiguration.getMessageFormat(), post.getContent()));
-        message.setParseMode(telegramConfiguration.getParseModeByName("html").getValue());
+        message.setChatId(telegramSettings.getChatId());
+        message.setText(String.format(MESSAGE_FORMAT, post.getContent()));
+        message.setParseMode(HTML.value);
         return message;
     }
 }

@@ -1,4 +1,4 @@
-<applicationConfiguration>
+<bloggerSettings>
   <postScheduler>
     <maxTaskDelayMinutes>200</maxTaskDelayMinutes>
     <taskIntervalSec>200</taskIntervalSec>
@@ -16,4 +16,4 @@
   <defaultCharset>utf-8</defaultCharset>
   <localMode>true</localMode>
   <postWhileStartingEnabled>false</postWhileStartingEnabled>
-</applicationConfiguration>
+</bloggerSettings>

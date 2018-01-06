@@ -1,4 +1,4 @@
-package ru.skogmark.go.blogger;
+package ru.skogmark.telegram.go.bot.application;
 
 /**
  * Handler that may handle some custom actions

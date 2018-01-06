@@ -6,19 +6,19 @@ import ru.skogmark.common.http.HttpMethod;
 import ru.skogmark.common.http.HttpRequest;
 import ru.skogmark.common.http.HttpRequestHeader;
 import ru.skogmark.go.api.Wisdom;
-import ru.skogmark.go.blogger.config.ApplicationConfiguration;
+import ru.skogmark.go.blogger.config.BloggerSettings;
 
 /**
  * Http client for making requests to go-generator service
  */
 @Service
 public class GeneratorClient {
-    private final ApplicationConfiguration applicationConfiguration;
+    private final BloggerSettings bloggerSettings;
     private final HttpRequest httpRequest;
 
     @Autowired
-    public GeneratorClient(ApplicationConfiguration applicationConfiguration, HttpRequest httpRequest) {
-        this.applicationConfiguration = applicationConfiguration;
+    public GeneratorClient(BloggerSettings bloggerSettings, HttpRequest httpRequest) {
+        this.bloggerSettings = bloggerSettings;
         this.httpRequest = httpRequest;
     }
 
@@ -30,7 +30,7 @@ public class GeneratorClient {
     public Wisdom getRandomWisdom() {
         HttpRequestHeader header = new HttpRequestHeader();
         header.setHttpMethod(HttpMethod.GET);
-        header.setUrl(applicationConfiguration.getGeneratorResourceUrl());
+        header.setUrl(bloggerSettings.getGeneratorResourceUrl());
         return httpRequest.makeRequest(header, null, Wisdom.class);
     }
 }

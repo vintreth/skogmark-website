@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.skogmark.common.http.HttpMethod;
 import ru.skogmark.common.http.HttpRequest;
 import ru.skogmark.common.http.HttpRequestHeader;
-import ru.skogmark.telegram.bot.api.TelegramBotApiMethod;
-import ru.skogmark.telegram.bot.api.TelegramBotApiUrlProvider;
+import ru.skogmark.telegram.bot.api.ApiMethod;
+import ru.skogmark.telegram.bot.api.ApiUrlProvider;
 
 /**
  * Http client to make requests to Telegram API
@@ -18,10 +18,10 @@ public class TelegramClient {
     private static final String CONTENT_TYPE = "application/json";
 
     private final HttpRequest httpRequest;
-    private final TelegramBotApiUrlProvider urlProvider;
+    private final ApiUrlProvider urlProvider;
 
     @Autowired
-    public TelegramClient(HttpRequest httpRequest, TelegramBotApiUrlProvider urlProvider) {
+    public TelegramClient(HttpRequest httpRequest, ApiUrlProvider urlProvider) {
         this.httpRequest = httpRequest;
         this.urlProvider = urlProvider;
     }
@@ -37,7 +37,7 @@ public class TelegramClient {
     private HttpRequestHeader createRequestHeader() {
         HttpRequestHeader header = new HttpRequestHeader();
         header.setHttpMethod(HttpMethod.POST);
-        header.setUrl(urlProvider.getMethodUrl(TelegramBotApiMethod.SEND_MESSAGE));
+        header.setUrl(urlProvider.getMethodUrl(ApiMethod.SEND_MESSAGE));
         header.setDefaultCharset(DEFAULT_CHARSET);
         header.setContentType(CONTENT_TYPE);
         header.setUserAgent(USER_AGENT);

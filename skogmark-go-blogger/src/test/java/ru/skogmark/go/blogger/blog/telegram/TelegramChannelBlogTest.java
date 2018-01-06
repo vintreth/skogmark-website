@@ -1,22 +1,7 @@
 package ru.skogmark.go.blogger.blog.telegram;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ru.skogmark.go.blogger.blog.Blog;
-import ru.skogmark.go.blogger.blog.Post;
 //import ru.skogmark.go.blogger.rest.HttpException;
 //import ru.skogmark.go.blogger.rest.HttpRequest;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author ksbogdan
@@ -29,7 +14,7 @@ public class TelegramChannelBlogTest {
 //    private static final String REQUEST_URI = "https://api.telegram.org/bottestToken123456789/sendMessage";
 //
 //    @Autowired
-//    private TelegramConfiguration telegramConfiguration;
+//    private TelegramSettings telegramConfiguration;
 //
 //    @Autowired
 //    private TelegramBotToken telegramBotToken;

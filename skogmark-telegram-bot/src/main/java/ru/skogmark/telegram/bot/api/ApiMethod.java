@@ -4,7 +4,7 @@ package ru.skogmark.telegram.bot.api;
  * @author svip
  *         2017-07-28
  */
-public enum TelegramBotApiMethod {
+public enum ApiMethod {
     GET_UPDATES("getUpdates"),
     SEND_MESSAGE("sendMessage");
 
@@ -13,7 +13,7 @@ public enum TelegramBotApiMethod {
      */
     public final String name;
 
-    TelegramBotApiMethod(String name) {
+    ApiMethod(String name) {
         this.name = name;
     }
 }

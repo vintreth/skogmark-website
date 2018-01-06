@@ -1,4 +1,5 @@
-<applicationConfiguration>
+<?xml version="1.0" encoding="UTF-8"?>
+<bloggerSettings>
   <postScheduler>
     <maxTaskDelayMinutes>180</maxTaskDelayMinutes>
     <taskIntervalSec>60</taskIntervalSec>
@@ -11,9 +12,6 @@
     </timeTable>
   </postScheduler>
   <awaitTerminationTimeoutSec>30</awaitTerminationTimeoutSec>
-  <generatorResourceUrl>http://go.skogmark.ru:8080/rest/gen/wisdom</generatorResourceUrl>
-  <userAgent>Mozilla/5.0</userAgent>
-  <defaultCharset>utf-8</defaultCharset>
-  <localMode>true</localMode>
+  <generatorResourceUrl>http://skogmark.ru:8084/rest/gen/wisdom</generatorResourceUrl>
   <postWhileStartingEnabled>true</postWhileStartingEnabled>
-</applicationConfiguration>
+</bloggerSettings>

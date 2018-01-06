@@ -3,8 +3,8 @@ package ru.skogmark.telegram.bot.core.client;
 import ru.skogmark.common.http.HttpMethod;
 import ru.skogmark.common.http.HttpRequest;
 import ru.skogmark.common.http.HttpRequestHeader;
-import ru.skogmark.telegram.bot.api.TelegramBotApiMethod;
-import ru.skogmark.telegram.bot.api.TelegramBotApiUrlProvider;
+import ru.skogmark.telegram.bot.api.ApiMethod;
+import ru.skogmark.telegram.bot.api.ApiUrlProvider;
 import ru.skogmark.telegram.bot.api.dto.Update;
 import ru.skogmark.telegram.bot.api.request.UpdateRequest;
 import ru.skogmark.telegram.bot.api.response.UpdateResponse;
@@ -23,9 +23,9 @@ public class UpdateClient {
     private static final String CONTENT_TYPE = "application/json";
 
     private final HttpRequest httpRequest;
-    private final TelegramBotApiUrlProvider urlProvider;
+    private final ApiUrlProvider urlProvider;
 
-    public UpdateClient(HttpRequest httpRequest, TelegramBotApiUrlProvider urlProvider) {
+    public UpdateClient(HttpRequest httpRequest, ApiUrlProvider urlProvider) {
         this.httpRequest = httpRequest;
         this.urlProvider = urlProvider;
     }
@@ -38,7 +38,7 @@ public class UpdateClient {
     public List<Update> getUpdates() {
         HttpRequestHeader header = new HttpRequestHeader();
         header.setHttpMethod(HttpMethod.POST);
-        header.setUrl(urlProvider.getMethodUrl(TelegramBotApiMethod.GET_UPDATES));
+        header.setUrl(urlProvider.getMethodUrl(ApiMethod.GET_UPDATES));
         header.setDefaultCharset(DEFAULT_CHARSET);
         header.setContentType(CONTENT_TYPE);
         header.setUserAgent(USER_AGENT);

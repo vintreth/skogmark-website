@@ -1,17 +1,5 @@
 package ru.skogmark.go.blogger.blog;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ru.skogmark.go.blogger.config.ApplicationConfiguration;
-
-import java.util.Calendar;
-
-import static org.mockito.Mockito.*;
-
 /**
  * @author svip
  *         2016-12-17
@@ -21,14 +9,14 @@ import static org.mockito.Mockito.*;
 //@ContextConfiguration(locations = {"classpath:beans.xml"})
 public class PostSchedulerTest {
 //    @Autowired
-//    private ApplicationConfiguration configuration;
+//    private BloggerSettings configuration;
 //
 //    @Test
 //    public void testTheTimeToPost() throws Exception {
 //        configure();
 //        WisdomService wisdomService = getWisdomService();
 //        PostScheduler postScheduler = new PostScheduler(getBlog(), configuration, wisdomService);
-//        postScheduler.beABlogger();
+//        postScheduler.schedule();
 //        verify(wisdomService, times(1)).getWisdom();
 //    }
 //
@@ -37,8 +25,8 @@ public class PostSchedulerTest {
 //        configure();
 //        WisdomService wisdomService = getWisdomService();
 //        PostScheduler postScheduler = new PostScheduler(getBlog(), configuration, wisdomService);
-//        postScheduler.beABlogger();
-//        postScheduler.beABlogger();
+//        postScheduler.schedule();
+//        postScheduler.schedule();
 //        verify(wisdomService, times(1)).getWisdom();
 //    }
 //

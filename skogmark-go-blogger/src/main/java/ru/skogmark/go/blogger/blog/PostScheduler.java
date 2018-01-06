@@ -1,15 +1,18 @@
 package ru.skogmark.go.blogger.blog;
 
+import com.google.common.collect.ImmutableSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.skogmark.go.api.Wisdom;
 import ru.skogmark.go.blogger.client.GeneratorClient;
-import ru.skogmark.go.blogger.config.ApplicationConfiguration;
+import ru.skogmark.go.blogger.config.BloggerSettings;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author svip
@@ -19,17 +22,17 @@ import java.util.Date;
 public class PostScheduler {
     private static final Logger log = LoggerFactory.getLogger(PostScheduler.class);
 
-    private final Blog blog;
-    private final ApplicationConfiguration applicationConfiguration;
+    private final Set<Blog> blogs;
+    private final BloggerSettings bloggerSettings;
     private final GeneratorClient generatorClient;
 
     private Date postedDate;
 
     @Autowired
-    public PostScheduler(Blog blog, ApplicationConfiguration applicationConfiguration,
+    public PostScheduler(@Qualifier("telegramChannelBlog") Blog telegramChannelBlog, BloggerSettings bloggerSettings,
                          GeneratorClient generatorClient) {
-        this.blog = blog;
-        this.applicationConfiguration = applicationConfiguration;
+        this.blogs = ImmutableSet.of(telegramChannelBlog);
+        this.bloggerSettings = bloggerSettings;
         this.generatorClient = generatorClient;
     }
 
@@ -38,7 +41,7 @@ public class PostScheduler {
      */
     public void checkPostWhileStarting() {
         log.debug("Checking if a message need to be posted while starting application");
-        if (!applicationConfiguration.isPostWhileStartingEnabled()) {
+        if (!bloggerSettings.isPostWhileStartingEnabled()) {
             postedDate = new Date();
         }
     }
@@ -51,7 +54,7 @@ public class PostScheduler {
      * Posts the message if it's about time
      * or the message hasn't been posted at necessary time.
      */
-    public void beABlogger() {
+    public void schedule() {
         log.debug("Checking for time to post a message");
         Calendar todayCalendar = Calendar.getInstance();
         todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -60,7 +63,7 @@ public class PostScheduler {
         Date now = new Date();
 
         boolean timeSuitable = false;
-        Integer[] timeTable = applicationConfiguration.getPostSchedulerParams().getTimeTable().getTimes();
+        Integer[] timeTable = bloggerSettings.getPostSchedulerParams().getTimeTable().getTimes();
         for (Integer hour : timeTable) {
             todayCalendar.set(Calendar.HOUR_OF_DAY, hour);
             Date postDate = todayCalendar.getTime();
@@ -80,7 +83,7 @@ public class PostScheduler {
     }
 
     private boolean isTimeSuitable(Date now, Date postDate) {
-        long maxTaskDelayMs = applicationConfiguration.getPostSchedulerParams().getMaxTaskDelayMinutes() * 60 * 1000L;
+        long maxTaskDelayMs = bloggerSettings.getPostSchedulerParams().getMaxTaskDelayMinutes() * 60 * 1000L;
         return postDate.getTime() <= now.getTime() && now.getTime() < (postDate.getTime() + maxTaskDelayMs);
     }
 
@@ -110,7 +113,11 @@ public class PostScheduler {
         return post;
     }
 
-    private void post(Post post) throws PostingException {
-        blog.post(post);
+    /**
+     * Post a message to all blogs
+     * @param post message
+     */
+    private void post(Post post) {
+        blogs.forEach(blog -> blog.post(post));
     }
 }
