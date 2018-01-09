@@ -12,10 +12,10 @@ import ru.skogmark.common.http.LocalStubHttpRequest;
 import ru.skogmark.common.http.Serializer;
 import ru.skogmark.common.http.SerializerAwareHttpRequest;
 import ru.skogmark.telegram.bot.api.ApiUrlProvider;
-import ru.skogmark.telegram.bot.core.DefaultUpdateHandler;
-import ru.skogmark.telegram.bot.core.LocalStubUpdateHandler;
-import ru.skogmark.telegram.bot.core.UpdateHandler;
-import ru.skogmark.telegram.bot.core.client.UpdateClient;
+import ru.skogmark.telegram.bot.core.update.DefaultUpdateHandler;
+import ru.skogmark.telegram.bot.core.update.LocalStubUpdateHandler;
+import ru.skogmark.telegram.bot.core.update.UpdateClient;
+import ru.skogmark.telegram.bot.core.update.UpdateHandler;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

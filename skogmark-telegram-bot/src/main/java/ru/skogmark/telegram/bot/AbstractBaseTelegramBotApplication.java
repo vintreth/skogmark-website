@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
-import ru.skogmark.telegram.bot.core.UpdateHandler;
+import ru.skogmark.telegram.bot.core.update.UpdateHandler;
 
 //import javax.security.auth.message.config.AuthConfigFactory;
 

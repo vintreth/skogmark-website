@@ -1,4 +1,4 @@
-package ru.skogmark.telegram.bot.core;
+package ru.skogmark.telegram.bot.core.update;
 
 /**
  * Update handler retrieves a bunch of messages with update data from Telegram API

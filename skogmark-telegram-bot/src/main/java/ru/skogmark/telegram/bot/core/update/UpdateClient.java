@@ -1,4 +1,4 @@
-package ru.skogmark.telegram.bot.core.client;
+package ru.skogmark.telegram.bot.core.update;
 
 import ru.skogmark.common.http.HttpMethod;
 import ru.skogmark.common.http.HttpRequest;

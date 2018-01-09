@@ -1,4 +1,4 @@
-package ru.skogmark.telegram.bot.core.client;
+package ru.skogmark.telegram.bot.core.update;
 
 import ru.skogmark.telegram.bot.core.TelegramBotException;
 
@@ -6,7 +6,7 @@ import ru.skogmark.telegram.bot.core.TelegramBotException;
  * @author svip
  *         2017-07-29
  */
-public class ApiResponseException extends TelegramBotException {
+class ApiResponseException extends TelegramBotException {
     public ApiResponseException(String message) {
         super(message);
     }

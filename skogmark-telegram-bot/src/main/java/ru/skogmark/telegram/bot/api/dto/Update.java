@@ -2,12 +2,13 @@ package ru.skogmark.telegram.bot.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 
 /**
  * This object represents an incoming update.
  *
  * @author svip
- *         2017-07-28
+ * 2017-07-28
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Update {
@@ -135,5 +136,22 @@ public class Update {
                 ", shippingQuery=" + shippingQuery +
                 ", preCheckoutQuery=" + preCheckoutQuery +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Update update = (Update) o;
+        return Objects.equal(updateId, update.updateId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(updateId);
     }
 }

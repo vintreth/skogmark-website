@@ -1,4 +1,4 @@
-package ru.skogmark.telegram.bot.core;
+package ru.skogmark.telegram.bot.core.update;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
