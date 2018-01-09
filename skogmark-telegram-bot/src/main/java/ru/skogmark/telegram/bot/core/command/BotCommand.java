@@ -1,4 +1,4 @@
-package ru.skogmark.telegram.bot.core;
+package ru.skogmark.telegram.bot.core.command;
 
 /**
  * Central interface of any bot command

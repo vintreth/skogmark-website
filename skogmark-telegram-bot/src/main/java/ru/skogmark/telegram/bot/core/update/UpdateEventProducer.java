@@ -2,19 +2,19 @@ package ru.skogmark.telegram.bot.core.update;
 
 /**
  * Update handler retrieves a bunch of messages with update data from Telegram API
- * and handles it in some way
+ * and put it to {@link UpdateBlockingQueueTopic}
  *
  * @author svip
  * 2017-07-25
  */
-public interface UpdateHandler {
+public interface UpdateEventProducer {
     /**
-     * Starts the update handler
+     * Starts the update producer
      */
     void start();
 
     /**
-     * Stops the update handler
+     * Stops the update producer
      */
     void stop();
 }

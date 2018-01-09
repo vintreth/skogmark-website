@@ -17,7 +17,7 @@ import java.util.List;
  * @author svip
  * 2017-07-27
  */
-public class UpdateClient {
+class UpdateClient {
     private static final String DEFAULT_CHARSET = "utf-8";
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String CONTENT_TYPE = "application/json";

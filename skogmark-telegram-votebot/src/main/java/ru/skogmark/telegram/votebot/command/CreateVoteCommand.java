@@ -1,6 +1,6 @@
 package ru.skogmark.telegram.votebot.command;
 
-//import ru.skogmark.telegram.bot.core.BotCommand;
+//import ru.skogmark.telegram.bot.core.command.BotCommand;
 
 /**
  * Command that creates a new vote

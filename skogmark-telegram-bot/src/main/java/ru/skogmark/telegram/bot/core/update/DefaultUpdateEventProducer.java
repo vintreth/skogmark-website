@@ -5,40 +5,36 @@ import org.slf4j.LoggerFactory;
 import ru.skogmark.telegram.bot.api.dto.Update;
 
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
- * Default implementation of {@link UpdateHandler}
+ * Default implementation of {@link UpdateEventProducer}
  */
-public class DefaultUpdateHandler implements UpdateHandler {
+class DefaultUpdateEventProducer implements UpdateEventProducer {
     private static final long SCHEDULER_INITIAL_DELAY = 0L;
     private static final long SCHEDULER_DELAY = 5L;
 
-    private static final int QUEUE_CAPACITY = 100;
-    private static final int QUEUE_OFFER_TIMEOUT_SEC = 10;
-
-    private static final Logger log = LoggerFactory.getLogger(DefaultUpdateHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultUpdateEventProducer.class);
 
     private final UpdateClient updateClient;
     private final ScheduledExecutorService executor;
-
-    private final BlockingQueue<Update> topic = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
+    private final UpdateBlockingQueueTopic topic;
 
     private ScheduledFuture<?> updateFuture;
 
-    public DefaultUpdateHandler(UpdateClient updateClient, ScheduledExecutorService executor) {
+    public DefaultUpdateEventProducer(UpdateClient updateClient, ScheduledExecutorService executor,
+                                      UpdateBlockingQueueTopic topic) {
         this.updateClient = updateClient;
         this.executor = executor;
+        this.topic = topic;
     }
 
     @Override
     public void start() {
-        log.debug("Starting UpdateHandler");
+        log.debug("Starting UpdateEventProducer");
         //todo: move delays to config
         updateFuture = executor.scheduleWithFixedDelay(this::handle, SCHEDULER_INITIAL_DELAY, SCHEDULER_DELAY, SECONDS);
     }
@@ -49,10 +45,7 @@ public class DefaultUpdateHandler implements UpdateHandler {
             log.debug("Got updates " + updates);
             updates.forEach(update -> {
                 try {
-                    if (!topic.contains(update)) {
-                        log.debug("Offering new update to topic: update={}", update);
-                        topic.offer(update, QUEUE_OFFER_TIMEOUT_SEC, SECONDS);
-                    }
+                    topic.offer(update);
                 } catch (InterruptedException e) {
                     log.warn("Thread was interrupted while waiting to offer new update to the topic: update={}", update);
                     Thread.currentThread().interrupt();
@@ -65,7 +58,7 @@ public class DefaultUpdateHandler implements UpdateHandler {
 
     @Override
     public void stop() {
-        log.debug("Stopping UpdateHandler");
+        log.debug("Stopping UpdateEventProducer");
         if (null != updateFuture) {
             updateFuture.cancel(true);
         }
