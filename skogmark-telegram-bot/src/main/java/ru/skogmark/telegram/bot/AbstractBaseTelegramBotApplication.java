@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
-import ru.skogmark.telegram.bot.core.update.UpdateEventProducer;
 
 //import javax.security.auth.message.config.AuthConfigFactory;
 
@@ -29,23 +28,5 @@ public abstract class AbstractBaseTelegramBotApplication implements TelegramBotA
                 beforeStop(applicationContext);
             }
         }
-    }
-
-    @Override
-    public void onStartUp(ApplicationContext applicationContext) {
-        log.debug("OnStartUp handler");
-        startUpdateHandler(applicationContext);
-    }
-
-    private void startUpdateHandler(ApplicationContext applicationContext) {
-        log.debug("Getting UpdateEventProducer bean from ApplicationContext");
-        UpdateEventProducer updateEventProducer = applicationContext.getBean(UpdateEventProducer.class);
-        updateEventProducer.start();
-    }
-
-    @Override
-    public void beforeStop(ApplicationContext applicationContext) {
-        UpdateEventProducer updateEventProducer = applicationContext.getBean(UpdateEventProducer.class);
-        updateEventProducer.stop();
     }
 }

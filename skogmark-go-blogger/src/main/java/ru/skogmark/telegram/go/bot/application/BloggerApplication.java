@@ -26,7 +26,6 @@ public class BloggerApplication extends AbstractBaseTelegramBotApplication {
 
     @Override
     public void onStartUp(ApplicationContext applicationContext) {
-        super.onStartUp(applicationContext);
         Handler handler = applicationContext.getBean(OnStartUpHandler.class);
         handler.handle();
     }
@@ -36,8 +35,5 @@ public class BloggerApplication extends AbstractBaseTelegramBotApplication {
      */
     @Override
     public void beforeStop(ApplicationContext applicationContext) {
-        super.beforeStop(applicationContext);
-        Handler handler = applicationContext.getBean(BeforeStopHandler.class);
-        handler.handle();
     }
 }

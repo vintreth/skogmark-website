@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.skogmark.common.http.HttpRequest;
 import ru.skogmark.telegram.bot.api.ApiUrlProvider;
+import ru.skogmark.telegram.bot.api.dto.Update;
 import ru.skogmark.telegram.bot.core.config.TelegramBotSettings;
 
 import java.util.concurrent.Executors;
@@ -32,17 +33,17 @@ public class UpdateConfiguration {
      * Topic with updates
      */
     @Bean
-    UpdateBlockingQueueTopic updateBlockingQueueTopic() {
-        return new UpdateBlockingQueueTopic();
+    UniqueBlockingQueueTopic<Update> updateTopic() {
+        return new UniqueBlockingQueueTopic<>();
     }
 
     /**
      * UpdateEventProducer bean
      */
-    @Bean
+    @Bean(initMethod = "start", destroyMethod = "stop")
     UpdateEventProducer updateEventProducer(UpdateClient updateClient, TelegramBotSettings settings,
                                             @Qualifier("updateEventProducerExecutor") ScheduledExecutorService executor,
-                                            UpdateBlockingQueueTopic topic) {
+                                            UniqueBlockingQueueTopic<Update> topic) {
         if (settings.isLocalMode()) {
             return new LocalStubUpdateEventProducer();
         }
@@ -57,9 +58,9 @@ public class UpdateConfiguration {
         return Executors.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, "updateEventConsumer"));
     }
 
-    @Bean
+    @Bean(initMethod = "start", destroyMethod = "stop")
     UpdateEventConsumer updateEventConsumer(@Qualifier("updateEventConsumerExecutor") ScheduledExecutorService executor,
-                                            UpdateBlockingQueueTopic topic) {
+                                            UniqueBlockingQueueTopic<Update> topic) {
         return new DefaultUpdateEventConsumer(executor, topic);
     }
 }

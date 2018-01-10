@@ -21,12 +21,12 @@ class DefaultUpdateEventProducer implements UpdateEventProducer {
 
     private final UpdateClient updateClient;
     private final ScheduledExecutorService executor;
-    private final UpdateBlockingQueueTopic topic;
+    private final UniqueBlockingQueueTopic<Update> topic;
 
     private ScheduledFuture<?> updateFuture;
 
     public DefaultUpdateEventProducer(UpdateClient updateClient, ScheduledExecutorService executor,
-                                      UpdateBlockingQueueTopic topic) {
+                                      UniqueBlockingQueueTopic<Update> topic) {
         this.updateClient = updateClient;
         this.executor = executor;
         this.topic = topic;

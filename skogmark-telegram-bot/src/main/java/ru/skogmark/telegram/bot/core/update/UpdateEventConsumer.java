@@ -1,5 +1,7 @@
 package ru.skogmark.telegram.bot.core.update;
 
 interface UpdateEventConsumer {
-    void notifyListeners();
+    void start();
+
+    void stop();
 }

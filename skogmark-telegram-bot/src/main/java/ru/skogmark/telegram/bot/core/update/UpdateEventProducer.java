@@ -2,7 +2,7 @@ package ru.skogmark.telegram.bot.core.update;
 
 /**
  * Update handler retrieves a bunch of messages with update data from Telegram API
- * and put it to {@link UpdateBlockingQueueTopic}
+ * and put it to {@link UniqueBlockingQueueTopic}
  *
  * @author svip
  * 2017-07-25
