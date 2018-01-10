@@ -741,4 +741,5 @@ INSERT INTO sentence (date_created, content, role, gender) VALUES
 ,('NOW()', 'руки опускаются', 2, null)
 ,('NOW()', 'опускаючи руки после такого пидорства', 3, null)
 ,('NOW()', 'пидорство', 1, 0)
+,('NOW()', 'если не стоит это делать это совсем другое дело', 2, null)
 ;

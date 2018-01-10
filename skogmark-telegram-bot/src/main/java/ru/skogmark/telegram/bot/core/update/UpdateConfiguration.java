@@ -12,17 +12,20 @@ import java.util.concurrent.ScheduledExecutorService;
 
 @Configuration
 public class UpdateConfiguration {
+    /**
+     * Client for updates
+     */
     @Bean
     UpdateClient updateClient(HttpRequest httpRequest, ApiUrlProvider urlProvider) {
         return new UpdateClient(httpRequest, urlProvider);
     }
 
     /**
-     * Executor holder for update handler
+     * Executor holder for {@link UpdateEventProducer}
      */
     @Bean
-    ScheduledExecutorService updateHandlerScheduledExecutor() {
-        return Executors.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, "updateHandler"));
+    ScheduledExecutorService updateEventProducerExecutor() {
+        return Executors.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, "updateEventProducer"));
     }
 
     /**
@@ -34,15 +37,29 @@ public class UpdateConfiguration {
     }
 
     /**
-     * Update handler
+     * UpdateEventProducer bean
      */
     @Bean
-    UpdateEventProducer updateHandler(UpdateClient updateClient, TelegramBotSettings settings,
-                                      @Qualifier("updateHandlerScheduledExecutor") ScheduledExecutorService executor,
-                                      UpdateBlockingQueueTopic updateBlockingQueueTopic) {
+    UpdateEventProducer updateEventProducer(UpdateClient updateClient, TelegramBotSettings settings,
+                                            @Qualifier("updateEventProducerExecutor") ScheduledExecutorService executor,
+                                            UpdateBlockingQueueTopic topic) {
         if (settings.isLocalMode()) {
             return new LocalStubUpdateEventProducer();
         }
-        return new DefaultUpdateEventProducer(updateClient, executor, updateBlockingQueueTopic);
+        return new DefaultUpdateEventProducer(updateClient, executor, topic);
+    }
+
+    /**
+     * Executor holder for {@link UpdateEventConsumer}
+     */
+    @Bean
+    ScheduledExecutorService updateEventConsumerExecutor() {
+        return Executors.newSingleThreadScheduledExecutor(runnable -> new Thread(runnable, "updateEventConsumer"));
+    }
+
+    @Bean
+    UpdateEventConsumer updateEventConsumer(@Qualifier("updateEventConsumerExecutor") ScheduledExecutorService executor,
+                                            UpdateBlockingQueueTopic topic) {
+        return new DefaultUpdateEventConsumer(executor, topic);
     }
 }
