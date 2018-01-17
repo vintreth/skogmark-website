@@ -14,7 +14,7 @@ import static ru.skogmark.go.gen.core.domain.Gender.PLURAL;
 
 @Component
 public class TemplateProvider {
-    private static final long CONJUNCTION_ID_IS = 1L;
+    private static final long CONJUNCTION_ID_DASH = 1L;
     private static final long CONJUNCTION_ID_AND = 3L;
 
     private static final long SENTENCE_ID_METAL_IN_RUSSIA = 290L;
@@ -32,6 +32,7 @@ public class TemplateProvider {
 
     @Autowired
     public TemplateProvider(TemplateBuilder templateBuilder) {
+        // todo добавить вес шаблонам
         templates = ImmutableList.of(templateBuilder.single().build(),
                 templateBuilder.none().empty().main().build(),
                 templateBuilder.none().empty().main().empty().adverbial().build(),
@@ -59,9 +60,11 @@ public class TemplateProvider {
                         .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).build(),
                 templateBuilder.sentence(SENTENCE_ID_STANDING_NEAR_THE_STAGE_AND_THINKING).empty().main().build(),
                 templateBuilder.sentence(SENTENCE_ID_BEING_ON_STAGE).empty().secondary().build(),
-                templateBuilder.secondary().conjunction(CONJUNCTION_ID_IS).sentence(SENTENCE_ID_DEEP_THOUGHT).build());
+                templateBuilder.secondary().conjunction(CONJUNCTION_ID_DASH).sentence(SENTENCE_ID_DEEP_THOUGHT).build());
         // todo буду там в качестве
-        // todo и в мыслях нет... хотя конечно иногда хочется...
+        // todo и в мыслях нет... хотя конечно иногда хочется ...
+        // todo ... решил дела
+        // todo три события произойдут - ...
     }
 
     public List<Template> getTemplates() {
