@@ -65,6 +65,9 @@ public class TemplateProvider {
         // todo и в мыслях нет... хотя конечно иногда хочется ...
         // todo ... решил дела
         // todo три события произойдут - ...
+        // todo есть три несовместимые вещи-...
+        // todo всем крыс, хэйт, с почтением Ваш Граф
+        // todo согласование по роду в main+secondary
     }
 
     public List<Template> getTemplates() {
