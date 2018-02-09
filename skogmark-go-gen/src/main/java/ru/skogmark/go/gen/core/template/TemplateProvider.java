@@ -7,11 +7,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
-import static ru.skogmark.go.gen.core.domain.Gender.FEMALE;
-import static ru.skogmark.go.gen.core.domain.Gender.MALE;
-import static ru.skogmark.go.gen.core.domain.Gender.NONE;
-import static ru.skogmark.go.gen.core.domain.Gender.PLURAL;
+import static ru.skogmark.go.gen.core.domain.Gender.*;
 
+/**
+ * todo
+ * перенести логику класса в {@link ru.skogmark.go.gen.core.pipeline.TemplateSelectionHandler}
+ */
 @Component
 public class TemplateProvider {
     private static final long CONJUNCTION_ID_DASH = 1L;
@@ -33,6 +34,13 @@ public class TemplateProvider {
     @Autowired
     public TemplateProvider(TemplateBuilder templateBuilder) {
         // todo добавить вес шаблонам
+        /*
+         * todo
+         * переосмыслить роли в предложении,
+         * перестать клеить сложные предложения,
+         * сделать разделение на Объект+Действие (Подлежащее+Сказуемое) вместо main+secondary
+         * и составлять простые предложения
+         */
         templates = ImmutableList.of(templateBuilder.single().build(),
                 templateBuilder.none().empty().main().build(),
                 templateBuilder.none().empty().main().empty().adverbial().build(),
@@ -68,6 +76,7 @@ public class TemplateProvider {
         // todo есть три несовместимые вещи-...
         // todo всем крыс, хэйт, с почтением Ваш Граф
         // todo согласование по роду в main+secondary
+        // todo добавить Объекту (сейчас main) признак одушевленности и использовать как обращение
     }
 
     public List<Template> getTemplates() {
