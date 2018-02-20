@@ -54,6 +54,7 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
          * сделать разделение на Объект+Действие (Подлежащее+Сказуемое) вместо main+secondary
          * и составлять простые предложения
          */
+        // todo разобраться с предлогами (уменьшить их количество?)
         templates = ImmutableList.of(templateBuilder.single().weight(0.3f).build(),
                 templateBuilder.none().empty().main().build(),
                 templateBuilder.main().empty().main().build(),
