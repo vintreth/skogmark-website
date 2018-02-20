@@ -29,6 +29,7 @@ public class TemplateSelectionHandlerTest {
         assertTrue(results.get("MAIN EMPTY MAIN") > results.get("SENTENCE#131 EMPTY MAIN EMPTY SENTENCE#592"));
         assertTrue(results.get("MAIN EMPTY MAIN") > results.get("SENTENCE#728 EMPTY MAIN EMPTY SENTENCE#592"));
         assertTrue(results.get("MAIN EMPTY MAIN") > results.get("SENTENCE#130 EMPTY MAIN EMPTY SENTENCE#592"));
+        assertTrue(results.get("MAIN EMPTY MAIN") > results.get("SINGLE"));
     }
 
     private static TemplateSelectionHandler createTemplateSelectionHandler() {

@@ -30,6 +30,7 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
     private static final long SENTENCE_ID_HAVING_MORE_THAN_200_DOLLARS = 21L;
     private static final long SENTENCE_ID_BEING_ON_STAGE = 20L;
     private static final long SENTENCE_ID_DEEP_THOUGHT = 10L;
+    private static final long SENTENCE_ID_COMING_OUT_AND_SAYING = 798L;
 
     private static final WeightedRandom RANDOM = new WeightedRandom();
 
@@ -53,20 +54,13 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
          * сделать разделение на Объект+Действие (Подлежащее+Сказуемое) вместо main+secondary
          * и составлять простые предложения
          */
-        templates = ImmutableList.of(templateBuilder.single().build(),
+        templates = ImmutableList.of(templateBuilder.single().weight(0.3f).build(),
                 templateBuilder.none().empty().main().build(),
-                templateBuilder.none().empty().main().empty().adverbial().build(),
-                templateBuilder.none().empty().main().compound().secondary().build(),
                 templateBuilder.main().empty().main().build(),
                 templateBuilder.main().complex().main().build(),
-                templateBuilder.main().complex().main().comma().none().build(),
                 templateBuilder.main().complex().main().empty().adverbial().build(),
                 templateBuilder.main().compound().secondary().build(),
-                templateBuilder.main().compound().secondary().comma().none().build(),
-                templateBuilder.main().compound().secondary().empty().adverbial().build(),
                 templateBuilder.adverbial().empty().main().build(),
-                templateBuilder.adverbial().empty().main().comma().none().build(),
-                templateBuilder.adverbial().empty().main().compound().secondary().build(),
 
                 templateBuilder.custom("слева ").main().comma().custom("справа ").main().weight(0.7f).build(),
                 templateBuilder.list().empty().secondary().conjunction(CONJUNCTION_ID_AND).secondary().build(),
@@ -82,6 +76,7 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
                         .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.2f).build(),
 
                 templateBuilder.sentence(SENTENCE_ID_STANDING_NEAR_THE_STAGE_AND_THINKING).empty().main().build(),
+                templateBuilder.sentence(SENTENCE_ID_COMING_OUT_AND_SAYING).empty().main().build(),
                 templateBuilder.sentence(SENTENCE_ID_BEING_ON_STAGE).empty().secondary().weight(0.6f).build(),
                 templateBuilder.secondary().conjunction(CONJUNCTION_ID_DASH).sentence(SENTENCE_ID_DEEP_THOUGHT)
                         .weight(0.6f).build());
