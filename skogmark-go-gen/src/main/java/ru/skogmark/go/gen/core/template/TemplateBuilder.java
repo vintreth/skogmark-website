@@ -25,10 +25,13 @@ import static ru.skogmark.go.gen.core.domain.SentenceRole.SINGLE;
 
 @Component
 public class TemplateBuilder {
+    private static final float DEFAULT_WEIGHT_VALUE = 0.5f;
+
     private final SentenceDao sentenceDao;
     private final ConjunctionDao conjunctionDao;
 
     private List<TemplatePart> templateParts = new ArrayList<>();
+    private float weight = DEFAULT_WEIGHT_VALUE;
 
     @Autowired
     public TemplateBuilder(SentenceDao sentenceDao, ConjunctionDao conjunctionDao) {
@@ -37,8 +40,9 @@ public class TemplateBuilder {
     }
 
     public Template build() {
-        Template template = new Template(templateParts);
+        Template template = new Template(templateParts, weight);
         templateParts = new ArrayList<>();
+        weight = DEFAULT_WEIGHT_VALUE;
         return template;
     }
 
@@ -151,6 +155,11 @@ public class TemplateBuilder {
 
     public TemplateBuilder empty() {
         templateParts.add(new ConjunctionTemplatePart(EMPTY, conjunctionDao));
+        return this;
+    }
+
+    public TemplateBuilder weight(float weight) {
+        this.weight = weight;
         return this;
     }
 }

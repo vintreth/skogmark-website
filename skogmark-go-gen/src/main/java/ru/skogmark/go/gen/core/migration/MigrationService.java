@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 @Component
-public class MigrationManager {
+public class MigrationService {
     static final String SQL_SENTENCE_TABLE = "ru/skogmark/go/gen/sql/sentence.table.sql";
     static final String SQL_CONJUNCTION_TABLE = "ru/skogmark/go/gen/sql/conjunction.table.sql";
 
@@ -25,13 +25,13 @@ public class MigrationManager {
             SQL_SENTENCE_TABLE, SQL_CONJUNCTION_TABLE
     };
 
-    private static final Logger log = LoggerFactory.getLogger(MigrationManager.class);
+    private static final Logger log = LoggerFactory.getLogger(MigrationService.class);
 
     private final TransactionTemplate transactionTemplate;
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Autowired
-    public MigrationManager(TransactionTemplate transactionTemplate, NamedParameterJdbcTemplate jdbcTemplate) {
+    public MigrationService(TransactionTemplate transactionTemplate, NamedParameterJdbcTemplate jdbcTemplate) {
         this.transactionTemplate = transactionTemplate;
         this.jdbcTemplate = jdbcTemplate;
     }

@@ -5,12 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.skogmark.common.util.WeightedRandom;
 import ru.skogmark.go.gen.core.template.Template;
 import ru.skogmark.go.gen.core.template.TemplateBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Random;
 
 import static java.util.Objects.requireNonNull;
 import static ru.skogmark.go.gen.core.domain.Gender.*;
@@ -31,7 +31,7 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
     private static final long SENTENCE_ID_BEING_ON_STAGE = 20L;
     private static final long SENTENCE_ID_DEEP_THOUGHT = 10L;
 
-    private static final Random RANDOM = new Random();
+    private static final WeightedRandom RANDOM = new WeightedRandom();
 
     private static final Logger log = LoggerFactory.getLogger(TemplateSelectionHandler.class);
 
@@ -46,7 +46,6 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
     }
 
     private void initTemplates() {
-        // todo добавить вес шаблонам
         /*
          * todo
          * переосмыслить роли в предложении,
@@ -68,20 +67,24 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
                 templateBuilder.adverbial().empty().main().build(),
                 templateBuilder.adverbial().empty().main().comma().none().build(),
                 templateBuilder.adverbial().empty().main().compound().secondary().build(),
-                templateBuilder.custom("слева ").main().comma().custom("справа ").main().build(),
+
+                templateBuilder.custom("слева ").main().comma().custom("справа ").main().weight(0.7f).build(),
                 templateBuilder.list().empty().secondary().conjunction(CONJUNCTION_ID_AND).secondary().build(),
-                templateBuilder.sentence(SENTENCE_ID_METAL_IN_RUSSIA).empty().main().build(),
+                templateBuilder.sentence(SENTENCE_ID_METAL_IN_RUSSIA).empty().main().weight(0.6f).build(),
+
                 templateBuilder.sentence(SENTENCE_ID_THE_SAME_AS_NONE).empty().main(NONE).empty()
-                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).build(),
+                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.2f).build(),
                 templateBuilder.sentence(SENTENCE_ID_THE_SAME_AS_MALE).empty().main(MALE).empty()
-                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).build(),
+                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.2f).build(),
                 templateBuilder.sentence(SENTENCE_ID_THE_SAME_AS_FEMALE).empty().main(FEMALE).empty()
-                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).build(),
+                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.2f).build(),
                 templateBuilder.sentence(SENTENCE_ID_THE_SAME_AS_PLURAL).empty().main(PLURAL).empty()
-                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).build(),
+                        .sentence(SENTENCE_ID_ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.2f).build(),
+
                 templateBuilder.sentence(SENTENCE_ID_STANDING_NEAR_THE_STAGE_AND_THINKING).empty().main().build(),
-                templateBuilder.sentence(SENTENCE_ID_BEING_ON_STAGE).empty().secondary().build(),
-                templateBuilder.secondary().conjunction(CONJUNCTION_ID_DASH).sentence(SENTENCE_ID_DEEP_THOUGHT).build());
+                templateBuilder.sentence(SENTENCE_ID_BEING_ON_STAGE).empty().secondary().weight(0.6f).build(),
+                templateBuilder.secondary().conjunction(CONJUNCTION_ID_DASH).sentence(SENTENCE_ID_DEEP_THOUGHT)
+                        .weight(0.6f).build());
         // todo буду там в качестве
         // todo и в мыслях нет... хотя конечно иногда хочется ...
         // todo ... решил дела
@@ -95,7 +98,9 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
     @Override
     public void handle(WisdomPayload wisdomPayload) {
         log.info("Selecting the sentence template");
-        Template template = templates.get(RANDOM.nextInt(templates.size()));
+        Template template = templates.get(RANDOM.pick(templates.stream()
+                .mapToDouble(Template::getWeight)
+                .toArray()));
         log.info("Template selected: template={}", template);
         wisdomPayload.setTemplate(template);
     }

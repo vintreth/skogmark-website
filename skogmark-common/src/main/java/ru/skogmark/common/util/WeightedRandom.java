@@ -8,17 +8,31 @@ public class WeightedRandom {
      * Pick random index from array of weights
      *
      * @param weights array, every item of this array represents weight value
-     * @return index of array item
+     * @return random array index
      */
     public int pick(float[] weights) {
+        double[] convertedWeights = new double[weights.length];
+        for (int i = 0; i < weights.length; i++) {
+            convertedWeights[i] = weights[i];
+        }
+        return pick(convertedWeights);
+    }
+
+    /**
+     * Pick random index from array of weights
+     *
+     * @param weights array, every item of this array represents weight value
+     * @return random array index
+     */
+    public int pick(double[] weights) {
         // Computing the total weight of all weights together
         float totalWeight = 0.0f;
-        for (float i : weights) {
+        for (double i : weights) {
             totalWeight += i;
         }
         // Choosing a random item
         int randomIndex = -1;
-        float random = (float) Math.random() * totalWeight;
+        double random = Math.random() * totalWeight;
         for (int i = 0; i < weights.length; ++i) {
             random -= weights[i];
             if (random <= .0f) {

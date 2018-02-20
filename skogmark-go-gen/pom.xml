@@ -68,6 +68,10 @@
       <artifactId>skogmark-go-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>ru.skogmark</groupId>
+      <artifactId>skogmark-common</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
