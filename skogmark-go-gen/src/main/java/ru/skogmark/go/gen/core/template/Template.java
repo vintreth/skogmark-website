@@ -32,6 +32,7 @@ public class Template {
     public String toString() {
         return "Template{" +
                 "templateParts=" + templateParts +
+                "weight=" + weight +
                 '}';
     }
 }
