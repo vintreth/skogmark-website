@@ -89,6 +89,7 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
         // todo всем крыс, хэйт, с почтением Ваш Граф
         // todo согласование по роду в main+secondary
         // todo добавить Объекту (сейчас main) признак одушевленности и использовать как обращение
+        // todo и что они там напишут? ...?
     }
 
     @Override
