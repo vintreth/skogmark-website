@@ -24,7 +24,7 @@ import static ru.skogmark.go.gen.core.domain.SentenceRole.SECONDARY;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.SINGLE;
 
 @Component
-class TemplateBuilder {
+public class TemplateBuilder {
     private final SentenceDao sentenceDao;
     private final ConjunctionDao conjunctionDao;
 
