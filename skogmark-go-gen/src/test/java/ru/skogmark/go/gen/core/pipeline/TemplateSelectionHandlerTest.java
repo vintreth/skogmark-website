@@ -40,7 +40,7 @@ public class TemplateSelectionHandlerTest {
     private static Map<Integer, Integer> doPick(TemplateSelectionHandler templateSelectionHandler) {
         WisdomPayload payload = new WisdomPayload();
         Map<Integer, Integer> results = new HashMap<>();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 50000; i++) {
             templateSelectionHandler.handle(payload);
             Integer key = payload.getTemplate().getId();
             if (!results.containsKey(key)) {
