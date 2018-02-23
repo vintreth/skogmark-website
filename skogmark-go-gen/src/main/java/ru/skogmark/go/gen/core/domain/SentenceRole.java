@@ -4,15 +4,40 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum SentenceRole {
+    /**
+     * Без роли / неизвестная роль
+     */
     NONE(0),
-    MAIN(1),
-    SECONDARY(2),
+
+    /**
+     * Подлежащее
+     */
+    SUBJECT(1),
+
+    /**
+     * Действие (сказуемое + дополнения)
+     */
+    ACTION(2),
+
     /**
      * Дополнение
      */
     ADVERBIAL(3),
+
+    /**
+     * Реальная цитата, используемая самостоятельно
+     */
     SINGLE(4),
-    LIST(5);
+
+    /**
+     * Список с перечислениями
+     */
+    LIST(5),
+
+    /**
+     * Подпись
+     */
+    SIGNATURE(6);
 
     public final int value;
 

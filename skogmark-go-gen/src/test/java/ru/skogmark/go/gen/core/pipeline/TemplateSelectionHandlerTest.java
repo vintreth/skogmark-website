@@ -18,18 +18,18 @@ public class TemplateSelectionHandlerTest {
         TemplateSelectionHandler templateSelectionHandler = createTemplateSelectionHandler();
 
         // when
-        Map<String, Integer> results = doPick(templateSelectionHandler);
+        Map<Integer, Integer> results = doPick(templateSelectionHandler);
 
         // then
-        assertTrue(results.get("слева  MAIN COMMA справа  MAIN") > results.get("SENTENCE#290 EMPTY MAIN"));
-        assertTrue(results.get("SENTENCE#290 EMPTY MAIN") > results.get("MAIN EMPTY MAIN"));
-        assertTrue(results.get("SENTENCE#20 EMPTY SECONDARY") > results.get("MAIN EMPTY MAIN"));
-        assertTrue(results.get("SECONDARY CONJUNCTION#1 SENTENCE#10") > results.get("MAIN EMPTY MAIN"));
-        assertTrue(results.get("MAIN EMPTY MAIN") > results.get("SENTENCE#729 EMPTY MAIN EMPTY SENTENCE#592"));
-        assertTrue(results.get("MAIN EMPTY MAIN") > results.get("SENTENCE#131 EMPTY MAIN EMPTY SENTENCE#592"));
-        assertTrue(results.get("MAIN EMPTY MAIN") > results.get("SENTENCE#728 EMPTY MAIN EMPTY SENTENCE#592"));
-        assertTrue(results.get("MAIN EMPTY MAIN") > results.get("SENTENCE#130 EMPTY MAIN EMPTY SENTENCE#592"));
-        assertTrue(results.get("MAIN EMPTY MAIN") > results.get("SINGLE"));
+        assertTrue(results.get(8) > results.get(10));
+        assertTrue(results.get(10) > results.get(3));
+        assertTrue(results.get(15) > results.get(3));
+        assertTrue(results.get(16) > results.get(3));
+        assertTrue(results.get(3) > results.get(11));
+        assertTrue(results.get(3) > results.get(12));
+        assertTrue(results.get(3) > results.get(13));
+        assertTrue(results.get(3) > results.get(14));
+        assertTrue(results.get(3) > results.get(1));
     }
 
     private static TemplateSelectionHandler createTemplateSelectionHandler() {
@@ -37,12 +37,12 @@ public class TemplateSelectionHandlerTest {
         return new TemplateSelectionHandler(templateBuilder);
     }
 
-    private static Map<String, Integer> doPick(TemplateSelectionHandler templateSelectionHandler) {
+    private static Map<Integer, Integer> doPick(TemplateSelectionHandler templateSelectionHandler) {
         WisdomPayload payload = new WisdomPayload();
-        Map<String, Integer> results = new HashMap<>();
+        Map<Integer, Integer> results = new HashMap<>();
         for (int i = 0; i < 10000; i++) {
             templateSelectionHandler.handle(payload);
-            String key = payload.getTemplate().asString();
+            Integer key = payload.getTemplate().getId();
             if (!results.containsKey(key)) {
                 results.put(key, 1);
             } else {

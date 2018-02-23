@@ -136,9 +136,9 @@ public class LocalRepositoryConverter {
         return getRoleIdByCode(Integer.parseInt(oldId))
                 .map(roleId -> {
                     if (RoleId.COMPLEX.equals(roleId)) {
-                        return SentenceRole.MAIN;
+                        return SentenceRole.SUBJECT;
                     } else if (RoleId.COMPOUND.equals(roleId)) {
-                        return SentenceRole.SECONDARY;
+                        return SentenceRole.ACTION;
                     } else if (RoleId.ADVERBIAL.equals(roleId)) {
                         return SentenceRole.ADVERBIAL;
                     } else {

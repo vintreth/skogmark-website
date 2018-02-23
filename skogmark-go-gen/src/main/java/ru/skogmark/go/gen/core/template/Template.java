@@ -6,12 +6,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Template {
+    private final int id;
     private final List<TemplatePart> templateParts;
     private final float weight;
 
-    public Template(List<TemplatePart> templateParts, float weight) {
+    public Template(int id, List<TemplatePart> templateParts, float weight) {
+        this.id = id;
         this.templateParts = ImmutableList.copyOf(templateParts);
         this.weight = weight;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public List<TemplatePart> getTemplateParts() {
@@ -31,7 +37,8 @@ public class Template {
     @Override
     public String toString() {
         return "Template{" +
-                "templateParts=" + templateParts +
+                "id=" + id + ", " +
+                "templateParts=" + templateParts + ", " +
                 "weight=" + weight +
                 '}';
     }

@@ -11,17 +11,19 @@ import ru.skogmark.go.gen.core.domain.old.Conjunction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMMA;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMPLEX;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMPOUND;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.EMPTY;
+import static ru.skogmark.go.gen.core.domain.SentenceRole.ACTION;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.ADVERBIAL;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.LIST;
-import static ru.skogmark.go.gen.core.domain.SentenceRole.MAIN;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.NONE;
-import static ru.skogmark.go.gen.core.domain.SentenceRole.SECONDARY;
+import static ru.skogmark.go.gen.core.domain.SentenceRole.SIGNATURE;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.SINGLE;
+import static ru.skogmark.go.gen.core.domain.SentenceRole.SUBJECT;
 
 @Component
 public class TemplateBuilder {
@@ -30,6 +32,7 @@ public class TemplateBuilder {
     private final SentenceDao sentenceDao;
     private final ConjunctionDao conjunctionDao;
 
+    private AtomicInteger id = new AtomicInteger();
     private List<TemplatePart> templateParts = new ArrayList<>();
     private float weight = DEFAULT_WEIGHT_VALUE;
 
@@ -40,7 +43,7 @@ public class TemplateBuilder {
     }
 
     public Template build() {
-        Template template = new Template(templateParts, weight);
+        Template template = new Template(id.incrementAndGet(), templateParts, weight);
         templateParts = new ArrayList<>();
         weight = DEFAULT_WEIGHT_VALUE;
         return template;
@@ -70,7 +73,7 @@ public class TemplateBuilder {
 
             @Override
             public String getCode() {
-                return "SENTENCE#" + id;
+                return "SENTENCE-" + id;
             }
         });
         return this;
@@ -81,28 +84,28 @@ public class TemplateBuilder {
         return this;
     }
 
-    public TemplateBuilder main() {
-        templateParts.add(new SentenceTemplatePart(MAIN, sentenceDao));
+    public TemplateBuilder subject() {
+        templateParts.add(new SentenceTemplatePart(SUBJECT, sentenceDao));
         return this;
     }
 
-    public TemplateBuilder main(Gender gender) {
+    public TemplateBuilder subject(Gender gender) {
         templateParts.add(new TemplatePart() {
             @Override
             public Optional<String> getContent() {
-                return Optional.ofNullable(sentenceDao.getRandomByRoleAndGender(MAIN, gender)).map(Sentence::getContent);
+                return Optional.ofNullable(sentenceDao.getRandomByRoleAndGender(SUBJECT, gender)).map(Sentence::getContent);
             }
 
             @Override
             public String getCode() {
-                return MAIN.toString();
+                return SUBJECT.toString();
             }
         });
         return this;
     }
 
-    public TemplateBuilder secondary() {
-        templateParts.add(new SentenceTemplatePart(SECONDARY, sentenceDao));
+    public TemplateBuilder action() {
+        templateParts.add(new SentenceTemplatePart(ACTION, sentenceDao));
         return this;
     }
 
@@ -121,6 +124,11 @@ public class TemplateBuilder {
         return this;
     }
 
+    public TemplateBuilder signature() {
+        templateParts.add(new SentenceDelimiterFormationDecorator(new SentenceTemplatePart(SIGNATURE, sentenceDao)));
+        return this;
+    }
+
     public TemplateBuilder conjunction(long id) {
         templateParts.add(new DoubleSpaceFormationDecorator(new TemplatePart() {
             @Override
@@ -130,7 +138,7 @@ public class TemplateBuilder {
 
             @Override
             public String getCode() {
-                return "CONJUNCTION#" + id;
+                return "CONJUNCTION-" + id;
             }
         }));
         return this;
