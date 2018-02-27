@@ -138,7 +138,7 @@ public class LocalRepositoryConverter {
                     if (RoleId.COMPLEX.equals(roleId)) {
                         return SentenceRole.SUBJECT;
                     } else if (RoleId.COMPOUND.equals(roleId)) {
-                        return SentenceRole.ACTION;
+                        return SentenceRole.PREDICATE;
                     } else if (RoleId.ADVERBIAL.equals(roleId)) {
                         return SentenceRole.ADVERBIAL;
                     } else {

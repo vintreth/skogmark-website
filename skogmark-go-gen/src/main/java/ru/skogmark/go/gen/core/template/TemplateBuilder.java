@@ -17,7 +17,7 @@ import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMMA;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMPLEX;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMPOUND;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.EMPTY;
-import static ru.skogmark.go.gen.core.domain.SentenceRole.ACTION;
+import static ru.skogmark.go.gen.core.domain.SentenceRole.PREDICATE;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.ADVERBIAL;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.LIST;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.NONE;
@@ -104,8 +104,8 @@ public class TemplateBuilder {
         return this;
     }
 
-    public TemplateBuilder action() {
-        templateParts.add(new SentenceTemplatePart(ACTION, sentenceDao));
+    public TemplateBuilder predicate() {
+        templateParts.add(new SentenceTemplatePart(PREDICATE, sentenceDao));
         return this;
     }
 

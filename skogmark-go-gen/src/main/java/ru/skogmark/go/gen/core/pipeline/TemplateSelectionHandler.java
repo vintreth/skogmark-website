@@ -38,7 +38,7 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
     private static final long ON_THE_LEFT_ON_THE_RIGHT = 805L;
     private static final long IT_TURNS_OUT_THAT = 324L;
     private static final long SO_WHAT_THEY_WILL_WRITE = 138L;
-    private static final long DONE_THE_JOB = 134L;
+    private static final long DID_THE_JOB = 134L;
     private static final long THERE_ARE_THREE_INCOMPATIBLE_THINGS = 806L;
 
     private static final WeightedRandom RANDOM = new WeightedRandom();
@@ -62,11 +62,11 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
                 templateBuilder.subject().empty().subject().build(),
                 templateBuilder.subject().conjunction(IS).subject().signature().build(),
                 templateBuilder.subject().conjunction(IS).subject().comma().adverbial().build(),
-                templateBuilder.subject().compound().action().signature().weight(0.4f).build(),
+                templateBuilder.subject().compound().predicate().signature().weight(0.4f).build(),
                 templateBuilder.adverbial().empty().subject().signature().weight(0.3f).build(),
 
                 templateBuilder.custom("слева ").subject().comma().custom("справа ").subject().weight(0.7f).build(),
-                templateBuilder.list().empty().action().conjunction(AND).action().weight(0.3f).build(),
+                templateBuilder.list().empty().predicate().conjunction(AND).predicate().weight(0.3f).build(),
                 templateBuilder.sentence(METAL_IN_RUSSIA).empty().subject().weight(0.55f).build(),
 
                 templateBuilder.sentence(THE_SAME_AS_NONE).empty().subject(NONE).empty()
@@ -79,13 +79,13 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
                         .sentence(ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.2f).build(),
 
                 templateBuilder.sentence(STANDING_NEAR_THE_STAGE_AND_THINKING).empty().subject().build(),
-                templateBuilder.sentence(COMING_OUT_ON_STAGE_LIKE).empty().action().weight(0.6f).build(),
-                templateBuilder.action().conjunction(DASH).sentence(DEEP_THOUGHT).weight(0.6f).build(),
-                templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().action().signature().weight(0.4f).build(),
-                templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().subject().empty().action().signature().weight(0.4f)
-                        .build(),
+                templateBuilder.sentence(COMING_OUT_ON_STAGE_LIKE).empty().predicate().weight(0.6f).build(),
+                templateBuilder.predicate().conjunction(DASH).sentence(DEEP_THOUGHT).weight(0.6f).build(),
+                templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().predicate().signature().weight(0.4f).build(),
+                templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().subject().empty().predicate().signature()
+                        .weight(0.4f).build(),
                 templateBuilder.sentence(SO_WHAT_THEY_WILL_WRITE).custom("?").empty().subject().custom("?").build(),
-                templateBuilder.subject(MALE).empty().sentence(DONE_THE_JOB).build(),
+                templateBuilder.subject(MALE).empty().sentence(DID_THE_JOB).build(),
 
                 templateBuilder.sentence(THERE_ARE_THREE_INCOMPATIBLE_THINGS).conjunction(DASH)
                         .subject().conjunction(AND).subject().comma()

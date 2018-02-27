@@ -15,9 +15,9 @@ public enum SentenceRole {
     SUBJECT(1),
 
     /**
-     * Действие (сказуемое + дополнения)
+     * Сказуемое
      */
-    ACTION(2),
+    PREDICATE(2),
 
     /**
      * Дополнение
