@@ -4,9 +4,10 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum Time {
-    PAST(0),
-    PRESENT(1),
-    FUTURE(2);
+    INFINITIVE(0),
+    PAST(1),
+    PRESENT(2),
+    FUTURE(3);
 
     public final int value;
 
