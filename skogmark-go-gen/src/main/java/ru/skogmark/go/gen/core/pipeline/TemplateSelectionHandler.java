@@ -13,10 +13,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
-import static ru.skogmark.go.gen.core.domain.Gender.FEMALE;
-import static ru.skogmark.go.gen.core.domain.Gender.MALE;
-import static ru.skogmark.go.gen.core.domain.Gender.NONE;
-import static ru.skogmark.go.gen.core.domain.Gender.PLURAL;
+import static ru.skogmark.go.gen.core.domain.Gender.*;
 
 @Component
 class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
@@ -55,8 +52,31 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
         initTemplates();
     }
 
+    /**
+     * todo убрать из empty() поход в БД, захардкодить значение
+     * <p>
+     * Или убрать empty() совсем, клеить части через пробелы в WisdomFormationHandler,
+     * но тогда придется убрать и запятые
+     * Скорее всего лучше заменить empty() на space() с захардкоженным значением,
+     * а comma() также захардкодить
+     * <p>
+     * todo разобраться с предлогами (уменьшить их количество?)
+     * todo буду там в качестве
+     * todo и в мыслях нет... хотя конечно иногда хочется ...
+     * todo три события произойдут - ...
+     * todo согласование по роду в main+secondary
+     * todo добавить Субъекту признак одушевленности и использовать как обращение
+     * todo predicate - это значит что ты в семье
+     * todo что слева ... что справа, на лице ничерта не происходит
+     * <p>
+     * Шаблон в шаблоне в виде "слева %s, справа %s" противоречит всей идее текущей реализации шаблонов,
+     * т.к. %s не содержит никакой информации о том, какая это часть.
+     * Т.о. получается, чтобы реализовать шаблон в шаблоне в виде строки нужно писать что-то вроде
+     * "слева ${subject}, справа ${subject}".
+     * А т.к. от идеи парсинга строк мы отказались в пользу построения шаблонов прямо в коде, то выходит, что
+     * вариант "шаблон в шаблоне" нам не подходит.
+     */
     private void initTemplates() {
-        // todo разобраться с предлогами (уменьшить их количество?)
         templates = ImmutableList.of(templateBuilder.single().signature().weight(0.3f).build(),
                 templateBuilder.none().empty().subject().weight(0.3f).build(),
                 templateBuilder.subject().empty().subject().build(),
@@ -84,7 +104,8 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
                 templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().predicate().signature().weight(0.4f).build(),
                 templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().subject().empty().predicate().signature()
                         .weight(0.4f).build(),
-                templateBuilder.sentence(SO_WHAT_THEY_WILL_WRITE).custom("?").empty().subject().custom("?").build(),
+                templateBuilder.sentence(SO_WHAT_THEY_WILL_WRITE).custom("? ").subject().custom("?").build(),
+                templateBuilder.sentence(SO_WHAT_THEY_WILL_WRITE).custom("? Что ").predicate().custom("?").build(),
                 templateBuilder.subject(MALE).empty().sentence(DID_THE_JOB).build(),
 
                 templateBuilder.sentence(THERE_ARE_THREE_INCOMPATIBLE_THINGS).conjunction(DASH)
@@ -92,11 +113,6 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
                         .subject().conjunction(AND).subject().comma()
                         .conjunction(AND).subject().conjunction(AND).subject()
                         .weight(0.6f).build());
-        // todo буду там в качестве
-        // todo и в мыслях нет... хотя конечно иногда хочется ...
-        // todo три события произойдут - ...
-        // todo согласование по роду в main+secondary
-        // todo добавить Субъекту признак одушевленности и использовать как обращение
     }
 
     @Override
