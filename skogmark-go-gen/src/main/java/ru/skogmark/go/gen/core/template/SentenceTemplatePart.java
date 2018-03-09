@@ -22,7 +22,7 @@ class SentenceTemplatePart implements TemplatePart {
 
     @Override
     public String getCode() {
-        return sentenceRole.toString();
+        return '<' + sentenceRole.toString().toLowerCase() + '>';
     }
 
     @Override

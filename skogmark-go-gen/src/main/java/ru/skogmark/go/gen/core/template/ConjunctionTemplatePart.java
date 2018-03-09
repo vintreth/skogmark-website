@@ -23,7 +23,7 @@ class ConjunctionTemplatePart implements TemplatePart {
 
     @Override
     public String getCode() {
-        return conjunctionType.toString();
+        return '<' + conjunctionType.toString().toLowerCase() + '>';
     }
 
     @Override

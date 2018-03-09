@@ -31,7 +31,7 @@ public class Template {
     public String asString() {
         return templateParts.stream()
                 .map(TemplatePart::getCode)
-                .collect(Collectors.joining(" "));
+                .collect(Collectors.joining());
     }
 
     @Override

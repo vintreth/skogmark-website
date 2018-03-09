@@ -74,7 +74,7 @@ public class TemplateBuilder {
 
             @Override
             public String getCode() {
-                return "SENTENCE-" + id;
+                return "<sentence-" + id + '>';
             }
         });
         return this;
@@ -139,7 +139,7 @@ public class TemplateBuilder {
 
             @Override
             public String getCode() {
-                return "CONJUNCTION-" + id;
+                return "<conjunction-" + id + '>';
             }
         }));
         return this;
