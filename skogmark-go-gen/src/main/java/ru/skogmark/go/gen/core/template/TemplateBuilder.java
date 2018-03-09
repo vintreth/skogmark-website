@@ -99,7 +99,7 @@ public class TemplateBuilder {
 
             @Override
             public String getCode() {
-                return SUBJECT.toString();
+                return '<' + SUBJECT.toString().toLowerCase() + '>';
             }
         });
         return this;
