@@ -13,20 +13,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMMA;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMPLEX;
 import static ru.skogmark.go.gen.core.domain.ConjunctionType.COMPOUND;
-import static ru.skogmark.go.gen.core.domain.ConjunctionType.EMPTY;
-import static ru.skogmark.go.gen.core.domain.SentenceRole.PREDICATE;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.ADVERBIAL;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.LIST;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.NONE;
+import static ru.skogmark.go.gen.core.domain.SentenceRole.PREDICATE;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.SIGNATURE;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.SINGLE;
 import static ru.skogmark.go.gen.core.domain.SentenceRole.SUBJECT;
 
 @Component
 public class TemplateBuilder {
+    private static final String SPACE = " ";
+    private static final String COMMA = ",";
+
     private static final float DEFAULT_WEIGHT_VALUE = 0.5f;
 
     private final SentenceDao sentenceDao;
@@ -157,12 +158,32 @@ public class TemplateBuilder {
     }
 
     public TemplateBuilder comma() {
-        templateParts.add(new RightSpaceFormationDecorator(new ConjunctionTemplatePart(COMMA, conjunctionDao)));
+        templateParts.add(new RightSpaceFormationDecorator(new TemplatePart() {
+            @Override
+            public Optional<String> getContent() {
+                return Optional.of(COMMA);
+            }
+
+            @Override
+            public String getCode() {
+                return COMMA;
+            }
+        }));
         return this;
     }
 
-    public TemplateBuilder empty() {
-        templateParts.add(new ConjunctionTemplatePart(EMPTY, conjunctionDao));
+    public TemplateBuilder space() {
+        templateParts.add(new TemplatePart() {
+            @Override
+            public Optional<String> getContent() {
+                return Optional.of(SPACE);
+            }
+
+            @Override
+            public String getCode() {
+                return SPACE;
+            }
+        });
         return this;
     }
 

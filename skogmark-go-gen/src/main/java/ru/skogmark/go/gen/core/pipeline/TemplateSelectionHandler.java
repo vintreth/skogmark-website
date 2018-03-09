@@ -13,8 +13,34 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
-import static ru.skogmark.go.gen.core.domain.Gender.*;
+import static ru.skogmark.go.gen.core.domain.Gender.FEMALE;
+import static ru.skogmark.go.gen.core.domain.Gender.MALE;
+import static ru.skogmark.go.gen.core.domain.Gender.NONE;
+import static ru.skogmark.go.gen.core.domain.Gender.PLURAL;
 
+/**
+ * Handler that can random select template.
+ * It stores list of templates and selects one of them randomly by weight.
+ * <p>
+ * todo tasks:
+ * - разобраться с предлогами (уменьшить их количество?)
+ * - буду там в качестве
+ * - и в мыслях нет... хотя конечно иногда хочется ...
+ * - три события произойдут - ...
+ * - согласование по роду в main+secondary
+ * - добавить Субъекту признак одушевленности и использовать как обращение
+ * - predicate - это значит что ты в семье
+ * - что слева ... что справа, на лице ничерта не происходит
+ * <p>
+ * Notes:
+ * <p>
+ * Шаблон в шаблоне в виде "слева %s, справа %s" противоречит всей идее текущей реализации шаблонов,
+ * т.к. %s не содержит никакой информации о том, какая это часть.
+ * Т.о. получается, чтобы реализовать шаблон в шаблоне в виде строки нужно писать что-то вроде
+ * "слева ${subject}, справа ${subject}".
+ * А т.к. от идеи парсинга строк мы отказались в пользу построения шаблонов прямо в коде, то выходит, что
+ * вариант "шаблон в шаблоне" нам не подходит.
+ */
 @Component
 class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
     private static final long DASH = 1L;
@@ -52,61 +78,37 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
         initTemplates();
     }
 
-    /**
-     * todo убрать из empty() поход в БД, захардкодить значение
-     * <p>
-     * Или убрать empty() совсем, клеить части через пробелы в WisdomFormationHandler,
-     * но тогда придется убрать и запятые
-     * Скорее всего лучше заменить empty() на space() с захардкоженным значением,
-     * а comma() также захардкодить
-     * <p>
-     * todo разобраться с предлогами (уменьшить их количество?)
-     * todo буду там в качестве
-     * todo и в мыслях нет... хотя конечно иногда хочется ...
-     * todo три события произойдут - ...
-     * todo согласование по роду в main+secondary
-     * todo добавить Субъекту признак одушевленности и использовать как обращение
-     * todo predicate - это значит что ты в семье
-     * todo что слева ... что справа, на лице ничерта не происходит
-     * <p>
-     * Шаблон в шаблоне в виде "слева %s, справа %s" противоречит всей идее текущей реализации шаблонов,
-     * т.к. %s не содержит никакой информации о том, какая это часть.
-     * Т.о. получается, чтобы реализовать шаблон в шаблоне в виде строки нужно писать что-то вроде
-     * "слева ${subject}, справа ${subject}".
-     * А т.к. от идеи парсинга строк мы отказались в пользу построения шаблонов прямо в коде, то выходит, что
-     * вариант "шаблон в шаблоне" нам не подходит.
-     */
     private void initTemplates() {
         templates = ImmutableList.of(templateBuilder.single().signature().weight(0.3f).build(),
-                templateBuilder.none().empty().subject().weight(0.3f).build(),
-                templateBuilder.subject().empty().subject().build(),
+                templateBuilder.none().space().subject().weight(0.3f).build(),
+                templateBuilder.subject().space().subject().build(),
                 templateBuilder.subject().conjunction(IS).subject().signature().build(),
                 templateBuilder.subject().conjunction(IS).subject().comma().adverbial().build(),
                 templateBuilder.subject().compound().predicate().signature().weight(0.4f).build(),
-                templateBuilder.adverbial().empty().subject().signature().weight(0.3f).build(),
+                templateBuilder.adverbial().space().subject().signature().weight(0.3f).build(),
 
-                templateBuilder.custom("слева ").subject().comma().custom("справа ").subject().weight(0.7f).build(),
-                templateBuilder.list().empty().predicate().conjunction(AND).predicate().weight(0.3f).build(),
-                templateBuilder.sentence(METAL_IN_RUSSIA).empty().subject().weight(0.55f).build(),
+                templateBuilder.custom("слева ").subject().comma().custom("справа ").subject().weight(0.6f).build(),
+                templateBuilder.list().space().predicate().conjunction(AND).predicate().weight(0.3f).build(),
+                templateBuilder.sentence(METAL_IN_RUSSIA).space().subject().weight(0.55f).build(),
 
-                templateBuilder.sentence(THE_SAME_AS_NONE).empty().subject(NONE).empty()
-                        .sentence(ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.2f).build(),
-                templateBuilder.sentence(THE_SAME_AS_MALE).empty().subject(MALE).empty()
-                        .sentence(ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.2f).build(),
-                templateBuilder.sentence(THE_SAME_AS_FEMALE).empty().subject(FEMALE).empty()
-                        .sentence(ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.2f).build(),
-                templateBuilder.sentence(THE_SAME_AS_PLURAL).empty().subject(PLURAL).empty()
-                        .sentence(ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.2f).build(),
+                templateBuilder.sentence(THE_SAME_AS_NONE).space().subject(NONE).space()
+                        .sentence(ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.13f).build(),
+                templateBuilder.sentence(THE_SAME_AS_MALE).space().subject(MALE).space()
+                        .sentence(ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.13f).build(),
+                templateBuilder.sentence(THE_SAME_AS_FEMALE).space().subject(FEMALE).space()
+                        .sentence(ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.13f).build(),
+                templateBuilder.sentence(THE_SAME_AS_PLURAL).space().subject(PLURAL).space()
+                        .sentence(ONLY_IN_200_THOUSAND_KILOMETRES).weight(0.13f).build(),
 
-                templateBuilder.sentence(STANDING_NEAR_THE_STAGE_AND_THINKING).empty().subject().build(),
-                templateBuilder.sentence(COMING_OUT_ON_STAGE_LIKE).empty().predicate().weight(0.6f).build(),
+                templateBuilder.sentence(STANDING_NEAR_THE_STAGE_AND_THINKING).space().subject().build(),
+                templateBuilder.sentence(COMING_OUT_ON_STAGE_LIKE).space().predicate().weight(0.6f).build(),
                 templateBuilder.predicate().conjunction(DASH).sentence(DEEP_THOUGHT).weight(0.6f).build(),
                 templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().predicate().signature().weight(0.4f).build(),
-                templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().subject().empty().predicate().signature()
+                templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().subject().space().predicate().signature()
                         .weight(0.4f).build(),
                 templateBuilder.sentence(SO_WHAT_THEY_WILL_WRITE).custom("? ").subject().custom("?").build(),
                 templateBuilder.sentence(SO_WHAT_THEY_WILL_WRITE).custom("? Что ").predicate().custom("?").build(),
-                templateBuilder.subject(MALE).empty().sentence(DID_THE_JOB).build(),
+                templateBuilder.subject(MALE).space().sentence(DID_THE_JOB).build(),
 
                 templateBuilder.sentence(THERE_ARE_THREE_INCOMPATIBLE_THINGS).conjunction(DASH)
                         .subject().conjunction(AND).subject().comma()

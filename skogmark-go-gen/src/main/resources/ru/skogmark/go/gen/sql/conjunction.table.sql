@@ -39,6 +39,4 @@ INSERT INTO conjunction (creator_id, date_created, content, type) VALUES
 ,(0, NOW(), 'если', 1)
 ,(0, NOW(), 'хотя', 1)
 ,(0, NOW(), 'так что', 1)
-,(0, NOW(), ',', 2)
-,(0, NOW(), ' ', 3)
 ;

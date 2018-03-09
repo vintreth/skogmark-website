@@ -5,9 +5,7 @@ import java.util.Optional;
 
 public enum ConjunctionType {
     COMPLEX(0),
-    COMPOUND(1),
-    COMMA(2),
-    EMPTY(3);
+    COMPOUND(1);
 
     public final int value;
 
