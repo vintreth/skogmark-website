@@ -6,6 +6,7 @@ import ru.skogmark.go.gen.core.dao.ConjunctionDao;
 import ru.skogmark.go.gen.core.dao.SentenceDao;
 import ru.skogmark.go.gen.core.domain.Gender;
 import ru.skogmark.go.gen.core.domain.Sentence;
+import ru.skogmark.go.gen.core.domain.Tense;
 import ru.skogmark.go.gen.core.domain.old.Conjunction;
 
 import java.util.ArrayList;
@@ -94,12 +95,13 @@ public class TemplateBuilder {
         templateParts.add(new TemplatePart() {
             @Override
             public Optional<String> getContent() {
-                return Optional.ofNullable(sentenceDao.getRandomByRoleAndGender(SUBJECT, gender)).map(Sentence::getContent);
+                return Optional.ofNullable(sentenceDao.getRandomByRoleAndGender(SUBJECT, gender))
+                        .map(Sentence::getContent);
             }
 
             @Override
             public String getCode() {
-                return '<' + SUBJECT.toString().toLowerCase() + '>';
+                return '<' + SUBJECT.toString().toLowerCase() + '-' + gender.toString().toLowerCase() + '>';
             }
         });
         return this;
@@ -107,6 +109,22 @@ public class TemplateBuilder {
 
     public TemplateBuilder predicate() {
         templateParts.add(new SentenceTemplatePart(PREDICATE, sentenceDao));
+        return this;
+    }
+
+    public TemplateBuilder predicate(Tense tense) {
+        templateParts.add(new TemplatePart() {
+            @Override
+            public Optional<String> getContent() {
+                return Optional.ofNullable(sentenceDao.getRandomByRoleAndTense(PREDICATE, tense))
+                        .map(Sentence::getContent);
+            }
+
+            @Override
+            public String getCode() {
+                return '<' + PREDICATE.toString().toLowerCase() + '-' + tense.toString().toLowerCase() + '>';
+            }
+        });
         return this;
     }
 

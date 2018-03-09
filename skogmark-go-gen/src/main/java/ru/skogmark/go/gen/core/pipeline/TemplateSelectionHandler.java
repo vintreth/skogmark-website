@@ -17,6 +17,7 @@ import static ru.skogmark.go.gen.core.domain.Gender.FEMALE;
 import static ru.skogmark.go.gen.core.domain.Gender.MALE;
 import static ru.skogmark.go.gen.core.domain.Gender.NONE;
 import static ru.skogmark.go.gen.core.domain.Gender.PLURAL;
+import static ru.skogmark.go.gen.core.domain.Tense.FUTURE;
 
 /**
  * Handler that can random select template.
@@ -27,9 +28,8 @@ import static ru.skogmark.go.gen.core.domain.Gender.PLURAL;
  * - буду там в качестве
  * - и в мыслях нет... хотя конечно иногда хочется ...
  * - три события произойдут - ...
- * - согласование по роду в main+secondary
+ * - согласование по роду в subject+predicate
  * - добавить Субъекту признак одушевленности и использовать как обращение
- * - predicate - это значит что ты в семье
  * - что слева ... что справа, на лице ничерта не происходит
  * <p>
  * Notes:
@@ -63,6 +63,7 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
     private static final long SO_WHAT_THEY_WILL_WRITE = 138L;
     private static final long DID_THE_JOB = 134L;
     private static final long THERE_ARE_THREE_INCOMPATIBLE_THINGS = 806L;
+    private static final long THAT_MEANS_YOU_ARE_IN_THE_FAMILY = 810L;
 
     private static final WeightedRandom RANDOM = new WeightedRandom();
 
@@ -88,7 +89,11 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
                 templateBuilder.adverbial().space().subject().signature().weight(0.3f).build(),
 
                 templateBuilder.custom("слева ").subject().comma().custom("справа ").subject().weight(0.6f).build(),
-                templateBuilder.list().space().predicate().conjunction(AND).predicate().weight(0.3f).build(),
+                templateBuilder.list().space()
+                        .predicate(FUTURE).conjunction(AND)
+                        .predicate(FUTURE)
+                        .weight(0.3f)
+                        .build(),
                 templateBuilder.sentence(METAL_IN_RUSSIA).space().subject().weight(0.55f).build(),
 
                 templateBuilder.sentence(THE_SAME_AS_NONE).space().subject(NONE).space()
@@ -106,15 +111,17 @@ class TemplateSelectionHandler implements PipelineHandler<WisdomPayload> {
                 templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().predicate().signature().weight(0.4f).build(),
                 templateBuilder.sentence(IT_TURNS_OUT_THAT).comma().subject().space().predicate().signature()
                         .weight(0.4f).build(),
-                templateBuilder.sentence(SO_WHAT_THEY_WILL_WRITE).custom("? ").subject().custom("?").build(),
-                templateBuilder.sentence(SO_WHAT_THEY_WILL_WRITE).custom("? Что ").predicate().custom("?").build(),
+                templateBuilder.sentence(SO_WHAT_THEY_WILL_WRITE).custom("? ").subject().custom("?").weight(0.25f).build(),
+                templateBuilder.sentence(SO_WHAT_THEY_WILL_WRITE).custom("? Что ").predicate().custom("?").weight(0.25f).build(),
                 templateBuilder.subject(MALE).space().sentence(DID_THE_JOB).build(),
 
                 templateBuilder.sentence(THERE_ARE_THREE_INCOMPATIBLE_THINGS).conjunction(DASH)
                         .subject().conjunction(AND).subject().comma()
                         .subject().conjunction(AND).subject().comma()
                         .conjunction(AND).subject().conjunction(AND).subject()
-                        .weight(0.6f).build());
+                        .weight(0.6f).build(),
+
+                templateBuilder.subject().space().sentence(THAT_MEANS_YOU_ARE_IN_THE_FAMILY).build());
     }
 
     @Override

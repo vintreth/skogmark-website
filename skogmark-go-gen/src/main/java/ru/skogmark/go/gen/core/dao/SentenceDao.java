@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import ru.skogmark.go.gen.core.domain.Gender;
 import ru.skogmark.go.gen.core.domain.Sentence;
 import ru.skogmark.go.gen.core.domain.SentenceRole;
+import ru.skogmark.go.gen.core.domain.Tense;
 
 import javax.annotation.Nullable;
 import java.sql.ResultSet;
@@ -19,7 +20,7 @@ import static ru.skogmark.go.gen.core.domain.SentenceRole.NONE;
 
 @Repository
 public class SentenceDao {
-    private static final String FIELDS = "id, creator_id, date_created, content, role, gender";
+    private static final String FIELDS = "id, creator_id, date_created, content, role, gender, tense";
     private static final Logger log = LoggerFactory.getLogger(SentenceDao.class);
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -57,6 +58,20 @@ public class SentenceDao {
     }
 
     @Nullable
+    public Sentence getRandomByRoleAndTense(SentenceRole sentenceRole, Tense tense) {
+        log.info("Finding random sentence: role={}, tense={}", sentenceRole, tense);
+        String sql = "select " + FIELDS + " from sentence " +
+                "where role = :role " +
+                "and tense = :tense " +
+                "order by random() " +
+                "limit 1";
+        Sentence sentence = jdbcTemplate.queryForObject(sql,
+                ImmutableMap.of("role", sentenceRole.value, "tense", tense.value), new SentenceRowMapper());
+        log.info("Found sentence: sentence={}", sentence);
+        return sentence;
+    }
+
+    @Nullable
     public Sentence getById(long id) {
         log.info("Finding sentence by: id={}", id);
         String sql = "select " + FIELDS + " from sentence where id = :id";
@@ -75,6 +90,7 @@ public class SentenceDao {
             sentence.setContent(rs.getString("content"));
             sentence.setRole(SentenceRole.getByValue(rs.getInt("role")).orElse(NONE));
             sentence.setGender(Gender.getByValue(rs.getInt("gender")).orElse(null));
+            sentence.setTense(Tense.getByValue(rs.getInt("tense")).orElse(null));
             return sentence;
         }
     }

@@ -9,6 +9,7 @@ public class Sentence {
     private String content;
     private SentenceRole role;
     private Gender gender;
+    private Tense tense;
 
     public long getId() {
         return id;
@@ -58,6 +59,14 @@ public class Sentence {
         this.gender = gender;
     }
 
+    public Tense getTense() {
+        return tense;
+    }
+
+    public void setTense(Tense tense) {
+        this.tense = tense;
+    }
+
     @Override
     public String toString() {
         return "Sentence{" +
@@ -67,6 +76,7 @@ public class Sentence {
                 ", content='" + content + '\'' +
                 ", role=" + role +
                 ", gender=" + gender +
+                ", tense=" + tense +
                 '}';
     }
 }
