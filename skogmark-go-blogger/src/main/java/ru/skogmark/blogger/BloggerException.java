@@ -1,4 +1,4 @@
-package ru.skogmark.go.blogger.exception;
+package ru.skogmark.blogger;
 
 /**
  * @author svip

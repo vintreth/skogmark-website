@@ -1,6 +1,6 @@
 package ru.skogmark.go.blogger.blog;
 
-import ru.skogmark.go.blogger.exception.BloggerException;
+import ru.skogmark.blogger.BloggerException;
 
 /**
  * @author ksbogdan

@@ -1,9 +1,11 @@
-package ru.skogmark.go.blogger.config;
+package ru.skogmark.blogger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.skogmark.blogger.post.PostScheduler;
 import ru.skogmark.common.config.ConfigurationFactory;
 import ru.skogmark.go.blogger.blog.telegram.TelegramSettings;
+import ru.skogmark.go.blogger.config.BloggerSettings;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -33,7 +35,7 @@ public class BloggerConfiguration {
     }
 
     /**
-     * Executor for {@link ru.skogmark.go.blogger.blog.PostScheduler}
+     * Executor for {@link PostScheduler}
      */
     @Bean
     public ScheduledExecutorService postSchedulerExecutor() {

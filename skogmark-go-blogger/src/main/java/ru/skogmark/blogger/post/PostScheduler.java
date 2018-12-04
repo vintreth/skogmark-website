@@ -1,45 +1,74 @@
-package ru.skogmark.go.blogger.blog;
+package ru.skogmark.blogger.post;
 
 import com.google.common.collect.ImmutableSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.skogmark.go.api.Wisdom;
+import ru.skogmark.go.blogger.blog.Blog;
+import ru.skogmark.go.blogger.blog.Post;
+import ru.skogmark.go.blogger.blog.PostingException;
 import ru.skogmark.go.blogger.client.GeneratorClient;
 import ru.skogmark.go.blogger.config.BloggerSettings;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author svip
  * 2016-12-17
  */
-@Component
+@Service
 public class PostScheduler {
     private static final Logger log = LoggerFactory.getLogger(PostScheduler.class);
 
     private final Set<Blog> blogs;
     private final BloggerSettings bloggerSettings;
     private final GeneratorClient generatorClient;
+    private final ScheduledExecutorService executor;
 
     private Date postedDate;
 
-    @Autowired
-    public PostScheduler(@Qualifier("telegramChannelBlog") Blog telegramChannelBlog, BloggerSettings bloggerSettings,
-                         GeneratorClient generatorClient) {
+    public PostScheduler(@Qualifier("telegramChannelBlog") Blog telegramChannelBlog,
+                         BloggerSettings bloggerSettings,
+                         GeneratorClient generatorClient,
+                         @Qualifier("postSchedulerExecutor") ScheduledExecutorService executor) {
         this.blogs = ImmutableSet.of(telegramChannelBlog);
         this.bloggerSettings = bloggerSettings;
         this.generatorClient = generatorClient;
+        this.executor = executor;
+    }
+
+    public void start() {
+        checkPostWhileStarting();
+        log.debug("Starting scheduled executor");
+        executor.scheduleAtFixedRate(this::schedule, 0L,
+                bloggerSettings.getPostSchedulerParams().getTaskIntervalSec(), TimeUnit.SECONDS);
+    }
+
+    public void stop() {
+        try {
+            log.info("Stopping the application. Awaiting termination.");
+            executor.awaitTermination(bloggerSettings.getAwaitTerminationTimeoutSec(), TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            log.warn("InterruptedException occurred while awaiting scheduler termination", e);
+            Thread.currentThread().interrupt();
+        } finally {
+            if (!executor.isTerminated()) {
+                log.warn("Scheduler termination timeout");
+                executor.shutdownNow();
+            }
+        }
     }
 
     /**
      * Checks if a message need to be posted to a blog while starting application
      */
-    public void checkPostWhileStarting() {
+    private void checkPostWhileStarting() {
         log.debug("Checking if a message need to be posted while starting application");
         if (!bloggerSettings.isPostWhileStartingEnabled()) {
             postedDate = new Date();
@@ -54,7 +83,7 @@ public class PostScheduler {
      * Posts the message if it's about time
      * or the message hasn't been posted at necessary time.
      */
-    public void schedule() {
+    private void schedule() {
         try {
             log.debug("Checking for time to post a message");
             Calendar todayCalendar = Calendar.getInstance();
@@ -119,6 +148,7 @@ public class PostScheduler {
 
     /**
      * Post a message to all blogs
+     *
      * @param post message
      */
     private void post(Post post) {
