@@ -33,6 +33,7 @@
     <jackson.databind.version>2.9.3</jackson.databind.version>
     <postgresql.version>42.1.4</postgresql.version>
     <guava.version>23.0</guava.version>
+    <commons-httpclient.version>3.1</commons-httpclient.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -166,6 +167,11 @@
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
         <version>${jackson.databind.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>${commons-httpclient.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
